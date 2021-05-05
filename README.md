@@ -1,7 +1,6 @@
-# Getting Started with Create React App
+# "IZI Investments" App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+This is Lab test web application.
 ## Available Scripts
 
 In the project directory, you can run:
