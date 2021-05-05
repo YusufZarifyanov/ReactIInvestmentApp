@@ -1,22 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import { Button } from 'antd';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Welcome to Investment App!
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>
+          <a href="https://ant.design/docs/react/introduce">
+            <Button type="primary" shape="round" icon={<ArrowRightOutlined />}>
+              Start Learn Ant Design
+            </Button>
+          </a>
+        </p>
       </header>
     </div>
   );
