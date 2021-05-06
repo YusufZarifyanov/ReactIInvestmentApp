@@ -1,23 +1,12 @@
 import './App.css';
-import { Button } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { Layout } from 'antd';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Welcome to Investment App!
-        </p>
-        <p>
-          <a href="https://ant.design/docs/react/introduce">
-            <Button type="primary" shape="round" icon={<ArrowRightOutlined />}>
-              Learn Ant Design
-            </Button>
-          </a>
-        </p>
-      </header>
-    </div>
+    <Layout>
+      {/* Header component goes here */}
+      {/* Sider and Content components goes here */}
+    </Layout>
   );
 }
 
