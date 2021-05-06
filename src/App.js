@@ -12,7 +12,7 @@ function App() {
         <p>
           <a href="https://ant.design/docs/react/introduce">
             <Button type="primary" shape="round" icon={<ArrowRightOutlined />}>
-              Start Learn Ant Design
+              Learn Ant Design
             </Button>
           </a>
         </p>
