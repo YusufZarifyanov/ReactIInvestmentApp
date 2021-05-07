@@ -33,6 +33,7 @@ function Header() {
         defaultSelectedKeys={["portfolio"]}
         style={{
           flex: "0 1 auto",
+          minWidth: "800px",
         }}
       >
         <Menu.Item key="portfolio" icon={<ShoppingFilled />}>
