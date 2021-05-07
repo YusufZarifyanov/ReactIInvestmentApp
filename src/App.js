@@ -1,11 +1,13 @@
 import './App.css';
-import { Layout } from 'antd';
+import { Layout, Menu } from 'antd';
+import MainComponent from './components/MainComponent';
+
 
 function App() {
   return (
     <Layout>
-      {/* Header component goes here */}
-      {/* Sider and Content components goes here */}
+      {/* <Header>Some data</Header> */}
+      <MainComponent />
     </Layout>
   );
 }
