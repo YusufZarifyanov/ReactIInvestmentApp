@@ -5,6 +5,7 @@ import {
   QuestionCircleFilled,
   ShoppingFilled,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function Header() {
   return (
@@ -15,35 +16,42 @@ function Header() {
         alignItems: "center",
       }}
     >
-      <Typography.Title
-        style={{
-          fontSize: 24,
-          lineHeight: "32px",
-          color: "#fff",
-          marginBottom: 0,
-          flex: "0 0 168px",
-          cursor: "pointer",
-        }}
-      >
-        IZI Investment
+      <Link to="/">
+        <Typography.Title
+          style={{
+            fontSize: 24,
+            lineHeight: "32px",
+            color: "#fff",
+            marginBottom: 0,
+            flex: "0 0 168px",
+            cursor: "pointer",
+          }}
+        >
+          IZI Investment
       </Typography.Title>
+      </Link>
       <Menu
         theme="dark"
         mode="horizontal"
-        defaultSelectedKeys={["portfolio"]}
+        defaultSelectedKeys={["briefcase"]}
         style={{
           flex: "0 1 auto",
-          minWidth: "800px",
         }}
       >
-        <Menu.Item key="portfolio" icon={<ShoppingFilled />}>
-          Мой Портфель
+        <Menu.Item key="briefcase" icon={<ShoppingFilled />}>
+          <Link to="briefcase">
+            Мой Портфель
+          </Link>
         </Menu.Item>
         <Menu.Item key="showcase" icon={<AppstoreFilled />}>
-          Витрина
+          <Link to="showcase">
+            Витрина
+          </Link>
         </Menu.Item>
         <Menu.Item key="about" icon={<QuestionCircleFilled />}>
-          О программе
+          <Link to="about">
+            О программе
+          </Link>
         </Menu.Item>
       </Menu>
     </Layout.Header>
