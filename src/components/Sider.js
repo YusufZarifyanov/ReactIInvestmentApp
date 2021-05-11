@@ -14,19 +14,19 @@ const SideBar= (props) => {
           defaultSelectedKeys={["4"]}
         >
           <Menu.Item key="1">
-            <Link to={"/briefcase/a"}>{props.data[1]}</Link>
+            <Link to={"/briefcase"}>{props.data[1]}</Link>
           </Menu.Item>
           <Menu.Item key="2">
             {" "}
-            <Link to={"/briefcase/b"}>{props.data[2]}</Link>
+            <Link to={"/briefcase"}>{props.data[2]}</Link>
           </Menu.Item>
           <Menu.Item key="3">
             {" "}
-            <Link to={"/briefcase/c"}>{props.data[3]}</Link>
+            <Link to={"/briefcase"}>{props.data[3]}</Link>
           </Menu.Item>
           <Menu.Item key="4">
             {" "}
-            <Link to={"/briefcase/d"}>{props.data[0]}</Link>
+            <Link to={"/briefcase"}>{props.data[0]}</Link>
           </Menu.Item>
         </Menu>
       </Sider>

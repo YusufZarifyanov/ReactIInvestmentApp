@@ -1,7 +1,6 @@
 import './App.css';
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
-import MainComponent from './components/MainComponent';
 import Briefcase from "./components/Briefcase";
 import ContentWindow from "./components/Content"
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -15,7 +14,7 @@ function App() {
       <Layout>
         <Header />
         <Switch>
-          <Route path="/briefcase">
+          <Route exact path="/briefcase">
             <Briefcase data={data_briefcase}/>
           </Route>
           <Route exact path="/">

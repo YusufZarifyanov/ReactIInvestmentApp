@@ -6,7 +6,7 @@ const ContentWindow = () => {
   return (
     <>
       <Content className="content_block">
-        <div className="content_block__elem">content</div>
+              <div className="content_block__elem">content</div>
       </Content>
     </>
   );
