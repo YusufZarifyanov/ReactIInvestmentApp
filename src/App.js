@@ -2,7 +2,12 @@ import './App.css';
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
 import MainComponent from './components/MainComponent';
+import Briefcase from "./components/Briefcase";
+import ContentWindow from "./components/Content"
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+const data_briefcase=["Валюта", "Акции", "Облигации", "Фонды"]
+const data_showcase = ["Меню", "Магазин", "Что-то еще", "Подарки"];
 
 function App() {
   return (
@@ -10,13 +15,21 @@ function App() {
       <Layout>
         <Header />
         <Switch>
-          <Route exact path='/'>
-            <MainComponent />
+          <Route path="/briefcase">
+            <Briefcase data={data_briefcase}/>
+          </Route>
+          <Route exact path="/">
+            <ContentWindow />
+          </Route>
+          <Route exact path="/showcase">
+            <Briefcase data={data_showcase} />
+          </Route>
+          <Route exact path="/about">
+            <ContentWindow />
           </Route>
         </Switch>
       </Layout>
     </BrowserRouter>
-
   );
 }
 
