@@ -11,6 +11,25 @@ import { Link } from "react-router-dom";
 import cn from 'classnames'
 import './Header.css'
 
+const menuItems = [{
+  id: 1,
+  key: "briefcase",
+  icon: <ShoppingFilled />,
+  text: 'Мой Портфель'
+},
+{
+  id: 2,
+  key: "showcase",
+  icon: <AppstoreFilled />,
+  text: 'Витрина'
+},
+{
+  id: 3,
+  key: "about",
+  icon: <QuestionCircleFilled />,
+  text: 'О программе'
+}]
+
 function Header() {
   const [active, setActive] = useState(false)
 
@@ -52,22 +71,13 @@ function Header() {
         defaultSelectedKeys={["briefcase"]}
         className={cn('header__menu', active ? 'active' : '')}
         onClick={setActiveToFalse}
-      >
-        <Menu.Item key="briefcase" icon={<ShoppingFilled />}>
-          <Link to="briefcase">
-            Мой Портфель
+      >{menuItems.map(item => (
+        <Menu.Item className="header__menuItem" key={item.key} icon={item.icon}>
+          <Link to={item.key}>
+            {item.text}
           </Link>
         </Menu.Item>
-        <Menu.Item key="showcase" icon={<AppstoreFilled />}>
-          <Link to="showcase">
-            Витрина
-          </Link>
-        </Menu.Item>
-        <Menu.Item key="about" icon={<QuestionCircleFilled />}>
-          <Link to="about">
-            О программе
-          </Link>
-        </Menu.Item>
+      ))}
       </Menu>
     </Layout.Header>
   );
