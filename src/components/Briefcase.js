@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import SideBar from "./SideBar";
-import ContentWindow from "./Content";
+import ContentWindow from "./ContentWindow";
 
 const Briefcase = (props) => {
   return (

@@ -2,7 +2,7 @@ import './App.css';
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
 import Briefcase from "./components/Briefcase";
-import ContentWindow from "./components/Content"
+import ContentWindow from "./components/ContentWindow"
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 const data_briefcase = ["Валюта", "Акции", "Облигации", "Фонды"]
