@@ -1,6 +1,6 @@
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 const ContentWindow = () => {
   return (

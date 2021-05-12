@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import SideBar from "./Sider";
 import ContentWindow from "./Content";
 
