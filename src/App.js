@@ -12,7 +12,7 @@ const data_showcase = ["Меню", "Магазин", "Что-то еще", "По
 function App() {
   return (
     <BrowserRouter>
-      <Layout>
+      <Layout style={{ position: "relative", overflow: "hidden" }}>
         <Header />
         <Switch>
           <Route path="/briefcase">

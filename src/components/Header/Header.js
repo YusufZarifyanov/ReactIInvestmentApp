@@ -30,7 +30,7 @@ const menuItems = [{
   text: 'О программе'
 }]
 
-function Header() {
+const Header = () => {
   const [active, setActive] = useState(false)
 
   function handleActive() {
