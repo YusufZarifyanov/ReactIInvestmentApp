@@ -1,10 +1,9 @@
 import { Layout, Menu } from "antd";
+import { Link } from "react-router-dom";
 
-const { Content, Sider } = Layout;
-/*eslint-disable*/ 
-import {Link} from "react-router-dom"
+const { Sider } = Layout;
 
-const SideBar= (props) => {
+const SideBar = (props) => {
   return (
     <>
       <Sider>
