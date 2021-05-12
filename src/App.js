@@ -10,32 +10,32 @@ const data_showcase = ["Меню", "Магазин", "Что-то еще", "По
 
 function App() {
   return (
-      <Layout>
-        <Header />
-        <Switch>
-          <Route path="/briefcase">
+    <Layout style={{ position: "relative", overflow: "hidden" }}>
+      <Header />
+      <Switch>
+        <Route path="/briefcase">
 
-            <Briefcase data={data_briefcase} />
-          </Route>
-          <Route exact path="/showcase">
-            <Briefcase
-              data={data_showcase}
-              content_data={"showcase"}
-              url_params={{ url_start: "showcase" }}
-            />
-          </Route>
-          <Route exact path="/about">
-            <ContentWindow data={"about"} />
-          </Route>
-          <Route exact path="/data">
-            <ContentWindow data={"someData"} />
-          </Route>
-          <Route exact path="/">
-            <ContentWindow content_data={"homepage"}/>
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </Layout>
+          <Briefcase data={data_briefcase} />
+        </Route>
+        <Route exact path="/showcase">
+          <Briefcase
+            data={data_showcase}
+            content_data={"showcase"}
+            url_params={{ url_start: "showcase" }}
+          />
+        </Route>
+        <Route exact path="/about">
+          <ContentWindow data={"about"} />
+        </Route>
+        <Route exact path="/data">
+          <ContentWindow data={"someData"} />
+        </Route>
+        <Route exact path="/">
+          <ContentWindow content_data={"homepage"} />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+    </Layout>
   );
 }
 
