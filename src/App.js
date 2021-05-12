@@ -3,14 +3,13 @@ import { Layout } from 'antd';
 import Header from './components/Header/Header';
 import Briefcase from "./components/Briefcase";
 import ContentWindow from "./components/Content"
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 const data_briefcase = ["Валюта", "Акции", "Облигации", "Фонды"]
 const data_showcase = ["Меню", "Магазин", "Что-то еще", "Подарки"];
 
 function App() {
   return (
-    <BrowserRouter>
       <Layout>
         <Header />
         <Switch>
@@ -29,7 +28,6 @@ function App() {
           <Redirect to="/" />
         </Switch>
       </Layout>
-    </BrowserRouter>
   );
 }
 
