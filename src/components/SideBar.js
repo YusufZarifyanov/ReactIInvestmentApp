@@ -1,9 +1,13 @@
 import { Layout, Menu } from "antd";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { data_showcase, data_briefcase } from "../state"
 
 const { Sider } = Layout;
 
 const SideBar = (props) => {
+  const [data, setData] = useState(props.typeCase === 'briefcase' ? data_briefcase : data_showcase);
+
   return (
     <>
       <Sider>
@@ -12,9 +16,9 @@ const SideBar = (props) => {
           mode="inline"
           defaultSelectedKeys={["4"]}
         >
-          {props.data.map((el, id) => (
+          {data.map((el, id) => (
             <Menu.Item key={id + 1}>
-              <Link to={`/data`}>{el}</Link>
+              <Link to={`/${props.typeCase}` + el.route}>{el.name}</Link>
             </Menu.Item>
           ))}
         </Menu>
