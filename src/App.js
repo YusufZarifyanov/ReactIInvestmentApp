@@ -10,12 +10,29 @@ function App() {
     <Layout style={{ position: "relative", overflow: "hidden" }}>
       <Header />
       <Switch>
-        <Route path="/" exact component={ContentWindow} />
-        <Route path="/briefcase" exact component={Briefcase} />
-        <Route path="/briefcase/briefcase_route" exact component={Briefcase} />
-        <Route path="/showcase" exact component={Showcase} />
-        <Route path="/showcase/showcase_route" exact component={Showcase} />
-        <Route path="/about" exact component={ContentWindow} />
+        <Route path="/briefcase" exact >
+          <Briefcase />
+        </Route>
+        <Route path="/briefcase/briefcase_route" exact >
+          <Briefcase />
+        </Route>
+
+        <Route path="/showcase" exact >
+          <Showcase />
+        </Route>
+
+        <Route path="/showcase/showcase_route" exact >
+          <Showcase />
+        </Route>
+
+        <Route path="/about" exact >
+          <About />
+        </Route>
+
+        <Route path="/" exact >
+          <Briefcase />
+        </Route>
+
         <Redirect to="/" />
       </Switch>
     </Layout>
