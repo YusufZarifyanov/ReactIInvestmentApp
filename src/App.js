@@ -1,4 +1,3 @@
-import './App.css';
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
 import Briefcase from "./components/Briefcase/Briefcase";
