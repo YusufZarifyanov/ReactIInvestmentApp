@@ -8,11 +8,7 @@ const sbMenuItems = [
     route: '/showcase_route'
   },
   {
-    name: "Актуальное",
-    route: '/showcase_route',
-  },
-  {
-    name: "Взлеты и Падения дня",
+    name: "Взлеты и Падения",
     route: '/showcase_route'
   },
   {
