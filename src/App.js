@@ -1,8 +1,8 @@
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
-import Briefcase from "./components/Briefcase/Briefcase";
-import Showcase from "./components/Showcase/Showcase";
-import ContentWindow from "./components/ContentWindow"
+import Briefcase from "./containers/Briefcase/Briefcase";
+import Showcase from "./containers/Showcase/Showcase";
+import About from "./containers/About/About"
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
 
         <Redirect to="/" />
       </Switch>
-    </Layout>
+    </Layout >
   );
 }
 
