@@ -28,7 +28,7 @@ const sbMenuItems = [
 const Briefcase = (props) => {
   return (
     <Layout>
-      <SideBar typeCase={"showcase"} menuItems={sbMenuItems} />
+      <SideBar typeCase={"briefcase"} menuItems={sbMenuItems} />
       <ContentWindow data={"briefcase"} className="content_block" />
     </Layout>
   );
