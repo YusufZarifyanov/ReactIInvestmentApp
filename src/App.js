@@ -20,7 +20,6 @@ function App() {
         <Route path="/showcase" exact >
           <Showcase />
         </Route>
-
         <Route path="/showcase/showcase_route" exact >
           <Showcase />
         </Route>

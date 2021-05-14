@@ -25,7 +25,7 @@ const sbMenuItems = [
   },
 ];
 
-const Briefcase = (props) => {
+const Briefcase = () => {
   return (
     <Layout>
       <SideBar typeCase={"briefcase"} menuItems={sbMenuItems} />
