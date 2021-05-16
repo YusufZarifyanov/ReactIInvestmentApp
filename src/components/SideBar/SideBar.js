@@ -13,7 +13,7 @@ const SideBar = ({ menuItems, typeCase }) => {
         defaultSelectedKeys={["4"]}
       >
         {menuItems.map((el, id) => (
-          <Menu.Item key={id + 1}>
+          <Menu.Item key={id + 1} icon={el.icon}>
             <Link to={`/${typeCase}` + el.route}>{el.name}</Link>
           </Menu.Item>
         ))}
