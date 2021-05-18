@@ -105,7 +105,7 @@ function RouteWithSubRoutes(route) {
 function App() {
   return (
     <Layout style={{ position: "relative", overflow: "hidden" }}>
-      <Header />
+      <Header routes={routes} />
         <Switch>
           {routes.map((route, i) => (
             <RouteWithSubRoutes key={i} {...route} />

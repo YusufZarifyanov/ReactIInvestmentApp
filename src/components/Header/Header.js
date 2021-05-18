@@ -1,44 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, Menu, Typography } from "antd";
 import {
-  AppstoreFilled,
   CloseOutlined,
   MenuOutlined,
-  QuestionCircleFilled,
-  ShoppingFilled,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import cn from 'classnames'
 import './Header.css'
 
-const menuItems = [{
-  id: 1,
-  key: "briefcase",
-  icon: <ShoppingFilled />,
-  text: 'Мой Портфель'
-},
-{
-  id: 2,
-  key: "showcase",
-  icon: <AppstoreFilled />,
-  text: 'Витрина'
-},
-{
-  id: 3,
-  key: "about",
-  icon: <QuestionCircleFilled />,
-  text: 'О программе'
-}]
+const Header = ({location, routes}) => {
+  const currentPath = location.pathname
 
-const Header = () => {
-  const [active, setActive] = useState(false)
+  const [activeMenuItem, setActiveMenuItem] = useState(routes && routes.find(item => item.path.split('/')[1] === currentPath.split('/')[1])?.path)
 
-  function handleActive() {
-    setActive(!active)
+  useEffect(() => {
+    setActiveMenuItem(routes && routes.find(item => item.path.split('/')[1] === currentPath.split('/')[1])?.path)
+  },[location])
+
+  const [activeBurger, setActiveBurger] = useState(false)
+
+  function handleActiveBurger() {
+    setActiveBurger(!activeBurger)
   }
 
-  function setActiveToFalse() {
-    setActive(false)
+  function setActiveBurgerToFalse() {
+    setActiveBurger(false)
   }
 
   return (
@@ -46,7 +32,7 @@ const Header = () => {
       className='header'
     >
       <Link to="/">
-        <Typography.Title onClick={setActiveToFalse}
+        <Typography.Title onClick={setActiveBurgerToFalse}
           style={{
             fontSize: 24,
             lineHeight: "32px",
@@ -61,20 +47,20 @@ const Header = () => {
       </Link>
       <div
         className='header__burgerBtn'
-        onClick={handleActive}
+        onClick={handleActiveBurger}
       >
-        {active ? <CloseOutlined /> : <MenuOutlined />}
+        {activeBurger ? <CloseOutlined /> : <MenuOutlined />}
       </div>
       <Menu
         theme="dark"
         mode="vertical"
-        defaultSelectedKeys={["briefcase"]}
-        className={cn('header__menu', active ? 'active' : '')}
-        onClick={setActiveToFalse}
-      >{menuItems.map(item => (
-        <Menu.Item className="header__menuItem" key={item.key} icon={item.icon}>
-          <Link to={item.key}>
-            {item.text}
+        selectedKeys={[`${activeMenuItem && activeMenuItem}`]}
+        className={cn('header__menu', activeBurger ? 'active' : '')}
+        onClick={setActiveBurgerToFalse}
+      >{routes && routes.map(item => (
+        <Menu.Item className="header__menuItem" key={item.path} icon={item.icon}>
+          <Link to={item.path}>
+            {item.name}
           </Link>
         </Menu.Item>
       ))}
@@ -83,4 +69,4 @@ const Header = () => {
   );
 }
 
-export default Header;
+export default withRouter(Header);
