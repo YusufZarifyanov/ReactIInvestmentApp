@@ -1,14 +1,10 @@
 import { Layout } from "antd";
 
-const { Content } = Layout;
-
-const ContentWindow = (props) => {
+const ContentWindow = ({children}) => {
   return (
-    <>
-      <Content className="content_block">
-        <div className="content_block__elem">{ props.data}</div>
-      </Content>
-    </>
+    <Layout.Content className="content_block">
+      <div className="content_block__elem">{children}</div>
+    </Layout.Content>
   );
 };
 

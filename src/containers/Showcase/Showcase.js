@@ -1,38 +1,19 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import ContentWindow from "../../components/ContentWindow/ContentWindow";
-import {
-  RiseOutlined,
-  ScheduleOutlined,
-  FireOutlined
-} from "@ant-design/icons";
+import { withRouter } from "react-router";
 
+const Showcase = ({location, routes}) => {
+  const currentPath = location.pathname
 
-const sbMenuItems = [
-  {
-    name: "Топ Просмотров",
-    route: '/showcase_route',
-    icon: <FireOutlined />
-  },
-  {
-    name: "Взлеты и Падения",
-    route: '/showcase_route',
-    icon: <RiseOutlined />
-  },
-  {
-    name: "События",
-    route: '/showcase_route',
-    icon: <ScheduleOutlined />
-  },
-];
-
-const Showcase = () => {
   return (
     <Layout>
-      <SideBar typeCase={"showcase"} menuItems={sbMenuItems} />
-      <ContentWindow data={"showcase"} className="content_block" />
+      <SideBar menuItems={routes} active={currentPath} />
+      <ContentWindow className="content_block" >
+        this is super showcase
+      </ContentWindow>
     </Layout>
   );
 };
 
-export default Showcase;
+export default withRouter(Showcase);

@@ -1,24 +1,28 @@
 import { Layout, Menu } from "antd";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const { Sider } = Layout;
+const SideBar = ({ menuItems, active }) => {
+  const [activeMenuItem, setActiveMenuItem] = useState(menuItems.find(item => item.path === active)?.path)
 
-const SideBar = ({ menuItems, typeCase }) => {
+  useEffect(() => {
+    setActiveMenuItem(menuItems.find(item => item.path === active)?.path)
+  },[active])
 
   return (
-    <Sider>
+    <Layout.Sider>
       <Menu
         className="sidebar_block"
         mode="inline"
-        defaultSelectedKeys={["4"]}
+        selectedKeys={[`${activeMenuItem && activeMenuItem}`]}
       >
-        {menuItems.map((el, id) => (
-          <Menu.Item key={id + 1} icon={el.icon}>
-            <Link to={`/${typeCase}` + el.route}>{el.name}</Link>
+        {menuItems && menuItems.map(el => (
+          <Menu.Item key={el.path} icon={el.icon}>
+            <Link to={el.path}>{el.name}</Link>
           </Menu.Item>
         ))}
       </Menu>
-    </Sider>
+    </Layout.Sider>
   );
 };
 
