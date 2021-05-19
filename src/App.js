@@ -68,6 +68,24 @@ const routes = [
 ];
 
 function RouteWithSubRoutes(route) {
+  if(route.path === "/briefcase"){
+    return (
+      <>
+        <route.component routes={route.routes} />
+        <Redirect to="/briefcase/review" />
+      </>
+    );
+  }
+
+  if(route.path === "/showcase"){
+    return (
+      <>
+        <route.component routes={route.routes} />
+        <Redirect to="/showcase/topviews" />
+      </>
+    );
+  }
+
   return (
     <Route
       path={route.path}
