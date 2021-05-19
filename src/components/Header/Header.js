@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Layout, Menu, Typography } from "antd";
 import {
   CloseOutlined,
@@ -10,12 +10,7 @@ import './Header.css'
 
 const Header = ({location, routes}) => {
   const currentPath = location.pathname
-
-  const [activeMenuItem, setActiveMenuItem] = useState(routes && routes.find(item => item.path.split('/')[1] === currentPath.split('/')[1])?.path)
-
-  useEffect(() => {
-    setActiveMenuItem(routes && routes.find(item => item.path.split('/')[1] === currentPath.split('/')[1])?.path)
-  },[location])
+  const activeMenuItem = '/' + currentPath.split('/')[1]
 
   const [activeBurger, setActiveBurger] = useState(false)
 
@@ -54,7 +49,7 @@ const Header = ({location, routes}) => {
       <Menu
         theme="dark"
         mode="vertical"
-        selectedKeys={[`${activeMenuItem && activeMenuItem}`]}
+        selectedKeys={[`${activeMenuItem}`]}
         className={cn('header__menu', activeBurger ? 'active' : '')}
         onClick={setActiveBurgerToFalse}
       >{routes && routes.map(item => (
