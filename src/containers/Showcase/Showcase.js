@@ -9,7 +9,7 @@ const Showcase = ({location, routes}) => {
   return (
     <Layout>
       <SideBar menuItems={routes} active={currentPath} />
-      <ContentWindow className="content_block" >
+      <ContentWindow>
         this is super showcase
       </ContentWindow>
     </Layout>

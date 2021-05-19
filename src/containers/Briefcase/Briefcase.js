@@ -9,7 +9,7 @@ const Briefcase = ({routes, location}) => {
   return (
     <Layout>
       <SideBar menuItems={routes} active={currentPath} />
-      <ContentWindow className="content_block" >this is a cool briefcase!</ContentWindow>
+      <ContentWindow>this is a cool briefcase!</ContentWindow>
     </Layout>
   );
 };

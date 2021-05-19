@@ -4,9 +4,8 @@ import { Link } from "react-router-dom";
 const SideBar = ({ menuItems, active }) => {
 
   return (
-    <Layout.Sider>
+    <Layout.Sider style={{backgroundColor: 'white'}}>
       <Menu
-        className="sidebar_block"
         mode="inline"
         selectedKeys={[`${active}`]}
       >
