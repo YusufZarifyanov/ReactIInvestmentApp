@@ -1,12 +1,30 @@
 import React, { useState } from "react";
 import { Layout, Menu, Typography } from "antd";
 import {
+  AppstoreFilled,
   CloseOutlined,
   MenuOutlined,
+  QuestionCircleFilled,
+  ShoppingFilled,
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import cn from 'classnames'
 import './Header.css'
+
+const menuItems = [
+  {
+    path: "/briefcase",
+    icon: <ShoppingFilled />,
+  },
+  {
+    path: "/showcase",
+    icon: <AppstoreFilled />,
+  },
+  {
+  path: "/about",
+  icon: <QuestionCircleFilled />,
+  },
+];
 
 const Header = ({location, routes}) => {
   const currentPath = location.pathname
@@ -53,7 +71,7 @@ const Header = ({location, routes}) => {
         className={cn('header__menu', activeBurger ? 'active' : '')}
         onClick={setActiveBurgerToFalse}
       >{routes && routes.map(item => (
-        <Menu.Item className="header__menuItem" key={item.path} icon={item.icon}>
+        <Menu.Item className="header__menuItem" key={item.path} icon={menuItems.find(menuItem => menuItem.path === item.path).icon}>
           <Link to={item.path}>
             {item.name}
           </Link>

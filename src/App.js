@@ -4,55 +4,36 @@ import Briefcase from "./containers/Briefcase/Briefcase";
 import Showcase from "./containers/Showcase/Showcase";
 import About from "./containers/About/About"
 import { Switch, Route, Redirect } from 'react-router-dom';
-import {
-  DollarCircleOutlined,
-  EyeOutlined,
-  PercentageOutlined,
-  FileTextOutlined,
-  BankOutlined,
-  RiseOutlined,
-  ScheduleOutlined,
-  FireOutlined,
-  AppstoreFilled,
-  QuestionCircleFilled,
-  ShoppingFilled,
-} from "@ant-design/icons";
 
 const routes = [
   {
     name: "Мой Портфель",
     path: "/briefcase",
-    icon: <ShoppingFilled />,
     component: Briefcase,
     routes: [
       {
         name: "Обзор",
         path: '/briefcase/review',
-        icon: <EyeOutlined />,
         component: Briefcase,
       },
       {
         name: "Валюта",
         path: '/briefcase/currency',
-        icon: <DollarCircleOutlined />,
         component: Briefcase,
       },
       {
         name: "Акции",
         path: '/briefcase/shares',
-        icon: <PercentageOutlined />,
         component: Briefcase,
       },
       {
         name: "Облигации",
         path: '/briefcase/bonds',
-        icon: <FileTextOutlined />,
         component: Briefcase,
       },
       {
         name: "Фонды",
         path: '/briefcase/funds',
-        icon: <BankOutlined />,
         component: Briefcase,
       },
     ]
@@ -60,25 +41,21 @@ const routes = [
   {
     name: "Витрина",
     path: "/showcase",
-    icon: <AppstoreFilled />,
     component: Showcase,
     routes: [
         {
           name: "Топ Просмотров",
           path: '/showcase/topviews',
-          icon: <FireOutlined />,
           component: Showcase,
         },
         {
           name: "Взлеты и Падения",
           path: '/showcase/upsdowns',
-          icon: <RiseOutlined />,
           component: Showcase,
         },
         {
           name: "События",
           path: '/showcase/events',
-          icon: <ScheduleOutlined />,
           component: Showcase,
         },
     ]
@@ -86,7 +63,6 @@ const routes = [
   {
   name: "О программе",
   path: "/about",
-  icon: <QuestionCircleFilled />,
   component: About,
   },
 ];

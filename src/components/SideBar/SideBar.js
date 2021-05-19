@@ -1,7 +1,7 @@
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 
-const SideBar = ({ menuItems, active }) => {
+const SideBar = ({menuItems, routes, active }) => {
 
   return (
     <Layout.Sider style={{backgroundColor: 'white'}}>
@@ -9,8 +9,8 @@ const SideBar = ({ menuItems, active }) => {
         mode="inline"
         selectedKeys={[`${active}`]}
       >
-        {menuItems && menuItems.map(el => (
-          <Menu.Item key={el.path} icon={el.icon}>
+        {routes && routes.map(el => (
+          <Menu.Item key={el.path} icon={menuItems.find(item => item.path === el.path).icon}>
             <Link to={el.path}>{el.name}</Link>
           </Menu.Item>
         ))}
