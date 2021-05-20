@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { Layout, Menu, Typography } from "antd";
+import {
+  Layout,
+  Menu,
+  Typography,
+} from "antd";
 import {
   AppstoreFilled,
   CloseOutlined,
@@ -13,23 +17,24 @@ import './Header.css'
 
 const menuItems = [
   {
-    path: "/briefcase",
+    name: "Мой Портфель",
+    path: "/briefcase/review",
     icon: <ShoppingFilled />,
   },
   {
-    path: "/showcase",
+    name: "Витрина",
+    path: "/showcase/topviews",
     icon: <AppstoreFilled />,
   },
   {
-  path: "/about",
-  icon: <QuestionCircleFilled />,
+    name: "О программе",
+    path: "/about",
+    icon: <QuestionCircleFilled />,
   },
 ];
 
-const Header = ({location, routes}) => {
-  const currentPath = location.pathname
-  const activeMenuItem = '/' + currentPath.split('/')[1]
-
+const Header = ({ location }) => {
+  const currentPath = location.pathname;
   const [activeBurger, setActiveBurger] = useState(false)
 
   function handleActiveBurger() {
@@ -60,23 +65,23 @@ const Header = ({location, routes}) => {
       </Link>
       <div
         className='header__burgerBtn'
-        onClick={handleActiveBurger}
-      >
+        onClick={handleActiveBurger} >
         {activeBurger ? <CloseOutlined /> : <MenuOutlined />}
       </div>
       <Menu
         theme="dark"
         mode="vertical"
-        selectedKeys={[`${activeMenuItem}`]}
+        selectedKeys={[currentPath]}
         className={cn('header__menu', activeBurger ? 'active' : '')}
         onClick={setActiveBurgerToFalse}
-      >{routes && routes.map(item => (
-        <Menu.Item className="header__menuItem" key={item.path} icon={menuItems.find(menuItem => menuItem.path === item.path).icon}>
-          <Link to={item.path}>
-            {item.name}
-          </Link>
-        </Menu.Item>
-      ))}
+      >
+        {menuItems.map(item => (
+          <Menu.Item className="header__menuItem" key={item.path} icon={item.icon}>
+            <Link to={item.path}>
+              {item.name}
+            </Link>
+          </Menu.Item>
+        ))}
       </Menu>
     </Layout.Header>
   );
