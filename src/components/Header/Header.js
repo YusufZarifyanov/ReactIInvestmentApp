@@ -35,6 +35,21 @@ const menuItems = [
 
 const Header = ({ location }) => {
   const currentPath = location.pathname;
+  const menuSelectItems = [];
+
+  const mainMenu = menuItems.map(item => {
+    if (item.path.split('/')[1] === currentPath.split('/')[1]) {
+      menuSelectItems.push(item.path);
+    };
+    return (
+      <Menu.Item className="header__menuItem" key={item.path} icon={item.icon}>
+        <Link to={item.path}>
+          {item.name}
+        </Link>
+      </Menu.Item>
+    )
+  })
+
   const [activeBurger, setActiveBurger] = useState(false)
 
   function handleActiveBurger() {
@@ -58,8 +73,8 @@ const Header = ({ location }) => {
             marginBottom: 0,
             flex: "0 0 168px",
             cursor: "pointer",
-          }}
-        >
+          }} >
+
           IZI Investment
       </Typography.Title>
       </Link>
@@ -71,17 +86,11 @@ const Header = ({ location }) => {
       <Menu
         theme="dark"
         mode="vertical"
-        selectedKeys={[currentPath]}
+        selectedKeys={menuSelectItems}
         className={cn('header__menu', activeBurger ? 'active' : '')}
-        onClick={setActiveBurgerToFalse}
-      >
-        {menuItems.map(item => (
-          <Menu.Item className="header__menuItem" key={item.path} icon={item.icon}>
-            <Link to={item.path}>
-              {item.name}
-            </Link>
-          </Menu.Item>
-        ))}
+        onClick={setActiveBurgerToFalse} >
+
+        {mainMenu}
       </Menu>
     </Layout.Header>
   );
