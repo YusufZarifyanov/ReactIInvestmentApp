@@ -36,16 +36,46 @@ const data = [
     currency: "$",
     icon: <TwitterOutlined />,
   },
+  {
+    name: "Apple",
+    count: 4,
+    cost: 124.83,
+    currency: "$",
+    icon: <AppleFilled />,
+  },
+  {
+    name: "Bank of America Corp",
+    count: 3,
+    cost: 41.92,
+    currency: "$",
+    icon: <BankOutlined />,
+  },
+  {
+    name: "TESLA",
+    count: 2,
+    cost: 41.92,
+    currency: "$",
+    icon: <ArrowUpOutlined />,
+  },
+  {
+    name: "Twitter",
+    count: 1,
+    cost: 41.92,
+    currency: "$",
+    icon: <TwitterOutlined />,
+  },
+  
+  
   
 ];
 
-const ContentWindow = ({ children }) => {
+const ContentWindow = () => {
   return (
     <Layout.Content>
       <div className="main_content">
         <div className="briefcase_header">
           <div className="briefcase_header__totalSum">
-            <h1>Общая сумма</h1>
+            <h1>Общая сумма = 1000 $</h1>
           </div>
         </div>
         <div className="briefcase_body">

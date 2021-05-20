@@ -1,6 +1,5 @@
 .main_content {
   background: rgb(182, 182, 211);
-  margin: 30px 30px 0;
 }
 
 .briefcase_header__totalSum {
@@ -22,3 +21,16 @@
     font-weight: 500;
     font-size: 16px;
 }
+
+@media screen and (max-width: 1200px) {
+    .briefcase_body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .briefcase_body__elem {
+        width: 90%;
+        height: 100%;
+       margin: 1rem auto;
+    }
+  }
