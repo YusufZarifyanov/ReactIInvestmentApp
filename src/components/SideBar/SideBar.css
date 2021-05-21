@@ -1,0 +1,27 @@
+.sider {
+    background-color: white !important;
+    z-index: 8;
+  }
+
+.sider__burgerBtn {
+    position: absolute;
+    height: 40px;
+    right: -28px;
+    top: 4px;
+    display: none;
+    color: #fff;
+    background-color: #001529;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 576px) {
+    .sider {
+        position: absolute !important;
+        height: 100vh;
+      }
+    
+    .sider__burgerBtn {
+        display: block;
+    }
+}
