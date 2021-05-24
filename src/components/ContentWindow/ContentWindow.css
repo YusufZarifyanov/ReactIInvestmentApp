@@ -1,5 +1,5 @@
 .main_content {
-  background: rgb(182, 182, 211);
+  background: rgb(241, 241, 248);
 }
 
 .briefcase_header__totalSum {
@@ -11,9 +11,11 @@
 }
 
 .briefcase_body__elem {
-    width: 25%;
+    /* width: 25%; */
     margin: 1rem;
-    height: 100%;
+    max-height: 82vh;
+    overflow: auto;
+    background-color:rgb(241, 241, 248);
 }
 
 .briefcase_body__elem__header {
@@ -22,15 +24,45 @@
     font-size: 16px;
 }
 
-@media screen and (max-width: 1200px) {
+.briefcase_body__elem__img {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+.briefcase_body__card {
+  width: 25%;
+  margin: 1rem;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1400px) {
+  .briefcase_body {
+    display: flex;
+    flex-flow: row wrap;
+}
+  .briefcase_body__card {
+      width: 50%;
+     margin: 1rem auto;
+  }
+
+}
+
+@media screen and (max-width: 769px) {
     .briefcase_body {
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
-    .briefcase_body__elem {
+    .briefcase_body__card {
         width: 90%;
-        height: 100%;
-       margin: 1rem auto;
+        margin-left: 50px;
+       
+    }
+
+    .briefcase_body__elem {
+      width: 80%;
     }
   }

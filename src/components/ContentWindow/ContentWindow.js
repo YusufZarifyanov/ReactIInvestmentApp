@@ -1,75 +1,8 @@
 import "./ContentWindow.css";
 import { Layout, List, Card } from "antd";
-import {
-  AppleFilled,
-  BankOutlined,
-  ArrowUpOutlined,
-  TwitterOutlined,
-} from "@ant-design/icons";
 
-const data = [
-  {
-    name: "Apple",
-    count: 4,
-    cost: 124.83,
-    currency: "$",
-    icon: <AppleFilled />,
-  },
-  {
-    name: "Bank of America Corp",
-    count: 3,
-    cost: 41.92,
-    currency: "$",
-    icon: <BankOutlined />,
-  },
-  {
-    name: "TESLA",
-    count: 2,
-    cost: 41.92,
-    currency: "$",
-    icon: <ArrowUpOutlined />,
-  },
-  {
-    name: "Twitter",
-    count: 1,
-    cost: 41.92,
-    currency: "$",
-    icon: <TwitterOutlined />,
-  },
-  {
-    name: "Apple",
-    count: 4,
-    cost: 124.83,
-    currency: "$",
-    icon: <AppleFilled />,
-  },
-  {
-    name: "Bank of America Corp",
-    count: 3,
-    cost: 41.92,
-    currency: "$",
-    icon: <BankOutlined />,
-  },
-  {
-    name: "TESLA",
-    count: 2,
-    cost: 41.92,
-    currency: "$",
-    icon: <ArrowUpOutlined />,
-  },
-  {
-    name: "Twitter",
-    count: 1,
-    cost: 41.92,
-    currency: "$",
-    icon: <TwitterOutlined />,
-  },
-  
-  
-  
-];
 
-const ContentWindow = () => {
+const ContentWindow = ({activeMenuItem, data}) => {
   return (
     <Layout.Content>
       <div className="main_content">
@@ -79,35 +12,43 @@ const ContentWindow = () => {
           </div>
         </div>
         <div className="briefcase_body">
-          <div className="briefcase_body__elem currency">
-            <Card
-              title={<div className="briefcase_body__elem__header">Валюта</div>}
-            >
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Валюта</div>
+            <div className="briefcase_body__elem">
               <List
-                dataSource={data}
+                dataSource={data.data_currency}
                 renderItem={(item) => (
-                  <List.Item>
+                  <List.Item className="briefcase_body__elem__list_item">
                     <List.Item.Meta
-                      avatar={item.icon}
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
                       title={item.name}
                       description={`${item.count} шт. - ${item.cost} ${item.currency}`}
                     />
                     <div>{`${item.count * item.cost} ${item.currency}`}</div>
                   </List.Item>
                 )}
-              />
-            </Card>
+              />{" "}
+            </div>
           </div>
-          <div className="briefcase_body__elem promotions">
-            <Card
-              title={<div className="briefcase_body__elem__header">Акции</div>}
-            >
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Акции</div>
+            <div className="briefcase_body__elem">
               <List
-                dataSource={data}
+                dataSource={data.data_shares}
                 renderItem={(item) => (
-                  <List.Item>
+                  <List.Item className="briefcase_body__elem__list_item">
                     <List.Item.Meta
-                      avatar={item.icon}
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
                       title={item.name}
                       description={`${item.count} шт. - ${item.cost} ${item.currency}`}
                     />
@@ -115,18 +56,22 @@ const ContentWindow = () => {
                   </List.Item>
                 )}
               />
-            </Card>
+            </div>
           </div>
-          <div className="briefcase_body__elem bonds">
-            <Card
-              title={<div className="briefcase_body__elem__header">Облигации</div>}
-            >
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Облигации</div>
+            <div className="briefcase_body__elem">
               <List
-                dataSource={data}
+                dataSource={data.data_bonds}
                 renderItem={(item) => (
-                  <List.Item>
+                  <List.Item className="briefcase_body__elem__list_item">
                     <List.Item.Meta
-                      avatar={item.icon}
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
                       title={item.name}
                       description={`${item.count} шт. - ${item.cost} ${item.currency}`}
                     />
@@ -134,18 +79,22 @@ const ContentWindow = () => {
                   </List.Item>
                 )}
               />
-            </Card>
+            </div>
           </div>
-          <div className="briefcase_body__elem fonds">
-            <Card
-              title={<div className="briefcase_body__elem__header">Фонды</div>}
-            >
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Фонды</div>
+            <div className="briefcase_body__elem">
               <List
-                dataSource={data}
+                dataSource={data.data_fonds}
                 renderItem={(item) => (
-                  <List.Item>
+                  <List.Item className="briefcase_body__elem__list_item">
                     <List.Item.Meta
-                      avatar={item.icon}
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
                       title={item.name}
                       description={`${item.count} шт. - ${item.cost} ${item.currency}`}
                     />
@@ -153,7 +102,7 @@ const ContentWindow = () => {
                   </List.Item>
                 )}
               />
-            </Card>
+            </div>
           </div>
         </div>
       </div>
