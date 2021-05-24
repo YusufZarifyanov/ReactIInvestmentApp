@@ -1,0 +1,25 @@
+.overview_mainContent {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+    flex-flow: row wrap;
+}
+
+.overview_mainContent__card {
+    
+    width: 300px;
+    margin: 10px;
+}
+
+.overview_mainContent::before, .overview_mainContent::after {
+    content: '';
+    width: 100%;
+    order: 1,
+}
+
+.overview_mainContent__card_content {
+    width: 100%;
+    height: 200px;
+}
+
+

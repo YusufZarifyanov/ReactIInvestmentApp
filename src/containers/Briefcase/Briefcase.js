@@ -1,7 +1,14 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import ContentWindow from "../../components/ContentWindow/ContentWindow";
+import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview" 
 import { useParams } from "react-router";
+import {
+  data_bonds,
+  data_currency,
+  data_fonds,
+  data_shares,
+} from "../../data/index";
 import {
   BankOutlined,
   DollarCircleOutlined,
@@ -13,41 +20,67 @@ import {
 const subMenuItems = [
   {
     name: "Обзор",
-    path: '/briefcase/review',
+    path: "/briefcase/review",
     icon: <EyeOutlined />,
   },
   {
     name: "Валюта",
-    path: '/briefcase/currency',
+    path: "/briefcase/currency",
     icon: <DollarCircleOutlined />,
   },
   {
     name: "Акции",
-    path: '/briefcase/shares',
+    path: "/briefcase/shares",
     icon: <PercentageOutlined />,
   },
   {
     name: "Облигации",
-    path: '/briefcase/bonds',
+    path: "/briefcase/bonds",
     icon: <FileTextOutlined />,
   },
   {
     name: "Фонды",
-    path: '/briefcase/funds',
+    path: "/briefcase/funds",
     icon: <BankOutlined />,
   },
 ];
 
 const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
-
+  let data;
+  switch (briefcaseSubmenuId) {
+    case "currency":
+      data = data_currency;
+      break;
+    case "shares":
+      data = data_shares;
+      break;
+    case "bonds":
+      data = data_bonds;
+      break;
+    case "funds":
+      data = data_fonds;
+      break;
+    default:
+      console.log("Нет таких значений");
+  }
+  console.log(data)
   return (
     <Layout>
       <SideBar
         menuItems={subMenuItems}
         activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
-      <ContentWindow>this is a cool briefcase!</ContentWindow>
+      {briefcaseSubmenuId === "review" ? (
+        <ContentWindow
+          activeMenuItem={briefcaseSubmenuId}
+          data={{ data_bonds, data_currency, data_fonds, data_shares }}
+        />
+      ) : (
+        <BriefcaseOverview
+          data={data}
+        />
+      )}
     </Layout>
   );
 };
