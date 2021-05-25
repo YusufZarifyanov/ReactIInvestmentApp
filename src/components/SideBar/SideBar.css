@@ -3,6 +3,12 @@
     z-index: 8;
   }
 
+.sider__menu {
+  position: -webkit-sticky;
+  position: sticky; 
+  top: 64px;
+}
+
 .sider__burgerBtn {
     position: absolute;
     height: 40px;
@@ -13,12 +19,17 @@
     background-color: #001529;
     font-size: 24px;
     cursor: pointer;
+    z-index: 10 !important;
+}
+
+.sider__burgerBtn span {
+  margin-top: 7px;
 }
 
 @media screen and (max-width: 576px) {
     .sider {
         position: absolute !important;
-        height: 100vh;
+        height: 100%;
       }
     
     .sider__burgerBtn {

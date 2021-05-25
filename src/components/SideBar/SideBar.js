@@ -1,7 +1,7 @@
 import { Layout, Menu } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { 
+import {
   LeftOutlined,
   RightOutlined
 } from "@ant-design/icons";
@@ -29,25 +29,26 @@ const SideBar = ({ menuItems, activeMenuItem }) => {
       trigger={null}
       collapsible
       collapsed={collapsed}
-      collapsedWidth={0}
+      collapsedWidth={1}
       className="sider"
       breakpoint="sm"
       onBreakpoint={onBreakpoint}
     >
-      <div
-        className='sider__burgerBtn'
-        onClick={toggle}
-      >
-        {collapsed ? <RightOutlined /> : <LeftOutlined />}
-      </div>
       <Menu
+        className="sider__menu"
         mode="inline"
         selectedKeys={[activeMenuItem]}
       >
+        <span
+          className='sider__burgerBtn'
+          onClick={toggle}
+        >
+          {collapsed ? <RightOutlined /> : <LeftOutlined />}
+        </span>
         {menuItems.map(item => (
-          <Menu.Item 
-            key={item.path} 
-            icon={item.icon} 
+          <Menu.Item
+            key={item.path}
+            icon={item.icon}
             onClick={isOnBreakpoint && setCollapsedToTrue}
           >
             <Link to={item.path}>{item.name}</Link>

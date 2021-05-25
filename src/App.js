@@ -29,7 +29,7 @@ const routes = [
 
 function App() {
   return (
-    <Layout style={{ position: "relative", overflow: "hidden", minHeight: '100vh' }}>
+    <Layout style={{ position: "relative", overflow: "visible", minHeight: '100vh' }}>
       <Header />
       <Switch>
         {routes.map((route, i) => (
