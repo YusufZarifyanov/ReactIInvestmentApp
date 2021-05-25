@@ -1,56 +1,112 @@
-import { Card, Avatar, Statistic } from "antd";
-import "antd/dist/antd.css";
 import "./BriefcaseOverview.css";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
+import { Layout, List, Card } from "antd";
 
-const { Meta } = Card;
 
-const BriefcaseOverview = ({ data }) => {
-  console.log(data);
+const BriefcaseOverview = ({ activeMenuItem, data }) => {
   return (
-    <div className="overview_mainContent">
-      {data.map((el) => (
-        <Card
-          className="overview_mainContent__card"
-          actions={[
-            <SettingOutlined key="setting" />,
-            <EditOutlined key="edit" />,
-            <EllipsisOutlined key="ellipsis" />,
-          ]}
-        >
-          <Meta
-            avatar={<Avatar src={el.src} />}
-            title={el.name}
-            description="This is the description"
-          />
-          <div style={{ display: "flex" }}>
-            <Statistic
-            style={{margin: '10px'}}
-              title="Active"
-              value={11.28}
-              precision={2}
-              valueStyle={{ color: "#3f8600" }}
-              prefix={<ArrowUpOutlined />}
-              suffix="%"
-            />
-            <Statistic
-            style={{margin: '10px'}}
-              title="Idle"
-              value={9.3}
-              precision={2}
-              valueStyle={{ color: "#cf1322" }}
-              prefix={<ArrowDownOutlined />}
-              suffix="%"
-            />
+    <Layout.Content>
+      <div className="main_content">
+        <div className="briefcase_header">
+          <div className="briefcase_header__totalSum">
+            <h1>Общая сумма = 1000 $</h1>
           </div>
-        </Card>
-      ))}
-    </div>
+        </div>
+        <div className="briefcase_body">
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Валюта</div>
+            <div className="briefcase_body__elem">
+              <List
+                dataSource={data.data_currency}
+                renderItem={(item) => (
+                  <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item.Meta
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
+                      title={item.name}
+                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                    />
+                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                  </List.Item>
+                )}
+              />{" "}
+            </div>
+          </div>
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Акции</div>
+            <div className="briefcase_body__elem">
+              <List
+                dataSource={data.data_shares}
+                renderItem={(item) => (
+                  <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item.Meta
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
+                      title={item.name}
+                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                    />
+                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Облигации</div>
+            <div className="briefcase_body__elem">
+              <List
+                dataSource={data.data_bonds}
+                renderItem={(item) => (
+                  <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item.Meta
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
+                      title={item.name}
+                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                    />
+                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
+          <div className="briefcase_body__card">
+            <div className="briefcase_body__elem__header">Фонды</div>
+            <div className="briefcase_body__elem">
+              <List
+                dataSource={data.data_fonds}
+                renderItem={(item) => (
+                  <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item.Meta
+                      avatar={
+                        <img
+                          className="briefcase_body__elem__img"
+                          src={item.src}
+                        ></img>
+                      }
+                      title={item.name}
+                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                    />
+                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </Layout.Content>
   );
 };
 
