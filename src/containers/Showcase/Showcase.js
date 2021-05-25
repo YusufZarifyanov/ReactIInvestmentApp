@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
-import ContentWindow from "../../components/ContentWindow/ContentWindow";
+import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview";
 import { useParams } from "react-router";
 import {
   FireOutlined,
@@ -35,9 +35,9 @@ const Showcase = () => {
         menuItems={subMenuItems}
         activeMenuItem={`/showcase/${showcaseSubmenuId}`}
     />
-      <ContentWindow>
+      <BriefcaseOverview>
         this is super showcase
-      </ContentWindow>
+      </BriefcaseOverview>
     </Layout>
   );
 };
