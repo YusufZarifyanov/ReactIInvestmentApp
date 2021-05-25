@@ -64,17 +64,11 @@ const Header = ({ location }) => {
     <Layout.Header
       className='header'
     >
-      <Link to="/">
-        <Typography.Title onClick={setActiveBurgerToFalse}
-          style={{
-            fontSize: 24,
-            lineHeight: "32px",
-            color: "#fff",
-            marginBottom: 0,
-            flex: "0 0 168px",
-            cursor: "pointer",
-          }} >
-
+      <Link to="/" className="header__link">
+        <Typography.Title
+          onClick={setActiveBurgerToFalse}
+          className="header__title"
+        >
           IZI Investment
       </Typography.Title>
       </Link>
@@ -88,8 +82,8 @@ const Header = ({ location }) => {
         mode="vertical"
         selectedKeys={menuSelectItems}
         className={cn('header__menu', activeBurger ? 'active' : '')}
-        onClick={setActiveBurgerToFalse} >
-
+        onClick={setActiveBurgerToFalse}
+      >
         {mainMenu}
       </Menu>
     </Layout.Header>
