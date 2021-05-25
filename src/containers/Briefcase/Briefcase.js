@@ -1,14 +1,14 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
-import ContentWindow from "../../components/ContentWindow/ContentWindow";
-import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview" 
+import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview";
+import BriefcaseItem from "../../components/BriefcaseItem/BriefcaseItem" 
 import { useParams } from "react-router";
 import {
   data_bonds,
   data_currency,
   data_fonds,
   data_shares,
-} from "../../data/index";
+} from "../../data/data_briefcase/index";
 import {
   BankOutlined,
   DollarCircleOutlined,
@@ -72,14 +72,12 @@ const Briefcase = () => {
         activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
       {briefcaseSubmenuId === "review" ? (
-        <ContentWindow
+        <BriefcaseOverview
           activeMenuItem={briefcaseSubmenuId}
           data={{ data_bonds, data_currency, data_fonds, data_shares }}
         />
       ) : (
-        <BriefcaseOverview
-          data={data}
-        />
+        <BriefcaseItem data={data} />
       )}
     </Layout>
   );
