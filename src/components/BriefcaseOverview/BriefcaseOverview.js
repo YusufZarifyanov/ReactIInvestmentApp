@@ -1,6 +1,6 @@
 import "./BriefcaseOverview.css";
 import { Layout, List, Card } from "antd";
-
+import { Link } from "react-router-dom";
 
 const BriefcaseOverview = ({ activeMenuItem, data }) => {
   return (
@@ -18,19 +18,26 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               <List
                 dataSource={data.data_currency}
                 renderItem={(item) => (
-                  <List.Item className="briefcase_body__elem__list_item">
-                    <List.Item.Meta
-                      avatar={
-                        <img
-                          className="briefcase_body__elem__img"
-                          src={item.src}
-                        ></img>
-                      }
-                      title={item.name}
-                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
-                    />
-                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
-                  </List.Item>
+                  <Link
+                    to={{
+                      pathname: `/briefcaseSecurities/${item.name}`,
+                      dataItem: item,
+                    }}
+                  >
+                    <List.Item className="briefcase_body__elem__list_item">
+                      <List.Item.Meta
+                        avatar={
+                          <img
+                            className="briefcase_body__elem__img"
+                            src={item.src}
+                          ></img>
+                        }
+                        title={item.name}
+                        description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                      />
+                      <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                    </List.Item>
+                  </Link>
                 )}
               />{" "}
             </div>
@@ -41,19 +48,26 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               <List
                 dataSource={data.data_shares}
                 renderItem={(item) => (
-                  <List.Item className="briefcase_body__elem__list_item">
-                    <List.Item.Meta
-                      avatar={
-                        <img
-                          className="briefcase_body__elem__img"
-                          src={item.src}
-                        ></img>
-                      }
-                      title={item.name}
-                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
-                    />
-                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
-                  </List.Item>
+                  <Link
+                    to={{
+                      pathname: `/briefcaseSecurities/${item.name}`,
+                      dataItem: item,
+                    }}
+                  >
+                    <List.Item className="briefcase_body__elem__list_item">
+                      <List.Item.Meta
+                        avatar={
+                          <img
+                            className="briefcase_body__elem__img"
+                            src={item.src}
+                          ></img>
+                        }
+                        title={item.name}
+                        description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                      />
+                      <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                    </List.Item>
+                  </Link>
                 )}
               />
             </div>
@@ -64,19 +78,26 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               <List
                 dataSource={data.data_bonds}
                 renderItem={(item) => (
-                  <List.Item className="briefcase_body__elem__list_item">
-                    <List.Item.Meta
-                      avatar={
-                        <img
-                          className="briefcase_body__elem__img"
-                          src={item.src}
-                        ></img>
-                      }
-                      title={item.name}
-                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
-                    />
-                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
-                  </List.Item>
+                  <Link
+                    to={{
+                      pathname: `/briefcaseSecurities/${item.name}`,
+                      dataItem: item,
+                    }}
+                  >
+                    <List.Item className="briefcase_body__elem__list_item">
+                      <List.Item.Meta
+                        avatar={
+                          <img
+                            className="briefcase_body__elem__img"
+                            src={item.src}
+                          ></img>
+                        }
+                        title={item.name}
+                        description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                      />
+                      <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                    </List.Item>
+                  </Link>
                 )}
               />
             </div>
@@ -87,19 +108,26 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               <List
                 dataSource={data.data_fonds}
                 renderItem={(item) => (
-                  <List.Item className="briefcase_body__elem__list_item">
-                    <List.Item.Meta
-                      avatar={
-                        <img
-                          className="briefcase_body__elem__img"
-                          src={item.src}
-                        ></img>
-                      }
-                      title={item.name}
-                      description={`${item.count} шт. - ${item.cost} ${item.currency}`}
-                    />
-                    <div>{`${item.count * item.cost} ${item.currency}`}</div>
-                  </List.Item>
+                  <Link
+                    to={{
+                      pathname: `/briefcaseSecurities/${item.name}`,
+                      dataItem: item,
+                    }}
+                  >
+                    <List.Item className="briefcase_body__elem__list_item">
+                      <List.Item.Meta
+                        avatar={
+                          <img
+                            className="briefcase_body__elem__img"
+                            src={item.src}
+                          ></img>
+                        }
+                        title={item.name}
+                        description={`${item.count} шт. - ${item.cost} ${item.currency}`}
+                      />
+                      <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                    </List.Item>
+                  </Link>
                 )}
               />
             </div>

@@ -1,13 +1,10 @@
-import { Layout } from 'antd';
-import Header from './components/Header/Header';
+import { Layout } from "antd";
+import Header from "./components/Header/Header";
 import Briefcase from "./containers/Briefcase/Briefcase";
 import Showcase from "./containers/Showcase/Showcase";
-import About from "./containers/About/About"
-import {
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
+import About from "./containers/About/About";
+import BriefcaseSecurities from "./components/BriefcaseSecurities/BriefcaseSecurities";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 const routes = [
   {
@@ -29,15 +26,22 @@ const routes = [
 
 function App() {
   return (
-    <Layout style={{ position: "relative", overflow: "hidden", minHeight: '100vh' }}>
+    <Layout
+      style={{ position: "relative", overflow: "visible", minHeight: "100vh" }}
+    >
       <Header />
       <Switch>
+        <Route
+          key={10}
+          path={"/briefcaseSecurities/:name"}
+          component={BriefcaseSecurities}
+        />
         {routes.map((route, i) => (
           <Route key={i} path={route.path} component={route.component} />
         ))}
         <Redirect to="/briefcase/review" />
       </Switch>
-    </Layout >
+    </Layout>
   );
 }
 
