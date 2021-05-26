@@ -5,7 +5,7 @@ import {
   LeftOutlined,
   RightOutlined
 } from "@ant-design/icons";
-import './SideBar.css'
+import './SideBar.scss'
 
 const SideBar = ({ menuItems, activeMenuItem }) => {
   const [collapsed, setCollapsed] = useState(false)
