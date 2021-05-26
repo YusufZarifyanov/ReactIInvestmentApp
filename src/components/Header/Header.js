@@ -13,7 +13,7 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import cn from 'classnames'
-import './Header.css'
+import './Header.scss'
 
 const menuItems = [
   {

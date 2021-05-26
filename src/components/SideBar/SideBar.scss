@@ -1,0 +1,38 @@
+.sider {
+  background-color: white !important;
+  z-index: 8;
+
+  &__menu {
+    position: -webkit-sticky;
+    position: sticky; 
+    top: 64px;
+  }
+    
+  &__burgerBtn {
+    position: absolute;
+    height: 40px;
+    right: -24px;
+    top: 4px;
+    display: none;
+    color: #fff;
+    background-color: #001529;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10 !important;
+  }
+    
+  &__burgerBtn span {
+    margin-top: 7px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sider {
+    position: absolute !important;
+    height: 100%;
+
+    &__burgerBtn {
+      display: block;
+    }
+  }
+}
