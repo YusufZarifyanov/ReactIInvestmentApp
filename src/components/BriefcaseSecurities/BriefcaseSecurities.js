@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Avatar } from "antd";
-import { Chart } from "@antv/g2";
+// import { Chart } from "@antv/g2";
 import {
   EditOutlined,
   EllipsisOutlined,
