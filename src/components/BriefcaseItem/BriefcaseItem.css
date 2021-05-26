@@ -1,17 +1,26 @@
 .overview_mainContent {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: center;
+    justify-content:flex-start;
+    align-items:baseline;
     flex-flow: row wrap;
     flex-wrap: wrap;
-    margin: 0 2rem;
-    width: 100%;
+    margin: 0 auto;
+    width: 90%;
 }
 
 .overview_mainContent__card {
-    width: 300px;
-    margin: 10px;
+    width: 350px;
+    margin: 30px;
+}
+
+.overview_mainContent__card_icon {
+    width: 3rem;
+    height: 3rem;
+}
+
+.overview_mainContent__card_info {
+    display: flex;
+    flex-direction: column;
 }
 
 /* .overview_mainContent::before, .overview_mainContent::after {
