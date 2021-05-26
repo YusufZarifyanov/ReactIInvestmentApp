@@ -8,6 +8,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import styles from './App.module.scss'
 
 const routes = [
   {
@@ -29,7 +30,9 @@ const routes = [
 
 function App() {
   return (
-    <Layout style={{ position: "relative", overflow: "visible", minHeight: '100vh' }}>
+    <Layout
+      className={styles.app}
+    >
       <Header />
       <Switch>
         {routes.map((route, i) => (
