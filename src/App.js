@@ -6,6 +6,7 @@ import About from "./containers/About/About";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styles from "./App.module.scss";
 import BriefcaseSecurities from "./components/BriefcaseSecurities/BriefcaseSecurities";
+
 const routes = [
   {
     name: "Мой Портфель",
@@ -27,7 +28,6 @@ const routes = [
 function App() {
   return (
     <Layout
-      style={{ position: "relative", overflow: "visible", minHeight: "100vh" }}
       className={styles.app}
     >
       <Header />
