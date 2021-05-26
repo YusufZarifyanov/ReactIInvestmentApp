@@ -13,7 +13,7 @@ import {
 } from "@ant-design/icons";
 import { Link, withRouter } from "react-router-dom";
 import cn from 'classnames'
-import './Header.scss'
+import styles from './Header.module.scss'
 
 const menuItems = [
   {
@@ -42,7 +42,7 @@ const Header = ({ location }) => {
       menuSelectItems.push(item.path);
     };
     return (
-      <Menu.Item className="header__menuItem" key={item.path} icon={item.icon}>
+      <Menu.Item className={styles.menuItem} key={item.path} icon={item.icon}>
         <Link to={item.path}>
           {item.name}
         </Link>
@@ -62,24 +62,18 @@ const Header = ({ location }) => {
 
   return (
     <Layout.Header
-      className='header'
+      className={styles.header}
     >
-      <Link to="/">
-        <Typography.Title onClick={setActiveBurgerToFalse}
-          style={{
-            fontSize: 24,
-            lineHeight: "32px",
-            color: "#fff",
-            marginBottom: 0,
-            flex: "0 0 168px",
-            cursor: "pointer",
-          }} >
-
+      <Link to="/" className={styles.link}>
+        <Typography.Title
+          onClick={setActiveBurgerToFalse}
+          className={styles.title}
+        >
           IZI Investment
       </Typography.Title>
       </Link>
       <div
-        className='header__burgerBtn'
+        className={styles.burgerBtn}
         onClick={handleActiveBurger} >
         {activeBurger ? <CloseOutlined /> : <MenuOutlined />}
       </div>
@@ -87,9 +81,9 @@ const Header = ({ location }) => {
         theme="dark"
         mode="vertical"
         selectedKeys={menuSelectItems}
-        className={cn('header__menu', activeBurger ? 'active' : '')}
-        onClick={setActiveBurgerToFalse} >
-
+        className={cn(styles.menu, activeBurger ? styles.active : '')}
+        onClick={setActiveBurgerToFalse}
+      >
         {mainMenu}
       </Menu>
     </Layout.Header>

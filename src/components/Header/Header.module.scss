@@ -7,11 +7,11 @@
   top: 0;
   z-index: 10;
 
-  &__link {
+  .link {
     flex: 0 0 168px;
   }
   
-  &__title {
+  .title {
     font-size: 24px !important;
     line-height: 32px !important;
     color: #fff !important;
@@ -19,28 +19,28 @@
     cursor: pointer;
   }
   
-  &__menu {
+  .menu {
     z-index: 10;
     display: flex;
     justify-content: space-between;
   }
   
-  &__menuItem {
+  .menuItem {
     margin: 0 !important;
     height: 64px !important;
     line-height: 64px !important;
   }
   
-  &__burgerBtn {
+  .burgerBtn {
     display: none;
   }
   
   @media screen and (max-width: 768px) {
-    &__menu {
+    .menu {
       display: none !important;
     }
   
-    &__menu.active {
+    .menu.active {
       display: block !important;
       position: absolute;
       right: 0px;
@@ -51,18 +51,17 @@
       height: 100vh;
     }
   
-    &__menuItem {
+    .menuItem {
       height: 40px !important;
       line-height: 40px !important;
       margin: 4px 0 !important;
     }
   
-    &__burgerBtn {
+    .burgerBtn {
       display: block;
       color: #fff !important;
       font-size: 24px;
     }
   }
-  
 }
 
