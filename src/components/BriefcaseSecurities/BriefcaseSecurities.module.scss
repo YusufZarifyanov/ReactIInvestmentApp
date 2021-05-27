@@ -1,7 +1,78 @@
 .container {
-    .card {
-        width: 300px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+
+  .info {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+    .securitiesType {
+      background-color: #fff;
+      width: 65%;
+      margin: 1rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      .name {
+        text-align:  center;
+        flex-basis: 5rem;
+        font-size: 18px;
+        font-weight: 800;
+        margin: 0 2rem;
+      }
+
+      .value {
+        flex-basis: 14rem;
+        font-size: 10px;
+        margin: 0 2rem;
+      }
+
+      .description {
+        flex-basis: 12rem;
+        font-size: 10px;
+        margin: 2rem 10rem 2rem 0rem;
+      }
+
+      .img {
+        width: 4rem;
+        height: 4rem;
+        margin: 0 2rem;
+      }
     }
 
-    .graphic {}
+    .securitiesPrice {
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 1rem;
+      background-color: #fff;
+
+      .date {
+        margin: 0;
+      }
+
+      .price {
+        margin: 0 2rem 1rem;
+        font-size: 25px;
+      }
+
+      .btn {
+        width: 8rem;
+        height: 2rem;
+        margin: 0 1rem 1rem;
+        background-color: #1890FF;
+        border: 0px;
+        border-radius: 5%;
+      }
+    }
+  }
+
+  .graphic {
+  }
 }
