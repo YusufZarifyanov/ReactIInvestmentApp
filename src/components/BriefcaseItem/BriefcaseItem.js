@@ -1,7 +1,7 @@
 import { Card, Avatar, Statistic } from "antd";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
-import "./BriefcaseItem.css";
+import styles from "./BriefcaseItem.module.scss";
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -14,14 +14,14 @@ const { Meta } = Card;
 const BriefcaseItem = ({ data }) => {
   console.log(data);
   return (
-    <div className="overview_mainContent">
+    <div className={styles.overviewMainContent}>
       {data.map((el) => (
         <Link
           to={{
             pathname: `/briefcaseSecurities/${el.name}`,
             dataItem: el,
           }}
-          className="overview_mainContent__card"
+          className={styles.card}
         >
           <Card
 
@@ -31,10 +31,10 @@ const BriefcaseItem = ({ data }) => {
           //   <EllipsisOutlined key="ellipsis" />,
           // ]}
           >
-            <div className="overview_mainContent__card_info">
+            <div className={styles.cardInfo}>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <Avatar
-                  className="overview_mainContent__card_icon"
+                  className={styles.cardIcon}
                   src={el.src}
                 />
                 <div>
@@ -55,7 +55,7 @@ const BriefcaseItem = ({ data }) => {
               {/* <Meta
                   avatar={
                     <Avatar
-                      className="overview_mainContent__card_icon"
+                      className={styles.cardIcon}
                       src={el.src}
                     />
                   }
@@ -66,6 +66,7 @@ const BriefcaseItem = ({ data }) => {
               {el.is_active ? (
                 <Statistic
                   style={{ textAlign: "center", marginTop: "0.5rem" }}
+                  // className={styles.cardStatistik}
                   // title="Active"
                   value={11.28}
                   precision={2}
@@ -76,6 +77,7 @@ const BriefcaseItem = ({ data }) => {
               ) : (
                 <Statistic
                   style={{ textAlign: "center", marginTop: "0.5rem" }}
+                  // className={styles.cardStatistik}
                   // title="Idle"
                   value={9.3}
                   precision={2}
