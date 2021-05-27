@@ -6,34 +6,29 @@ import {
   EllipsisOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import "./BriefcaseSecurities.css";
+import styles from "./BriefcaseSecurities.module.scss";
 
 const { Meta } = Card;
 
 const BriefcaseSecurities = ({ location }) => {
   const dataElem = location.dataItem;
   return (
-    <div>
-      <div className="container">
-        <div className="container__card">
-          <Card
-            style={{ width: 300 }}
-            cover={<img alt="example" src={dataElem.src} />}
-            actions={[
-              <SettingOutlined key="setting" />,
-              <EditOutlined key="edit" />,
-              <EllipsisOutlined key="ellipsis" />,
-            ]}
-          >
-            <Meta
-              title={dataElem.name}
-              description={`${dataElem.count} шт. - ${dataElem.cost} ${dataElem.currency}`}
-            />
-          </Card>
-        </div>
-
-        <div className="container__graphic"></div>
-      </div>
+    <div className={styles.container}>
+      <Card
+        className={styles.card}
+        cover={<img alt="example" src={dataElem.src} />}
+        actions={[
+          <SettingOutlined key="setting" />,
+          <EditOutlined key="edit" />,
+          <EllipsisOutlined key="ellipsis" />,
+        ]}
+      >
+        <Meta
+          title={dataElem.name}
+          description={`${dataElem.count} шт. - ${dataElem.cost} ${dataElem.currency}`}
+        />
+      </Card>
+      <div className={styles.graphic}></div>
     </div>
   );
 };
