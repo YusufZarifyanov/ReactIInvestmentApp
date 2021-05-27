@@ -1,20 +1,35 @@
 .content {
   display: flex;
   justify-content: flex-start;
-  align-items: baseline;
+
   flex-flow: row wrap;
-  flex-wrap: wrap;
   margin: 0 auto;
   width: 90%;
 
+  @media screen and (max-width: 769px) {
+    justify-content: center;
+  }
+
   .link {
-    width: 300px;
-    height: 200px;
+    width: 22%;
     margin: 1rem;
+    // align-items: baseline;
 
     @media screen and (max-width: 1800px) {
-      width: 14rem;
-      height: 10rem;
+      width: calc(25% - 2rem);
+    }
+
+    @media screen and (max-width: 1400px) {
+      width: calc(33.3% - 2rem);
+    }
+
+    @media screen and (max-width: 1024px) {
+      width: calc(50% - 2rem);
+    }
+
+    @media screen and (max-width: 769px) {
+      width: 70%;
+      margin-left: 60px;
     }
 
     .info {
@@ -25,12 +40,12 @@
       .iconContainer {
         display: flex;
         justify-content: space-between;
-    
+
         .icon {
           width: 3rem;
           height: 3rem;
         }
-  
+
         .name {
           font-size: 16px;
           font-weight: 600;
@@ -43,7 +58,7 @@
 
       .statistik {
         text-align: center;
-        margin-top:  0.5rem;
+        margin-top: 0.5rem;
       }
     }
   }

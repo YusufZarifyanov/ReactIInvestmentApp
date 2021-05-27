@@ -46,17 +46,6 @@ const BriefcaseItem = ({ data }) => {
                   </p>
                 </div>
               </div>
-              {/* <Meta
-                  avatar={
-                    <Avatar
-                      className={styles.icon}
-                      src={el.src}
-                    />
-                  }
-                  title={el.name}
-                  description={`${el.count} шт. - ${el.cost} ${el.currency}`}
-                  style={{ width: "100%" }}
-                /> */}
               {el.is_active ? (
                 <Statistic
                   className={styles.statistik}
