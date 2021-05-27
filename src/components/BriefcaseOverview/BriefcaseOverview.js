@@ -1,20 +1,18 @@
-import "./BriefcaseOverview.css";
+import styles from "./BriefcaseOverview.module.scss";
 import { Layout, List, Card } from "antd";
 import { Link } from "react-router-dom";
 
 const BriefcaseOverview = ({ activeMenuItem, data }) => {
   return (
     <Layout.Content>
-      <div className="main_content">
-        <div className="briefcase_header">
-          <div className="briefcase_header__totalSum">
-            <h1>Общая сумма = 1000 $</h1>
-          </div>
+      <div className={styles.main}>
+        <div className={styles.headerTotalSum}>
+          <h1>Общая сумма = 1000 $</h1>
         </div>
-        <div className="briefcase_body">
-          <div className="briefcase_body__card">
-            <div className="briefcase_body__elem__header">Валюта</div>
-            <div className="briefcase_body__elem">
+        <div className={styles.body}>
+          <div className={styles.card}>
+            <div className={styles.elemHeader}>Валюта</div>
+            <div className={styles.elem}>
               <List
                 dataSource={data.data_currency}
                 renderItem={(item) => (
@@ -24,11 +22,11 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                       dataItem: item,
                     }}
                   >
-                    <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item className={styles.listItem}>
                       <List.Item.Meta
                         avatar={
                           <img
-                            className="briefcase_body__elem__img"
+                            className={styles.img}
                             src={item.src}
                           ></img>
                         }
@@ -42,9 +40,9 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               />{" "}
             </div>
           </div>
-          <div className="briefcase_body__card">
-            <div className="briefcase_body__elem__header">Акции</div>
-            <div className="briefcase_body__elem">
+          <div className={styles.card}>
+            <div className={styles.elemHeader}>Акции</div>
+            <div className={styles.elem}>
               <List
                 dataSource={data.data_shares}
                 renderItem={(item) => (
@@ -54,11 +52,11 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                       dataItem: item,
                     }}
                   >
-                    <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item className={styles.listItem}>
                       <List.Item.Meta
                         avatar={
                           <img
-                            className="briefcase_body__elem__img"
+                            className={styles.img}
                             src={item.src}
                           ></img>
                         }
@@ -72,9 +70,10 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               />
             </div>
           </div>
-          <div className="briefcase_body__card">
-            <div className="briefcase_body__elem__header">Облигации</div>
-            <div className="briefcase_body__elem">
+          <div className={styles.card}>
+            <div className={styles.elemHeader}>Облигации</div>
+            <div className={styles.elem}>
+
               <List
                 dataSource={data.data_bonds}
                 renderItem={(item) => (
@@ -84,11 +83,11 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                       dataItem: item,
                     }}
                   >
-                    <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item className={styles.listItem}>
                       <List.Item.Meta
                         avatar={
                           <img
-                            className="briefcase_body__elem__img"
+                            className={styles.img}
                             src={item.src}
                           ></img>
                         }
@@ -102,9 +101,10 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
               />
             </div>
           </div>
-          <div className="briefcase_body__card">
-            <div className="briefcase_body__elem__header">Фонды</div>
-            <div className="briefcase_body__elem">
+          <div className={styles.card}>
+            <div className={styles.elemHeader}>Фонды</div>
+            <div className={styles.elem}>
+
               <List
                 dataSource={data.data_fonds}
                 renderItem={(item) => (
@@ -114,11 +114,11 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                       dataItem: item,
                     }}
                   >
-                    <List.Item className="briefcase_body__elem__list_item">
+                    <List.Item className={styles.listItem}>
                       <List.Item.Meta
                         avatar={
                           <img
-                            className="briefcase_body__elem__img"
+                            className={styles.img}
                             src={item.src}
                           ></img>
                         }
