@@ -14,14 +14,14 @@ const { Meta } = Card;
 const BriefcaseItem = ({ data }) => {
   console.log(data);
   return (
-    <div className={styles.overviewMainContent}>
+    <div className={styles.content}>
       {data.map((el) => (
         <Link
           to={{
             pathname: `/briefcaseSecurities/${el.name}`,
             dataItem: el,
           }}
-          className={styles.card}
+          className={styles.link}
         >
           <Card
 
@@ -31,31 +31,25 @@ const BriefcaseItem = ({ data }) => {
           //   <EllipsisOutlined key="ellipsis" />,
           // ]}
           >
-            <div className={styles.cardInfo}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className={styles.info}>
+              <div className={styles.iconContainer}>
                 <Avatar
-                  className={styles.cardIcon}
+                  className={styles.icon}
                   src={el.src}
                 />
                 <div>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      marginBottom: "5px",
-                    }}
-                  >
+                  <p className={styles.name}>
                     {el.name}
                   </p>
-                  <p
-                    style={{ fontSize: "12px" }}
-                  >{`${el.count} шт. - ${el.cost} ${el.currency}`}</p>
+                  <p className={styles.count}>
+                    {`${el.count} шт. - ${el.cost} ${el.currency}`}
+                  </p>
                 </div>
               </div>
               {/* <Meta
                   avatar={
                     <Avatar
-                      className={styles.cardIcon}
+                      className={styles.icon}
                       src={el.src}
                     />
                   }
@@ -65,8 +59,7 @@ const BriefcaseItem = ({ data }) => {
                 /> */}
               {el.is_active ? (
                 <Statistic
-                  style={{ textAlign: "center", marginTop: "0.5rem" }}
-                  // className={styles.cardStatistik}
+                  className={styles.statistik}
                   // title="Active"
                   value={11.28}
                   precision={2}
@@ -76,8 +69,7 @@ const BriefcaseItem = ({ data }) => {
                 />
               ) : (
                 <Statistic
-                  style={{ textAlign: "center", marginTop: "0.5rem" }}
-                  // className={styles.cardStatistik}
+                  className={styles.statistik}
                   // title="Idle"
                   value={9.3}
                   precision={2}
