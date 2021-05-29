@@ -64,11 +64,11 @@ const Events = ({ data }) => {
   )
 }
 
-const NotFound = () => {
-  return (
-    <div>NotFound</div>
-  )
-}
+// const NotFound = () => {
+//   return (
+//     <div>NotFound</div>
+//   )
+// }
 
 const subMenuItems = [
   {

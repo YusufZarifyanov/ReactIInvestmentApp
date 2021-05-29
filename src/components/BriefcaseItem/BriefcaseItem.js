@@ -1,77 +1,48 @@
-import { Card, Avatar, Statistic } from "antd";
-import { Link } from "react-router-dom";
-import "antd/dist/antd.css";
+// import React, { useState, useEffect } from "react";
 import styles from "./BriefcaseItem.module.scss";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
+import SideBar from "../SideBar/SideBar";
+import { subMenuItems } from "../../data/index";
+// import SecuritiesGraphic from "../SecuritiesGraphic/SecuritiesGraphic.jsx";
 
-const { Meta } = Card;
-
-const BriefcaseItem = ({ data }) => {
-  console.log(data);
+const BriefcaseItem = ({ location }) => {
+  const dataElem = location.dataItem;
   return (
-    <div className={styles.content}>
-      {data.map((el) => (
-        <Link
-          to={{
-            pathname: `/briefcaseSecurities/${el.name}`,
-            dataItem: el,
-          }}
-          className={styles.link}
-        >
-          <Card
-
-          // actions={[
-          //   <SettingOutlined key="setting" />,
-          //   <EditOutlined key="edit" />,
-          //   <EllipsisOutlined key="ellipsis" />,
-          // ]}
-          >
-            <div className={styles.info}>
-              <div className={styles.iconContainer}>
-                <Avatar
-                  className={styles.icon}
-                  src={el.src}
-                />
-                <div>
-                  <p className={styles.name}>
-                    {el.name}
-                  </p>
-                  <p className={styles.count}>
-                    {`${el.count} шт. - ${el.cost} ${el.currency}`}
-                  </p>
-                </div>
-              </div>
-              {el.is_active ? (
-                <Statistic
-                  className={styles.statistik}
-                  // title="Active"
-                  value={11.28}
-                  precision={2}
-                  valueStyle={{ color: "#3f8600" }}
-                  prefix={<ArrowUpOutlined />}
-                  suffix="%"
-                />
-              ) : (
-                <Statistic
-                  className={styles.statistik}
-                  // title="Idle"
-                  value={9.3}
-                  precision={2}
-                  valueStyle={{ color: "#cf1322" }}
-                  prefix={<ArrowDownOutlined />}
-                  suffix="%"
-                />
-              )}
+    <Layout>
+      <SideBar
+        menuItems={subMenuItems}
+        // activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
+      />
+      <Layout.Content>
+        <div className={styles.container}>
+          <div className={styles.info}>
+            <div className={styles.securitiesType}>
+              <p className={styles.name}>{dataElem.name}</p>
+              <p
+                className={styles.value}
+              >{`Доходность за полгода ${dataElem.value}`}</p>
+              <p className={styles.description}>{`Я свободный текст! Заполни меня`}</p>
+              <img
+                alt="example"
+                src={dataElem.src}
+                className={styles.img}
+              ></img>
             </div>
-          </Card>
-        </Link>
-      ))}
-    </div>
+            <div className={styles.securitiesPrice}>
+              <p className={styles.date}>Цена акции 27 мая 2021г.</p>
+              <p className={styles.price}>
+                {`${dataElem.currency} ${dataElem.cost}`}
+              </p>
+              <button className={styles.btn}>Приобрести</button>
+            </div>
+          </div>
+
+          <div className={styles.graphic}>
+            {/* <SecuritiesGraphic /> */}
+          </div>
+        </div>
+      </Layout.Content>
+    </Layout>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview";
-import BriefcaseItem from "../../components/BriefcaseItem/BriefcaseItem" 
+import BriefcaseSecurities from "../../components/BriefcaseSecurities/BriefcaseSecurities" 
 import { useParams } from "react-router";
 import {subMenuItems} from "../../data/index"
 import {
@@ -42,7 +42,7 @@ const Briefcase = () => {
           data={{ data_bonds, data_currency, data_fonds, data_shares }}
         />
       ) : (
-        <BriefcaseItem data={data} />
+        <BriefcaseSecurities data={data} />
       )}
     </Layout>
   );

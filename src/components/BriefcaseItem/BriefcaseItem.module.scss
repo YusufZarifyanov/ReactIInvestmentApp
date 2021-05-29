@@ -1,65 +1,78 @@
-.content {
+.container {
   display: flex;
-  justify-content: flex-start;
-
-  flex-flow: row wrap;
+  flex-direction: column;
+  width: 100%;
   margin: 0 auto;
-  width: 90%;
 
-  @media screen and (max-width: 769px) {
+  .info {
+    display: flex;
     justify-content: center;
-  }
+    height: 200px;
+    .securitiesType {
+      background-color: #fff;
+      width: 65%;
+      margin: 1rem;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
-  .link {
-    width: 22%;
-    margin: 1rem;
-    // align-items: baseline;
+      .name {
+        text-align:  center;
+        flex-basis: 5rem;
+        font-size: 18px;
+        font-weight: 800;
+        margin: 0 2rem;
+      }
 
-    @media screen and (max-width: 1800px) {
-      width: calc(25% - 2rem);
+      .value {
+        flex-basis: 14rem;
+        font-size: 10px;
+        margin: 0 2rem;
+      }
+
+      .description {
+        flex-basis: 12rem;
+        font-size: 10px;
+        margin: 2rem 10rem 2rem 0rem;
+      }
+
+      .img {
+        width: 4rem;
+        height: 4rem;
+        margin: 0 2rem;
+      }
     }
 
-    @media screen and (max-width: 1400px) {
-      width: calc(33.3% - 2rem);
-    }
-
-    @media screen and (max-width: 1024px) {
-      width: calc(50% - 2rem);
-    }
-
-    @media screen and (max-width: 769px) {
-      width: 70%;
-      margin-left: 60px;
-    }
-
-    .info {
-      width: 100%;
+    .securitiesPrice {
+      width: 25%;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      margin: 1rem;
+      background-color: #fff;
 
-      .iconContainer {
-        display: flex;
-        justify-content: space-between;
-
-        .icon {
-          width: 3rem;
-          height: 3rem;
-        }
-
-        .name {
-          font-size: 16px;
-          font-weight: 600;
-          margin-bottom: 5px;
-        }
-        .count {
-          font-size: 12px;
-        }
+      .date {
+        margin: 0;
       }
 
-      .statistik {
-        text-align: center;
-        margin-top: 0.5rem;
+      .price {
+        margin: 0 2rem 1rem;
+        font-size: 25px;
+      }
+
+      .btn {
+        width: 8rem;
+        height: 2rem;
+        margin: 0 1rem 1rem;
+        background-color: #1890FF;
+        border: 0px;
+        border-radius: 5%;
       }
     }
+  }
+
+  .graphic {
   }
 }

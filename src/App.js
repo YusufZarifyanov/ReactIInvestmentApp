@@ -5,21 +5,22 @@ import Showcase from "./containers/Showcase/Showcase";
 import About from "./containers/About/About";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styles from "./App.module.scss";
-import BriefcaseSecurities from "./components/BriefcaseSecurities/BriefcaseSecurities";
+import BriefcaseItem from "./components/BriefcaseItem/BriefcaseItem";
 
 const routes = [
   {
-    name: "Мой Портфель",
+    path: "/briefcaseItem/:name",
+    component: BriefcaseItem,
+  },
+  {
     path: "/briefcase/:briefcaseSubmenuId",
     component: Briefcase,
   },
   {
-    name: "Витрина",
     path: "/showcase/:showcaseSubmenuId",
     component: Showcase,
   },
   {
-    name: "О программе",
     path: "/about",
     component: About,
   },
@@ -32,11 +33,6 @@ function App() {
     >
       <Header />
       <Switch>
-        <Route
-          key={10}
-          path={"/briefcaseSecurities/:name"}
-          component={BriefcaseSecurities}
-        />
         {routes.map((route, i) => (
           <Route key={i} path={route.path} component={route.component} />
         ))}

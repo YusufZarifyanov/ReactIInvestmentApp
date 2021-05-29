@@ -1,5 +1,6 @@
 import styles from "./BriefcaseOverview.module.scss";
-import { Layout, List, Card } from "antd";
+// import { Layout, List, Card } from "antd";
+import { Layout, List } from "antd";
 import { Link } from "react-router-dom";
 
 const BriefcaseOverview = ({ activeMenuItem, data }) => {
@@ -18,7 +19,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseSecurities/${item.name}`,
+                      pathname: `/briefcaseItem/${item.name}`,
                       dataItem: item,
                     }}
                   >
@@ -28,7 +29,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                          ></img>
+                            alt={item.src} ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
@@ -48,7 +49,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseSecurities/${item.name}`,
+                      pathname: `/briefcaseItem/${item.name}`,
                       dataItem: item,
                     }}
                   >
@@ -58,7 +59,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                          ></img>
+                            alt={item.src} ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
@@ -79,7 +80,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseSecurities/${item.name}`,
+                      pathname: `/briefcaseItem/${item.name}`,
                       dataItem: item,
                     }}
                   >
@@ -89,7 +90,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                          ></img>
+                            alt={item.src} ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
@@ -110,7 +111,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseSecurities/${item.name}`,
+                      pathname: `/briefcaseItem/${item.name}`,
                       dataItem: item,
                     }}
                   >
@@ -120,7 +121,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                          ></img>
+                            alt={item.src} ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
