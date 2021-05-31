@@ -1,4 +1,4 @@
-import { Layout, List, Card } from "antd";
+import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useParams } from "react-router";
 import {
@@ -11,6 +11,7 @@ import { subMenuItems } from "../../data/sub_menu_showcase";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
+import withData from "../../hocs/withData";
 
 const components = {
   topviews: {
@@ -27,16 +28,8 @@ const components = {
   },
 }
 
-function withData(WrappedComponent, data) {
-  return (props) => {
-    return (
-      <WrappedComponent {...props} data={data} />
-    )
-  }
-}
-
 const Showcase = () => {
-  
+
   const { showcaseSubmenuId } = useParams();
 
   const [currentPath, setcurrentPath] = useState(showcaseSubmenuId)
