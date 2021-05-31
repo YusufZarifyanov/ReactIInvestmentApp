@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview";
-import BriefcaseSecurities from "../../components/BriefcaseSecurities/BriefcaseSecurities" 
+import BriefcaseSecurity from "../../components/BriefcaseSecurity/BriefcaseSecurity"
 import { useParams } from "react-router";
 import {subMenuItems} from "../../data/index"
 import {
@@ -13,6 +13,7 @@ import {
 
 const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
+
   let data;
   switch (briefcaseSubmenuId) {
     case "currency":
@@ -30,6 +31,7 @@ const Briefcase = () => {
     default:
       console.log("Нет таких значений");
   }
+  console.log(data)
   return (
     <Layout>
       <SideBar
@@ -42,7 +44,7 @@ const Briefcase = () => {
           data={{ data_bonds, data_currency, data_fonds, data_shares }}
         />
       ) : (
-        <BriefcaseSecurities data={data} />
+        <BriefcaseSecurity data={data} />
       )}
     </Layout>
   );

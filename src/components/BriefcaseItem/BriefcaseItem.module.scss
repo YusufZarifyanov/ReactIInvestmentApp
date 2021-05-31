@@ -1,50 +1,78 @@
 .container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
-  margin: 0 auto;
+  // min-height: 100vh;
 
-  .info {
+  // margin: 0 auto;
+
+  .cards {
     display: flex;
     justify-content: center;
+    margin: 0 auto;
+    width: 96%;
     height: 200px;
+
+    @media screen and (max-width: 1100px) {
+     flex-direction: column;
+     align-items: center;
+     margin-top: 150px;
+    }
+
     .securitiesType {
       background-color: #fff;
-      width: 65%;
+      width: 50%;
       margin: 1rem;
       display: flex;
-      justify-content: space-around;
-      align-items: center;
 
-      .name {
-        text-align:  center;
-        flex-basis: 5rem;
-        font-size: 18px;
-        font-weight: 800;
-        margin: 0 2rem;
+      @media screen and (max-width: 1100px) {
+  width: 80%;
+    }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 1rem auto;
+
+        .infoName {
+          display: flex;
+          width: 100%;
+          .name {
+            font-size: 18px;
+            font-weight: 800;
+          }
+
+          .ticket {
+            margin-left: 1rem;
+          }
+        }
+
+        .infoDescription {
+          display: flex;
+          justify-content: flex-start;
+          margin-top: 1rem;
+          line-height: 0.8;
+          .value {
+            font-size: 14px;
+          }
+
+          .description {
+            margin-left: 2rem;
+            font-size: 10px;
+          }
+        }
       }
-
-      .value {
-        flex-basis: 14rem;
-        font-size: 10px;
-        margin: 0 2rem;
-      }
-
-      .description {
-        flex-basis: 12rem;
-        font-size: 10px;
-        margin: 2rem 10rem 2rem 0rem;
-      }
-
       .img {
         width: 4rem;
         height: 4rem;
-        margin: 0 2rem;
+        margin: 2.5rem 2rem;
       }
     }
 
     .securitiesPrice {
-      width: 25%;
+      width: 30%;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -52,6 +80,11 @@
       text-align: center;
       margin: 1rem;
       background-color: #fff;
+
+      @media screen and (max-width: 1100px) {
+        width: 60%;
+        margin-bottom: 170px;
+          }
 
       .date {
         margin: 0;
@@ -66,13 +99,22 @@
         width: 8rem;
         height: 2rem;
         margin: 0 1rem 1rem;
-        background-color: #1890FF;
+        background-color: #1890ff;
         border: 0px;
         border-radius: 5%;
       }
     }
   }
 
-  .graphic {
+  .btnChangeGraph {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    left: 90%;
+    text-align: center;
+  }
+
+  .graph {
+    width: 100%;
   }
 }
