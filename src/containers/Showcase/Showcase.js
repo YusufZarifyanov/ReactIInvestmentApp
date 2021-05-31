@@ -9,23 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { subMenuItems } from "../../data/sub_menu_showcase";
 import TopViews from "../../components/TopViews/TopViews";
-
-const Upsdowns = ({ data }) => {
-  return (
-    <List
-      dataSource={data}
-      renderItem={(item) => (
-        <Card
-          hoverable
-          style={{ width: 200 }}
-          cover={<img alt={item.name} src={item.src} />}
-        >
-          <Card.Meta title={item.name} description={item.cost} />
-        </Card>
-      )}
-    />
-  )
-}
+import UpsDowns from "../../components/UpsDowns/UpsDowns";
 
 const Events = ({ data }) => {
   return (
@@ -50,7 +34,7 @@ const components = {
     data: dataTopviews,
   },
   upsdowns: {
-    component: Upsdowns,
+    component: UpsDowns,
     data: dataUpsdowns,
   },
   events: {
