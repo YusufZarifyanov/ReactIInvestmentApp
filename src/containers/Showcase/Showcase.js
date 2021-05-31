@@ -2,16 +2,12 @@ import { Layout, List, Card } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useParams } from "react-router";
 import {
-  FireOutlined,
-  RiseOutlined,
-  ScheduleOutlined
-} from "@ant-design/icons";
-import {
   data_bonds as dataTopviews,
   data_currency as dataUpsdowns,
   data_fonds as dataEvents,
 } from "../../data/data_briefcase/index";
 import { useEffect, useState } from "react";
+import { subMenuItems } from "../../data/sub_menu_showcase";
 
 const Topviews = ({ data }) => {
   return (
@@ -64,30 +60,6 @@ const Events = ({ data }) => {
   )
 }
 
-// const NotFound = () => {
-//   return (
-//     <div>NotFound</div>
-//   )
-// }
-
-const subMenuItems = [
-  {
-    name: "Топ Просмотров",
-    path: '/showcase/topviews',
-    icon: <FireOutlined />,
-  },
-  {
-    name: "Взлеты и Падения",
-    path: '/showcase/upsdowns',
-    icon: <RiseOutlined />,
-  },
-  {
-    name: "События",
-    path: '/showcase/events',
-    icon: <ScheduleOutlined />,
-  },
-];
-
 const components = {
   topviews: {
     component: Topviews,
@@ -112,6 +84,7 @@ function withData(WrappedComponent, data) {
 }
 
 const Showcase = () => {
+  
   const { showcaseSubmenuId } = useParams();
 
   const [currentPath, setcurrentPath] = useState(showcaseSubmenuId)
@@ -123,12 +96,6 @@ const Showcase = () => {
   useEffect(() => {
     setcurrentPath(showcaseSubmenuId)
   }, [showcaseSubmenuId])
-
-  // const ComponentN = subMenuItems.map(item => {
-  //   return item.path.split('/')[2] === showcaseSubmenuId
-  // })?.component || NotFound
-
-  // console.log('Component-->', Component)
 
   return (
     <Layout>
