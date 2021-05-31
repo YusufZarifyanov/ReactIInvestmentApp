@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { Card, Avatar, Statistic } from "antd";
+import { Link } from "react-router-dom";
+import {useState} from 'react'
+import "antd/dist/antd.css";
 import styles from "./BriefcaseSecurities.module.scss";
 import { Layout } from "antd";
 import SideBar from "../SideBar/SideBar";

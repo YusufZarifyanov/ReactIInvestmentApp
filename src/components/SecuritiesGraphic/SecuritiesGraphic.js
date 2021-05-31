@@ -27,12 +27,10 @@ const Graph = ({ graphFlag }) => {
     plot_data["x"] = x;
     plot_data["y"] = y;
 
-    // console.log(plot_data);
+    console.log(plot_data);
 
     return plot_data;
   };
-  console.log(graphFlag);
-
   return (
     <div>
       {!graphFlag ? (
