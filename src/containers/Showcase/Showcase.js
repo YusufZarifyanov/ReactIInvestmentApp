@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import {
   data_bonds as dataTopviews,
   data_currency as dataUpsdowns,
@@ -29,18 +29,29 @@ const components = {
 }
 
 const Showcase = () => {
-
   const { showcaseSubmenuId } = useParams();
+  const history = useHistory();
 
-  const [currentPath, setcurrentPath] = useState(showcaseSubmenuId)
+  const existParam = Object.keys(components).find(key => key === showcaseSubmenuId)
+
+  if (!existParam) {
+    moveToTopViews()
+  }
+
+  const [currentPath, setcurrentPath] = useState(existParam)
+
+  function moveToTopViews() {
+    history.push("/showcase/topviews");
+  }
+
   const Component = withData(
-    components[currentPath].component,
-    components[currentPath].data
+    components[currentPath || "topviews"].component,
+    components[currentPath || "topviews"].data
   )
 
   useEffect(() => {
-    setcurrentPath(showcaseSubmenuId)
-  }, [showcaseSubmenuId])
+    setcurrentPath(existParam)
+  }, [existParam])
 
   return (
     <Layout>
