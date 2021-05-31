@@ -8,23 +8,7 @@ import {
 } from "../../data/data_briefcase/index";
 import { useEffect, useState } from "react";
 import { subMenuItems } from "../../data/sub_menu_showcase";
-
-const Topviews = ({ data }) => {
-  return (
-    <List
-      dataSource={data}
-      renderItem={(item) => (
-        <Card
-          hoverable
-          style={{ width: 200 }}
-          cover={<img alt={item.name} src={item.src} />}
-        >
-          <Card.Meta title={item.name} description={item.cost} />
-        </Card>
-      )}
-    />
-  )
-}
+import TopViews from "../../components/TopViews/TopViews";
 
 const Upsdowns = ({ data }) => {
   return (
@@ -62,7 +46,7 @@ const Events = ({ data }) => {
 
 const components = {
   topviews: {
-    component: Topviews,
+    component: TopViews,
     data: dataTopviews,
   },
   upsdowns: {
