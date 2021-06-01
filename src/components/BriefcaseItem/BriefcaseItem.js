@@ -1,12 +1,23 @@
-// import React, { useState, useEffect } from "react";
+import { Card, Avatar, Statistic } from "antd";
+import { Link } from "react-router-dom";
+import {useState} from 'react'
+import "antd/dist/antd.css";
 import styles from "./BriefcaseItem.module.scss";
 import { Layout } from "antd";
 import SideBar from "../SideBar/SideBar";
 import { subMenuItems } from "../../data/index";
-// import SecuritiesGraphic from "../SecuritiesGraphic/SecuritiesGraphic.jsx";
+import Graph from "../SecuritiesGraphic/SecuritiesGraphic.js";
+
 
 const BriefcaseItem = ({ location }) => {
+  console.log(location)
   const dataElem = location.dataItem;
+
+  const [graph, setGraph] = useState(false);
+
+  const handleChangeGraph = () => {
+    graph ?  setGraph(false) : setGraph(true);
+  };
   return (
     <Layout>
       <SideBar
@@ -15,13 +26,29 @@ const BriefcaseItem = ({ location }) => {
       />
       <Layout.Content>
         <div className={styles.container}>
-          <div className={styles.info}>
+          <div className={styles.cards}>
             <div className={styles.securitiesType}>
-              <p className={styles.name}>{dataElem.name}</p>
-              <p
-                className={styles.value}
-              >{`Доходность за полгода ${dataElem.value}`}</p>
-              <p className={styles.description}>{`Я свободный текст! Заполни меня`}</p>
+              <div className={styles.info}>
+                <div className={styles.infoName}>
+                  <p className={styles.name}>{dataElem.name}</p>
+                  <p className={styles.ticket}>ticket</p>
+                </div>
+                <div className={styles.infoDescription}>
+                  <div className={styles.value}>
+                    <p style={{ fontSize: "14px" }}>Доходность к погашению:</p>
+                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                      {dataElem.value}%
+                    </p>
+                  </div>
+
+                  <div className={styles.description}>
+                    <p style={{ fontSize: "14px" }}>Рейтинг:</p>
+                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                      Низкий
+                    </p>
+                  </div>
+                </div>
+              </div>
               <img
                 alt="example"
                 src={dataElem.src}
@@ -36,10 +63,8 @@ const BriefcaseItem = ({ location }) => {
               <button className={styles.btn}>Приобрести</button>
             </div>
           </div>
-
-          <div className={styles.graphic}>
-            {/* <SecuritiesGraphic /> */}
-          </div>
+          <button onClick={handleChangeGraph} className={styles.btnChangeGraph}><i class="fa fa-arrows-v" aria-hidden="true"></i></button>
+          <Graph graphFlag={graph}/>
         </div>
       </Layout.Content>
     </Layout>
