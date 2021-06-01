@@ -11,7 +11,7 @@ const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
 
   const hasParam = Object.keys(securities).find(
-    (key) => key === "currency"
+    (key) => key === briefcaseSubmenuId
   );
 
   return (
@@ -26,7 +26,10 @@ const Briefcase = () => {
           data={securities}
         />
       ) : (
-        <BriefcaseSecurity data={securities[hasParam]} />
+        <BriefcaseSecurity
+          data={securities[hasParam]}
+          activeMenuItem={briefcaseSubmenuId}
+        />
       )}
     </Layout>
   );
