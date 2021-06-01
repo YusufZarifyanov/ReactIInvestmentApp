@@ -1,23 +1,41 @@
-import { Card, Avatar, Statistic } from "antd";
 import { useParams } from "react-router-dom";
-import {useState} from 'react'
+import { useState } from "react";
+import { subMenuBriefcase } from "../../data/sub_menu";
+import { securities } from "../../data/briefcase/securities";
+
 import "antd/dist/antd.css";
 import styles from "./BriefcaseItem.module.scss";
+
 import { Layout } from "antd";
 import SideBar from "../SideBar/SideBar";
-import { subMenuBriefcase } from "../../data/sub_menu";
 import Graph from "../SecuritiesGraphic/SecuritiesGraphic.js";
 
-
 const BriefcaseItem = ({ location }) => {
-  const dataElem = location.dataItem;
-  const { securityType, tiket } = useParams();
-  console.log(securityType, tiket);
-
+  const { securityType, tiker } = useParams();
   const [graph, setGraph] = useState(false);
+  let dataElem;
+
+  if (location.dataItem) dataElem = location.dataItem;
+  else {
+    let hasParam = Object.keys(securities).find((key) => key === securityType);
+    if (!hasParam) console.log("Все плохо!");
+    else {
+      let flag = false;
+      for (let el of securities[hasParam]) {
+        if (el.tiker === tiker && !flag) {
+          dataElem = el;
+          flag = true;
+          break;
+        }
+      }
+      if (!flag) console.log("Опять все плохо!");
+    }
+  }
+
+  console.log(dataElem);
 
   const handleChangeGraph = () => {
-    graph ?  setGraph(false) : setGraph(true);
+    graph ? setGraph(false) : setGraph(true);
   };
   return (
     <Layout>
@@ -64,8 +82,10 @@ const BriefcaseItem = ({ location }) => {
               <button className={styles.btn}>Приобрести</button>
             </div>
           </div>
-          <button onClick={handleChangeGraph} className={styles.btnChangeGraph}><i class="fa fa-arrows-v" aria-hidden="true"></i></button>
-          <Graph graphFlag={graph}/>
+          <button onClick={handleChangeGraph} className={styles.btnChangeGraph}>
+            <i class="fa fa-arrows-v" aria-hidden="true"></i>
+          </button>
+          <Graph graphFlag={graph} />
         </div>
       </Layout.Content>
     </Layout>
