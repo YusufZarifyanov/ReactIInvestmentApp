@@ -11,7 +11,7 @@ const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
 
   const hasParam = Object.keys(securities).find(
-    (key) => key === "currency"
+    (key) => key === briefcaseSubmenuId
   );
 
   return (
