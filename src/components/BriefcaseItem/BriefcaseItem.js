@@ -1,5 +1,5 @@
 import { Card, Avatar, Statistic } from "antd";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {useState} from 'react'
 import "antd/dist/antd.css";
 import styles from "./BriefcaseItem.module.scss";
@@ -10,8 +10,9 @@ import Graph from "../SecuritiesGraphic/SecuritiesGraphic.js";
 
 
 const BriefcaseItem = ({ location }) => {
-  console.log(location)
   const dataElem = location.dataItem;
+  const { securityType, tiket } = useParams();
+  console.log(securityType, tiket);
 
   const [graph, setGraph] = useState(false);
 
@@ -22,7 +23,7 @@ const BriefcaseItem = ({ location }) => {
     <Layout>
       <SideBar
         menuItems={subMenuBriefcase}
-        // activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
+        activeMenuItem={`/briefcase/${securityType}`}
       />
       <Layout.Content>
         <div className={styles.container}>

@@ -19,7 +19,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/${item.name}`,
+                      pathname: `/briefcaseItem/currency/${item.tiker}`,
                       dataItem: item,
                     }}
                   >
@@ -29,7 +29,8 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                            alt={item.src} ></img>
+                            alt={item.src}
+                          ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
@@ -49,7 +50,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/${item.name}`,
+                      pathname: `/briefcaseItem/shares/${item.tiker}`,
                       dataItem: item,
                     }}
                   >
@@ -59,7 +60,8 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                            alt={item.src} ></img>
+                            alt={item.src}
+                          ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
@@ -74,13 +76,12 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
           <div className={styles.card}>
             <div className={styles.elemHeader}>Облигации</div>
             <div className={styles.elem}>
-
               <List
                 dataSource={data.bonds}
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/${item.name}`,
+                      pathname: `/briefcaseItem/bonds/${item.tiker}`,
                       dataItem: item,
                     }}
                   >
@@ -90,7 +91,8 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                            alt={item.src} ></img>
+                            alt={item.src}
+                          ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}
@@ -105,13 +107,12 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
           <div className={styles.card}>
             <div className={styles.elemHeader}>Фонды</div>
             <div className={styles.elem}>
-
               <List
                 dataSource={data.funds}
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/${item.name}`,
+                      pathname: `/briefcaseItem/funds/${item.tiker}`,
                       dataItem: item,
                     }}
                   >
@@ -121,7 +122,8 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                           <img
                             className={styles.img}
                             src={item.src}
-                            alt={item.src} ></img>
+                            alt={item.src}
+                          ></img>
                         }
                         title={item.name}
                         description={`${item.count} шт. - ${item.cost} ${item.currency}`}

@@ -26,7 +26,10 @@ const Briefcase = () => {
           data={securities}
         />
       ) : (
-        <BriefcaseSecurity data={securities[hasParam]} />
+        <BriefcaseSecurity
+          data={securities[hasParam]}
+          activeMenuItem={briefcaseSubmenuId}
+        />
       )}
     </Layout>
   );

@@ -6,14 +6,14 @@ import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 
-const BriefcaseSecurity = ({ data }) => {
+const BriefcaseSecurity = ({ data, activeMenuItem }) => {
   console.log(data);
   return (
     <div className={styles.content}>
       {data.map((el) => (
         <Link
           to={{
-            pathname: `/briefcaseItem/${el.name}`,
+            pathname: `/briefcaseItem/${activeMenuItem}/${el.tiker}`,
             dataItem: el,
           }}
           className={styles.link}
@@ -28,14 +28,9 @@ const BriefcaseSecurity = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar
-                  className={styles.icon}
-                  src={el.src}
-                />
+                <Avatar className={styles.icon} src={el.src} />
                 <div>
-                  <p className={styles.name}>
-                    {el.name}
-                  </p>
+                  <p className={styles.name}>{el.name}</p>
                   <p className={styles.count}>
                     {`${el.count} шт. - ${el.cost} ${el.currency}`}
                   </p>
