@@ -1,11 +1,10 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useHistory, useParams } from "react-router";
-import {
-  data_bonds as dataTopviews,
-  data_currency as dataUpsdowns,
-  data_fonds as dataEvents,
-} from "../../data/data_briefcase/index";
+import {data_bonds as dataTopviews} from "../../data/data_briefcase/bounds";
+import {data_currency as dataUpsdowns} from "../../data/data_briefcase/currency";
+import { data_fonds as dataEvents} from "../../data/data_briefcase/fonds";
+
 import { useEffect, useState } from "react";
 import { subMenuItems } from "../../data/sub_menu_showcase";
 import TopViews from "../../components/TopViews/TopViews";
