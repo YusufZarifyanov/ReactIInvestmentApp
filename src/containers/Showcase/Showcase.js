@@ -1,12 +1,12 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useHistory, useParams } from "react-router";
-import {data_bonds as dataTopviews} from "../../data/data_briefcase/bounds";
-import {data_currency as dataUpsdowns} from "../../data/data_briefcase/currency";
-import { data_fonds as dataEvents} from "../../data/data_briefcase/fonds";
+import {data_currency as dataUpsdowns} from "../../data/briefcase/currency"
+import {data_fonds as dataEvents} from "../../data/briefcase/fonds"
+import { topViews } from '../../data/showcase/top_views'
 
 import { useEffect, useState } from "react";
-import { subMenuItems } from "../../data/sub_menu_showcase";
+import { subMenuShowcase } from "../../data/sub_menu";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
@@ -15,7 +15,7 @@ import withData from "../../hocs/withData";
 const components = {
   topviews: {
     component: TopViews,
-    data: dataTopviews,
+    data: topViews,
   },
   upsdowns: {
     component: UpsDowns,
@@ -32,16 +32,12 @@ const Showcase = () => {
   const history = useHistory();
 
   const hasParam = Object.keys(components).find(key => key === showcaseSubmenuId)
-  
+
   if (!hasParam) {
-    moveToTopViews()
+    history.push("/showcase/topviews"); 
   }
 
   const [currentPath, setcurrentPath] = useState(hasParam)
-
-  function moveToTopViews() {
-    history.push("/showcase/topviews");
-  }
 
   const Component = withData(
     components[currentPath || "topviews"].component,
@@ -55,7 +51,7 @@ const Showcase = () => {
   return (
     <Layout>
       <SideBar
-        menuItems={subMenuItems}
+        menuItems={subMenuShowcase}
         activeMenuItem={`/showcase/${showcaseSubmenuId}`}
       />
       <Component />

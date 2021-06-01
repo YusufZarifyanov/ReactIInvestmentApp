@@ -5,7 +5,7 @@ import "antd/dist/antd.css";
 import styles from "./BriefcaseItem.module.scss";
 import { Layout } from "antd";
 import SideBar from "../SideBar/SideBar";
-import { subMenuItems } from "../../data/subMenuItems";
+import { subMenuBriefcase } from "../../data/sub_menu";
 import Graph from "../SecuritiesGraphic/SecuritiesGraphic.js";
 
 
@@ -21,7 +21,7 @@ const BriefcaseItem = ({ location }) => {
   return (
     <Layout>
       <SideBar
-        menuItems={subMenuItems}
+        menuItems={subMenuBriefcase}
         // activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
       <Layout.Content>
