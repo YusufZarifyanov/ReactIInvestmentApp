@@ -5,7 +5,7 @@ import "antd/dist/antd.css";
 import styles from "./BriefcaseItem.module.scss";
 import { Layout } from "antd";
 import SideBar from "../SideBar/SideBar";
-import { subMenuItems } from "../../data/index";
+import { subMenuItems } from "../../data/subMenuItems";
 import Graph from "../SecuritiesGraphic/SecuritiesGraphic.js";
 
 
