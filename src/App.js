@@ -9,7 +9,7 @@ import BriefcaseItem from "./components/BriefcaseItem/BriefcaseItem";
 
 const routes = [
   {
-    path: "/briefcaseItem/:securityType/:tiket",
+    path: "/briefcaseItem/:securityType/:tiker",
     component: BriefcaseItem,
   },
   {
