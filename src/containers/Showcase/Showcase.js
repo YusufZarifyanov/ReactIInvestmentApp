@@ -32,13 +32,13 @@ const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
   const history = useHistory();
 
-  const existParam = Object.keys(components).find(key => key === showcaseSubmenuId)
-
-  if (!existParam) {
+  const hasParam = Object.keys(components).find(key => key === showcaseSubmenuId)
+  
+  if (!hasParam) {
     moveToTopViews()
   }
 
-  const [currentPath, setcurrentPath] = useState(existParam)
+  const [currentPath, setcurrentPath] = useState(hasParam)
 
   function moveToTopViews() {
     history.push("/showcase/topviews");
@@ -50,8 +50,8 @@ const Showcase = () => {
   )
 
   useEffect(() => {
-    setcurrentPath(existParam)
-  }, [existParam])
+    setcurrentPath(hasParam)
+  }, [hasParam])
 
   return (
     <Layout>
