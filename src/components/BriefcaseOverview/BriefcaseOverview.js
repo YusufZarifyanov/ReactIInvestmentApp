@@ -15,7 +15,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
             <div className={styles.elemHeader}>Валюта</div>
             <div className={styles.elem}>
               <List
-                dataSource={data.data_currency}
+                dataSource={data.currency}
                 renderItem={(item) => (
                   <Link
                     to={{
@@ -45,7 +45,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
             <div className={styles.elemHeader}>Акции</div>
             <div className={styles.elem}>
               <List
-                dataSource={data.data_shares}
+                dataSource={data.shares}
                 renderItem={(item) => (
                   <Link
                     to={{
@@ -76,7 +76,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
             <div className={styles.elem}>
 
               <List
-                dataSource={data.data_bonds}
+                dataSource={data.bonds}
                 renderItem={(item) => (
                   <Link
                     to={{
@@ -107,7 +107,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
             <div className={styles.elem}>
 
               <List
-                dataSource={data.data_fonds}
+                dataSource={data.funds}
                 renderItem={(item) => (
                   <Link
                     to={{

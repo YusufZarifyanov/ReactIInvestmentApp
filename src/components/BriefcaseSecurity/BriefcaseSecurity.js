@@ -2,11 +2,6 @@ import { Card, Avatar, Statistic } from "antd";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import styles from "./BriefcaseSecurity.module.scss";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;

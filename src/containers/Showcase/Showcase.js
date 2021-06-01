@@ -1,8 +1,9 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useHistory, useParams } from "react-router";
-import {data_currency as dataUpsdowns} from "../../data/briefcase/currency"
-import {data_fonds as dataEvents} from "../../data/briefcase/fonds"
+import {securities} from "../../data/briefcase/securities"
+// import {data_currency as dataUpsdowns} from "../../data/briefcase/currency"
+// import {data_fonds as dataEvents} from "../../data/briefcase/fonds"
 import { topViews } from '../../data/showcase/top_views'
 
 import { useEffect, useState } from "react";
@@ -11,6 +12,9 @@ import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
 import withData from "../../hocs/withData";
+
+const dataUpsdowns = securities.currency;
+const dataEvents = securities.funds;
 
 const components = {
   topviews: {
