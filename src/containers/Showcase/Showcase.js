@@ -1,18 +1,17 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useHistory, useParams } from "react-router";
-import { securities } from "../../data/briefcase/securities"
-import { topViews } from '../../data/showcase/top_views'
-
+import { securities } from "../../data/briefcase/securities";
+import { topViews } from '../../data/showcase/top_views';
 import { useEffect, useState } from "react";
 import { subMenuShowcase } from "../../data/sub_menu";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
 import withData from "../../hocs/withData";
+import { fakeResponseForEvents as dataEvents} from '../../data/showcase/fakeResponseEvents';
 
 const dataUpsdowns = securities.currency;
-const dataEvents = securities.funds;
 
 const components = {
   topviews: {
