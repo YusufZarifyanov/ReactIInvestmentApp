@@ -10,26 +10,25 @@ import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 
-
-const BriefcaseItem = ({ location }) => {
+const BriefcaseItem = () => {
   const { securityType, tiker } = useParams();
   const [graph, setGraph] = useState(false);
   let dataElem;
 
-  if (location.dataItem) dataElem = location.dataItem;
-  else {
-    let hasParam = Object.keys(securities).find((key) => key === securityType);
-    if (!hasParam) console.log("Все плохо!");
-    else {
-      let flag = false;
-      for (let el of securities[hasParam]) {
-        if (el.tiker === tiker && !flag) {
-          dataElem = el;
-          flag = true;
-          break;
-        }
+  let hasParam = Object.keys(securities).find((key) => key === securityType);
+  if (!hasParam) {
+    console.log("Все плохо!");
+  } else {
+    let flag = false;
+    for (let el of securities[hasParam]) {
+      if (el.tiker === tiker && !flag) {
+        dataElem = el;
+        flag = true;
+        break;
       }
-      if (!flag) console.log("Опять все плохо!");
+    }
+    if (!flag) {
+      console.log("Опять все плохо!");
     }
   }
 
@@ -117,7 +116,9 @@ const BriefcaseItem = ({ location }) => {
             <Space size={[8, 16]} wrap>
               {dateMas.map((el, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Button key={index} onClick={el.action}>{el.name}</Button>
+                <Button key={index} onClick={el.action}>
+                  {el.name}
+                </Button>
               ))}
             </Space>
           </div>
