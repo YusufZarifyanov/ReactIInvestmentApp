@@ -32,8 +32,14 @@ const BriefcaseItem = () => {
     }
   }
 
-  const handleChangeGraph = () => {
-    graph ? setGraph(false) : setGraph(true);
+  const handleChange = (action) => {
+    console.log(action)
+    switch (action) {
+      case "changeGraph": {
+        graph ? setGraph(false) : setGraph(true);
+        break;
+      }
+    }
   };
 
   const dateMas = [
@@ -63,7 +69,7 @@ const BriefcaseItem = () => {
     },
     {
       name: <i class="fa fa-arrows-v" aria-hidden="true"></i>,
-      action: handleChangeGraph,
+      action: 'changeGraph',
     },
   ];
 
@@ -116,7 +122,7 @@ const BriefcaseItem = () => {
             <Space size={[8, 16]} wrap>
               {dateMas.map((el, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Button key={index} onClick={el.action}>
+                <Button key={index} onClick={() => handleChange(el.action)}>
                   {el.name}
                 </Button>
               ))}
