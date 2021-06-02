@@ -4,24 +4,26 @@ import placeholder from '../../placeholder_img.png';
 import styles from './Events.module.scss';
 
 const Events = ({ data }) => {
-
   const [fetchData, setFetchData] = useState([])
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/news/v2/list?region=US&snippetCount=28", {
-        method: "POST",
-        headers: {
-          "content-type": "text/plain",
-          "x-rapidapi-key": "cf6ea43f25msh23327306488aa7bp1c5258jsn0b77144eed9b",
-          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
-        },
-        body: ""
-      })
-      const result = await response.json()
-      setFetchData(result.data.main.stream)
-    }
-    fetchData()
+    // async function fetchData() {
+    //   const response = await fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/news/v2/list?region=US&snippetCount=28", {
+    //     method: "POST",
+    //     headers: {
+    //       "content-type": "text/plain",
+    //       "x-rapidapi-key": "cf6ea43f25msh23327306488aa7bp1c5258jsn0b77144eed9b",
+    //       "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com"
+    //     },
+    //     body: ""
+    //   })
+    //   const result = await response.json()
+    //   setFetchData(result.data.main.stream)
+    // }
+    // fetchData()
+    setTimeout(() => {
+      setFetchData(data.data.main.stream)
+    }, 1000)
   }, [])
 
   if (!fetchData.length) {
@@ -63,6 +65,7 @@ const Events = ({ data }) => {
           // console.log(page);
         },
         pageSize: 12,
+        itemLayout: "vertical"
       }}
       grid={{
         gutter: 16,
