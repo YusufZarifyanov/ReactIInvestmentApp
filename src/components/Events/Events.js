@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { List, Card, Skeleton, Row, Col } from "antd";
-import placeholder from '../../placeholder_img.png'
+import placeholder from '../../placeholder_img.png';
+import styles from './Events.module.scss';
 
 const Events = ({ data }) => {
 
@@ -25,9 +26,9 @@ const Events = ({ data }) => {
 
   if (!fetchData.length) {
     return (
-      <Row style={{ margin: 16 }} gutter={16}>{
+      <Row className={styles.row} gutter={16}>{
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(item => (
-          <Col xs={24} sm={12} md={12} lg={8} xl={8} xxl={6}>
+          <Col key={item} xs={24} sm={12} md={12} lg={8} xl={8} xxl={6}>
             <Skeleton.Image />
             <br />
             <br />
@@ -56,7 +57,7 @@ const Events = ({ data }) => {
 
   return (
     <List
-      style={{ margin: 16 }}
+      className={styles.list}
       pagination={{
         onChange: page => {
           // console.log(page);
