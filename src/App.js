@@ -5,7 +5,7 @@ import Showcase from "./containers/Showcase/Showcase";
 import About from "./containers/About/About";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styles from "./App.module.scss";
-import BriefcaseItem from "./components/BriefcaseItem/BriefcaseItem";
+import BriefcaseItem from "./containers/BriefcaseItem/BriefcaseItem";
 
 const routes = [
   {
