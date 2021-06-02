@@ -1,9 +1,7 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useHistory, useParams } from "react-router";
-import {securities} from "../../data/briefcase/securities"
-// import {data_currency as dataUpsdowns} from "../../data/briefcase/currency"
-// import {data_fonds as dataEvents} from "../../data/briefcase/fonds"
+import { securities } from "../../data/briefcase/securities"
 import { topViews } from '../../data/showcase/top_views'
 
 import { useEffect, useState } from "react";
@@ -38,7 +36,7 @@ const Showcase = () => {
   const hasParam = Object.keys(components).find(key => key === showcaseSubmenuId)
 
   if (!hasParam) {
-    history.push("/showcase/topviews"); 
+    history.push("/showcase/topviews");
   }
 
   const [currentPath, setcurrentPath] = useState(hasParam)
@@ -58,7 +56,9 @@ const Showcase = () => {
         menuItems={subMenuShowcase}
         activeMenuItem={`/showcase/${showcaseSubmenuId}`}
       />
-      <Component />
+      <Layout.Content>
+        <Component />
+      </Layout.Content>
     </Layout>
   );
 };

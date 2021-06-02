@@ -5,13 +5,7 @@ import { subMenuBriefcase } from "../../data/sub_menu"
 const TopViews = ({ data }) => {
   const [active, setActive] = useState("/briefcase/review")
 
-  function getAllData(object) {
-    console.log('getAllData RUNNNNNNNN')
-    return [].concat.apply([], Object.values(object))
-  }
-
-  // const allData = getAllData(data)
-  const allData = useMemo(() => getAllData(data), [data]);
+  const allData = useMemo(() => [].concat.apply([], Object.values(data)), [data]);
 
   const [activeData, setActiveData] = useState(allData)
 
