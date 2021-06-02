@@ -6,9 +6,10 @@ import { securities } from "../../data/briefcase/securities";
 import "antd/dist/antd.css";
 import styles from "./BriefcaseItem.module.scss";
 
-import { Layout } from "antd";
-import SideBar from "../SideBar/SideBar";
-import Graph from "../SecuritiesGraphic/SecuritiesGraphic.js";
+import { Layout, Space, Button } from "antd";
+import SideBar from "../../components/SideBar/SideBar";
+import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
+
 
 const BriefcaseItem = ({ location }) => {
   const { securityType, tiker } = useParams();
@@ -32,11 +33,41 @@ const BriefcaseItem = ({ location }) => {
     }
   }
 
-  console.log(dataElem);
-
   const handleChangeGraph = () => {
     graph ? setGraph(false) : setGraph(true);
   };
+
+  const dateMas = [
+    {
+      name: "День",
+      action: null,
+    },
+    {
+      name: "Неделя",
+      action: null,
+    },
+    {
+      name: "Месяц",
+      action: null,
+    },
+    {
+      name: "Полгода",
+      action: null,
+    },
+    {
+      name: "Год",
+      action: null,
+    },
+    {
+      name: "Все время",
+      action: null,
+    },
+    {
+      name: <i class="fa fa-arrows-v" aria-hidden="true"></i>,
+      action: handleChangeGraph,
+    },
+  ];
+
   return (
     <Layout>
       <SideBar
@@ -82,9 +113,14 @@ const BriefcaseItem = ({ location }) => {
               <button className={styles.btn}>Приобрести</button>
             </div>
           </div>
-          <button onClick={handleChangeGraph} className={styles.btnChangeGraph}>
-            <i class="fa fa-arrows-v" aria-hidden="true"></i>
-          </button>
+          <div className={styles.btnList}>
+            <Space size={[8, 16]} wrap>
+              {dateMas.map((el, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Button key={index} onClick={el.action}>{el.name}</Button>
+              ))}
+            </Space>
+          </div>
           <Graph graphFlag={graph} />
         </div>
       </Layout.Content>
