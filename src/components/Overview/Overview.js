@@ -2,16 +2,16 @@ import styles from "./Overview.module.scss";
 import { Layout, List } from "antd";
 import { Link } from "react-router-dom";
 
-const Overview = ({ data, type }) => {
+const Overview = ({ data, briefcaseCalculation }) => {
   const securities = Object.keys(data)
 
   return (
     <Layout.Content>
       <div className={styles.main}>
         {
-          type === "briefcase" &&
+          briefcaseCalculation &&
           <div className={styles.headerTotalSum}>
-            <h1>Общая сумма = 1000 $</h1>
+            <h1>Общая сумма: {briefcaseCalculation.amount} $</h1>
           </div>
         }
         <div className={styles.body}>
@@ -40,10 +40,10 @@ const Overview = ({ data, type }) => {
                               ></img>
                             }
                             title={item.name}
-                            description={type === "briefcase" ? `${item.count} шт. - ${item.cost} ${item.currency}` : `${item.cost} ${item.currency}`}
+                            description={briefcaseCalculation ? `${item.count} шт. - ${item.cost} ${item.currency}` : `${item.cost} ${item.currency}`}
                           />
                           {
-                            type === "briefcase" && <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                            briefcaseCalculation && <div>{`${item.count * item.cost} ${item.currency}`}</div>
                           }
                         </List.Item>
                       </Link>

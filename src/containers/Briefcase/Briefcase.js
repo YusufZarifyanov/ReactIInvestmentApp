@@ -14,6 +14,11 @@ const Briefcase = () => {
     (key) => key === briefcaseSubmenuId
   );
 
+  const briefcase = {
+    amount: 1000,
+    someData: []
+  }
+
   return (
     <Layout>
       <SideBar
@@ -21,7 +26,7 @@ const Briefcase = () => {
         activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
       {briefcaseSubmenuId === "review" ? (
-        <Overview data={securities} type="briefcase" />
+        <Overview data={securities} briefcaseCalculation={briefcase} />
       ) : (
         <Securities
           data={securities[hasParam]?.data}

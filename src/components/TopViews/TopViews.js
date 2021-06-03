@@ -32,7 +32,7 @@ const TopViews = ({ data }) => {
           {
             subMenuItem.path.split('/')[2] === "review" ?
               (
-                <Overview data={data} type="showcase" />
+                <Overview data={data} />
               ) : (
                 <Securities
                   data={data[security]?.data}
