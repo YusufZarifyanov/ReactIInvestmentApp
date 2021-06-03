@@ -13,6 +13,7 @@ import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 const BriefcaseItem = () => {
   const { securityType, tiker } = useParams();
   const [graph, setGraph] = useState(false);
+  const [xRange, setXRange] = useState(["2017-01-04", "2017-02-15"]);
   let dataElem;
 
   let hasParam = Object.keys(securities).find((key) => key === securityType);
@@ -32,44 +33,65 @@ const BriefcaseItem = () => {
     }
   }
 
-  const handleChange = (action) => {
-    console.log(action)
-    switch (action) {
-      case "changeGraph": {
-        graph ? setGraph(false) : setGraph(true);
-        break;
-      }
+  const handleChange = (action, dateDifference) => {
+    if (action === "changeGraph") {
+      graph ? setGraph(false) : setGraph(true);
+    } else if (dateDifference) {
+      const dateNow = new Date();
+
+      const endDate =
+        new Date().toISOString().slice(0, 10) +
+        " " +
+        dateNow.getHours() +
+        ":" +
+        dateNow.getMinutes() +
+        ":" +
+        dateNow.getSeconds();
+  
+      dateNow.setDate(dateNow.getDate() - dateDifference);
+
+      const startDate =
+        dateNow.toISOString().slice(0, 10) +
+        " " +
+        dateNow.getHours() +
+        ":" +
+        dateNow.getMinutes() +
+        ":" +
+        dateNow.getSeconds();
+      
+      setXRange([startDate, endDate]);
     }
   };
 
   const dateMas = [
     {
       name: "День",
-      action: null,
+      action: "Day",
+      dataDifference: 1,
     },
     {
       name: "Неделя",
-      action: null,
+      action: "Week",
+      dataDifference: 7,
     },
     {
       name: "Месяц",
-      action: null,
+      action: "Month",
+      dataDifference: 30,
     },
     {
       name: "Полгода",
-      action: null,
+      action: "HalfYear",
+      dataDifference: 180,
     },
     {
       name: "Год",
-      action: null,
-    },
-    {
-      name: "Все время",
-      action: null,
+      action: "Year",
+      dataDifference: 360,
     },
     {
       name: <i class="fa fa-arrows-v" aria-hidden="true"></i>,
-      action: 'changeGraph',
+      action: "changeGraph",
     },
   ];
 
@@ -122,13 +144,16 @@ const BriefcaseItem = () => {
             <Space size={[8, 16]} wrap>
               {dateMas.map((el, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Button key={index} onClick={() => handleChange(el.action)}>
+                <Button
+                  key={index}
+                  onClick={() => handleChange(el.action, el.dataDifference)}
+                >
                   {el.name}
                 </Button>
               ))}
             </Space>
           </div>
-          <Graph graphFlag={graph} />
+          <Graph graphFlag={graph} xRange={xRange} />
         </div>
       </Layout.Content>
     </Layout>

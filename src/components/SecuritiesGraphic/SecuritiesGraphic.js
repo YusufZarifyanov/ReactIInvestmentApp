@@ -1,7 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
-const Graph = ({ graphFlag }) => {
+const Graph = ({ graphFlag, xRange }) => {
+  console.log(xRange)
   const [state, setState] = useState({ data: [] });
 
   useEffect(() => {
@@ -27,8 +28,6 @@ const Graph = ({ graphFlag }) => {
     plot_data["x"] = x;
     plot_data["y"] = y;
 
-    console.log(plot_data);
-
     return plot_data;
   };
   return (
@@ -49,6 +48,9 @@ const Graph = ({ graphFlag }) => {
             displayModeBar: false,
             responsive: true,
           }}
+          layout={{
+            xaxis: {range: xRange}
+          }}
           style={{ width: "80%", margin: "0 auto", height: "400px" }}
         />
       ) : (
@@ -60,38 +62,7 @@ const Graph = ({ graphFlag }) => {
           style={{ width: "80%", margin: "0 auto", height: "400px" }}
           data={[
             {
-              x: [
-                "2017-01-04",
-                "2017-01-05",
-                "2017-01-06",
-                "2017-01-09",
-                "2017-01-10",
-                "2017-01-11",
-                "2017-01-12",
-                "2017-01-13",
-                "2017-01-17",
-                "2017-01-18",
-                "2017-01-19",
-                "2017-01-20",
-                "2017-01-23",
-                "2017-01-24",
-                "2017-01-25",
-                "2017-01-26",
-                "2017-01-27",
-                "2017-01-30",
-                "2017-01-31",
-                "2017-02-01",
-                "2017-02-02",
-                "2017-02-03",
-                "2017-02-06",
-                "2017-02-07",
-                "2017-02-08",
-                "2017-02-09",
-                "2017-02-10",
-                "2017-02-13",
-                "2017-02-14",
-                "2017-02-15",
-              ],
+              x: transformData(state.data)["x"],
 
               close: [
                 116.019997, 116.610001, 117.910004, 118.989998, 119.110001,
@@ -141,7 +112,7 @@ const Graph = ({ graphFlag }) => {
             },
           ]}
           layout={{
-            dragmode: "zoom",
+            // dragmode: "zoom",
             // margin: {
             //   r: 10,
             //   t: 25,
@@ -155,17 +126,9 @@ const Graph = ({ graphFlag }) => {
               },
               // autorange: true,
               // domain: [0, 1],
-              // range: ["2017-01-03 12:00", "2017-02-15 12:00"],
-              // rangeslider: { range: ["2017-01-03 12:00", "2017-02-15 12:00"] },
-              title: "Date",
+              range: xRange,
               type: "date",
             },
-            // yaxis: {
-            //   // autorange: true,
-            //   domain: [0, 1],
-            //   range: [114.609999778, 137.410004222],
-            //   type: "linear",
-            // },
           }}
         />
       )}
