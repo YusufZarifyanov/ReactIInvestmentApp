@@ -1,15 +1,14 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import { securities } from "../../data/briefcase/securities";
 import { topViews } from '../../data/showcase/top_views';
-import { useEffect, useState } from "react";
 import { subMenuShowcase } from "../../data/sub_menu";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
-import withData from "../../hocs/withData";
-import { fakeResponseForEvents as dataEvents} from '../../data/showcase/fakeResponseEvents';
+import { fakeResponseForEvents as dataEvents } from '../../data/showcase/fakeResponseEvents';
+import { useRedirect } from "../../hooks/useRedirect";
 
 const dataUpsdowns = securities.currency;
 
@@ -30,24 +29,13 @@ const components = {
 
 const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
-  const history = useHistory();
 
-  const hasParam = Object.keys(components).find(key => key === showcaseSubmenuId)
-
-  if (!hasParam) {
-    history.push("/showcase/topviews");
-  }
-
-  const [currentPath, setcurrentPath] = useState(hasParam)
-
-  const Component = withData(
-    components[currentPath || "topviews"].component,
-    components[currentPath || "topviews"].data
+  const Component = useRedirect(
+    components,
+    "/showcase/topviews",
+    showcaseSubmenuId,
+    "topviews"
   )
-
-  useEffect(() => {
-    setcurrentPath(hasParam)
-  }, [hasParam])
 
   return (
     <Layout>
