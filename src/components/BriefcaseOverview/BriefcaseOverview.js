@@ -19,8 +19,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/currency/${item.tiker}`,
-                      dataItem: item,
+                      pathname: `/briefcaseItem/currency/${item.tiker}`
                     }}
                   >
                     <List.Item className={styles.listItem}>
@@ -50,8 +49,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/shares/${item.tiker}`,
-                      dataItem: item,
+                      pathname: `/briefcaseItem/shares/${item.tiker}`
                     }}
                   >
                     <List.Item className={styles.listItem}>
@@ -81,8 +79,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/bonds/${item.tiker}`,
-                      dataItem: item,
+                      pathname: `/briefcaseItem/bonds/${item.tiker}`
                     }}
                   >
                     <List.Item className={styles.listItem}>
@@ -112,8 +109,7 @@ const BriefcaseOverview = ({ activeMenuItem, data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/briefcaseItem/funds/${item.tiker}`,
-                      dataItem: item,
+                      pathname: `/briefcaseItem/funds/${item.tiker}`
                     }}
                   >
                     <List.Item className={styles.listItem}>

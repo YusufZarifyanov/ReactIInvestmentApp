@@ -10,61 +10,88 @@ import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 
-
-const BriefcaseItem = ({ location }) => {
+const BriefcaseItem = () => {
   const { securityType, tiker } = useParams();
   const [graph, setGraph] = useState(false);
+  const [xRange, setXRange] = useState(["2017-01-04", "2017-02-15"]);
   let dataElem;
 
-  if (location.dataItem) dataElem = location.dataItem;
-  else {
-    let hasParam = Object.keys(securities).find((key) => key === securityType);
-    if (!hasParam) console.log("Все плохо!");
-    else {
-      let flag = false;
-      for (let el of securities[hasParam]) {
-        if (el.tiker === tiker && !flag) {
-          dataElem = el;
-          flag = true;
-          break;
-        }
+  let hasParam = Object.keys(securities).find((key) => key === securityType);
+  if (!hasParam) {
+    console.log("Все плохо!");
+  } else {
+    let flag = false;
+    for (let el of securities[hasParam]) {
+      if (el.tiker === tiker && !flag) {
+        dataElem = el;
+        flag = true;
+        break;
       }
-      if (!flag) console.log("Опять все плохо!");
+    }
+    if (!flag) {
+      console.log("Опять все плохо!");
     }
   }
 
-  const handleChangeGraph = () => {
-    graph ? setGraph(false) : setGraph(true);
+  const handleChange = (action, dateDifference) => {
+    if (action === "changeGraph") {
+      graph ? setGraph(false) : setGraph(true);
+    } else if (dateDifference) {
+      const dateNow = new Date();
+
+      const endDate =
+        new Date().toISOString().slice(0, 10) +
+        " " +
+        dateNow.getHours() +
+        ":" +
+        dateNow.getMinutes() +
+        ":" +
+        dateNow.getSeconds();
+  
+      dateNow.setDate(dateNow.getDate() - dateDifference);
+
+      const startDate =
+        dateNow.toISOString().slice(0, 10) +
+        " " +
+        dateNow.getHours() +
+        ":" +
+        dateNow.getMinutes() +
+        ":" +
+        dateNow.getSeconds();
+      
+      setXRange([startDate, endDate]);
+    }
   };
 
   const dateMas = [
     {
       name: "День",
-      action: null,
+      action: "Day",
+      dataDifference: 1,
     },
     {
       name: "Неделя",
-      action: null,
+      action: "Week",
+      dataDifference: 7,
     },
     {
       name: "Месяц",
-      action: null,
+      action: "Month",
+      dataDifference: 30,
     },
     {
       name: "Полгода",
-      action: null,
+      action: "HalfYear",
+      dataDifference: 180,
     },
     {
       name: "Год",
-      action: null,
-    },
-    {
-      name: "Все время",
-      action: null,
+      action: "Year",
+      dataDifference: 360,
     },
     {
       name: <i class="fa fa-arrows-v" aria-hidden="true"></i>,
-      action: handleChangeGraph,
+      action: "changeGraph",
     },
   ];
 
@@ -117,11 +144,16 @@ const BriefcaseItem = ({ location }) => {
             <Space size={[8, 16]} wrap>
               {dateMas.map((el, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Button key={index} onClick={el.action}>{el.name}</Button>
+                <Button
+                  key={index}
+                  onClick={() => handleChange(el.action, el.dataDifference)}
+                >
+                  {el.name}
+                </Button>
               ))}
             </Space>
           </div>
-          <Graph graphFlag={graph} />
+          <Graph graphFlag={graph} xRange={xRange} />
         </div>
       </Layout.Content>
     </Layout>
