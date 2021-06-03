@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview";
-import BriefcaseSecurity from "../../components/BriefcaseSecurity/BriefcaseSecurity";
+import Securities from "../../components/Securities/Securities";
 import { useParams } from "react-router";
 
 import { subMenuBriefcase } from "../../data/sub_menu";
@@ -26,9 +26,9 @@ const Briefcase = () => {
           data={securities}
         />
       ) : (
-        <BriefcaseSecurity
+        <Securities
           data={securities[hasParam]}
-          activeMenuItem={briefcaseSubmenuId}
+          securityType={briefcaseSubmenuId}
         />
       )}
     </Layout>

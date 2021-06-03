@@ -1,22 +1,20 @@
 import { Card, Avatar, Statistic } from "antd";
 import { Link } from "react-router-dom";
-import "antd/dist/antd.css";
-import styles from "./BriefcaseSecurity.module.scss";
+import styles from "./Securities.module.scss";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 
-const { Meta } = Card;
+const Securities = ({ data, securityType }) => {
 
-const BriefcaseSecurity = ({ data, activeMenuItem }) => {
-  console.log(data);
   return (
     <div className={styles.content}>
-      {data.map((el) => (
+      {data && data.map((el) => (
         <Link
           to={{
-            pathname: `/briefcaseItem/${activeMenuItem}/${el.tiker}`,
+            pathname: `/briefcaseItem/${securityType}/${el.tiker}`,
             dataItem: el,
           }}
           className={styles.link}
+          key={el.tiker}
         >
           <Card
 
@@ -65,4 +63,4 @@ const BriefcaseSecurity = ({ data, activeMenuItem }) => {
   );
 };
 
-export default BriefcaseSecurity;
+export default Securities;
