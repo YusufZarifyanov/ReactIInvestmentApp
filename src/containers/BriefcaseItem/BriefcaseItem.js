@@ -21,7 +21,7 @@ const BriefcaseItem = () => {
     console.log("Все плохо!");
   } else {
     let flag = false;
-    for (let el of securities[hasParam]) {
+    for (let el of securities[hasParam].data) {
       if (el.tiker === tiker && !flag) {
         dataElem = el;
         flag = true;
