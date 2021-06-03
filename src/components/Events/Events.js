@@ -21,9 +21,12 @@ const Events = ({ data }) => {
     //   setFetchData(result.data.main.stream)
     // }
     // fetchData()
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setFetchData(data.data.main.stream)
     }, 1000)
+    return () => {
+      clearTimeout(timer);
+    }
   }, [])
 
   if (!fetchData.length) {
