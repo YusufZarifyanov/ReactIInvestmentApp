@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
-import BriefcaseOverview from "../../components/BriefcaseOverview/BriefcaseOverview";
+import Overview from "../../components/Overview/Overview";
 import Securities from "../../components/Securities/Securities";
 import { useParams } from "react-router";
 
@@ -21,13 +21,10 @@ const Briefcase = () => {
         activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
       {briefcaseSubmenuId === "review" ? (
-        <BriefcaseOverview
-          activeMenuItem={briefcaseSubmenuId}
-          data={securities}
-        />
+        <Overview data={securities} type="briefcase" />
       ) : (
         <Securities
-          data={securities[hasParam]}
+          data={securities[hasParam]?.data}
           securityType={briefcaseSubmenuId}
         />
       )}

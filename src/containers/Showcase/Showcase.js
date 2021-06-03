@@ -10,7 +10,7 @@ import Events from "../../components/Events/Events";
 import { fakeResponseForEvents as dataEvents } from '../../data/showcase/fakeResponseEvents';
 import { useRedirect } from "../../hooks/useRedirect";
 
-const dataUpsdowns = securities.currency;
+const dataUpsdowns = securities.currency.data;
 
 const components = {
   topviews: {
