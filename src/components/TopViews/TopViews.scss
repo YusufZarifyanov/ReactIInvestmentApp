@@ -1,0 +1,12 @@
+.ant-tabs {
+  position: relative !important;
+  overflow: visible !important;
+  min-height: 100vh !important;
+}
+
+.ant-tabs > .ant-tabs-nav {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 64px !important;
+  z-index: 1;
+}
