@@ -10,7 +10,7 @@ const Securities = ({ data, securityType }) => {
       {data && data.map((el) => (
         <Link
           to={{
-            pathname: `/briefcaseItem/${securityType}/${el.tiker}`,
+            pathname: `/security/${securityType}/${el.tiker}`,
             dataItem: el,
           }}
           className={styles.link}

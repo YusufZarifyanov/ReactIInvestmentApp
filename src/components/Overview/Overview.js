@@ -25,7 +25,7 @@ const Overview = ({ data, briefcaseCalculation }) => {
                     renderItem={(item) => (
                       <Link
                         to={{
-                          pathname: `/briefcaseItem/${security}/${item.tiker}`,
+                          pathname: `/security/${security}/${item.tiker}`,
                           dataItem: item,
                         }}
                       >
