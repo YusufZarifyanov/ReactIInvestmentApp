@@ -17,7 +17,7 @@ const Overview = ({ data, type }) => {
         <div className={styles.body}>
           {
             securities.map((security) => (
-              <div className={styles.card}>
+              <div key={security} className={styles.card}>
                 <div className={styles.elemHeader}>{data[security].name}</div>
                 <div className={styles.elem}>
                   <List
