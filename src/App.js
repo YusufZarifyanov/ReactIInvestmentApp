@@ -5,12 +5,12 @@ import Showcase from "./containers/Showcase/Showcase";
 import About from "./containers/About/About";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styles from "./App.module.scss";
-import BriefcaseItem from "./containers/BriefcaseItem/BriefcaseItem";
+import SecurityItem from "./containers/SecurityItem/SecurityItem";
 
 const routes = [
   {
     path: "/security/:securityType/:tiker",
-    component: BriefcaseItem,
+    component: SecurityItem,
   },
   {
     path: "/briefcase/:briefcaseSubmenuId",

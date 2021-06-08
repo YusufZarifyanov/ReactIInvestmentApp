@@ -4,14 +4,14 @@ import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { securities } from "../../data/briefcase/securities";
 // import chartData from "../../data/briefcase/ChartData"
 
-import styles from "./BriefcaseItem.module.scss";
+import styles from "./SecurityItem.module.scss";
 
 import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 // import unirest from "unirest";
 
-const BriefcaseItem = () => {
+const SecurityItem = () => {
   const { securityType, tiker } = useParams();
   const [graph, setGraph] = useState(false);
   const [xRange, setXRange] = useState([
@@ -199,4 +199,4 @@ const BriefcaseItem = () => {
   );
 };
 
-export default BriefcaseItem;
+export default SecurityItem;
