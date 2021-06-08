@@ -1,16 +1,14 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useParams } from "react-router";
-import { securities } from "../../data/briefcase/securities";
-import { topViews } from '../../data/showcase/top_views';
+import { upsDowns } from "../../data/showcase/ups_downs";
+import { topViews } from "../../data/showcase/top_views";
 import { subMenuShowcase } from "../../data/sub_menu";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
 import { fakeResponseForEvents as dataEvents } from '../../data/showcase/fakeResponseEvents';
 import { useRedirect } from "../../hooks/useRedirect";
-
-const dataUpsdowns = securities.currency.data;
 
 const components = {
   topviews: {
@@ -19,7 +17,7 @@ const components = {
   },
   upsdowns: {
     component: UpsDowns,
-    data: dataUpsdowns,
+    data: upsDowns.shares.data,
   },
   events: {
     component: Events,
