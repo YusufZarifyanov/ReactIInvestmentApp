@@ -9,7 +9,7 @@ import styles from "./BriefcaseItem.module.scss";
 import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
-import unirest from "unirest";
+// import unirest from "unirest";
 
 const BriefcaseItem = () => {
   const { securityType, tiker } = useParams();
@@ -127,7 +127,7 @@ const BriefcaseItem = () => {
 
   return (
     <Layout>
-      {securities[securityType].data.find((item) => item.tiker === tiker) ? (
+      {securities[securityType]?.data.find((item) => item.tiker === tiker) ? (
         <SideBar
           menuItems={subMenuBriefcase}
           activeMenuItem={`/briefcase/${securityType}`}
