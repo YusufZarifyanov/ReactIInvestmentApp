@@ -1,16 +1,18 @@
 import { Card, Avatar, Statistic } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./Securities.module.scss";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 
-const Securities = ({ data, securityType }) => {
+const Securities = ({ data }) => {
+
+  const { pathname } = useLocation()
 
   return (
     <div className={styles.content}>
       {data && data.map((el) => (
         <Link
           to={{
-            pathname: `/security/${securityType}/${el.tiker}`,
+            pathname: `/${pathname.split('/')[1]}/${pathname.split('/')[2]}/${el.tiker}`,
             dataItem: el,
           }}
           className={styles.link}

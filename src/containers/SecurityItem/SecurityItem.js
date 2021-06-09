@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { securities } from "../../data/briefcase/securities";
@@ -13,6 +13,8 @@ import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 
 const SecurityItem = () => {
   const { securityType, tiker } = useParams();
+  const { pathname } = useLocation();
+
   const [graph, setGraph] = useState(false);
   const [xRange, setXRange] = useState([
     "2021-05-30 15:9:19",
@@ -29,7 +31,7 @@ const SecurityItem = () => {
       .then((json) => {
         json = json["Time Series (Daily)"]
         console.log(json)
-        const yAxes = {open: [], high: [], low: [], close: [], adjusted: []};
+        const yAxes = { open: [], high: [], low: [], close: [], adjusted: [] };
         const xAxes = Object.keys(json);
         for (let item of Object.keys(json)) {
           yAxes.open.push(json[item]["1. open"]);
@@ -118,7 +120,7 @@ const SecurityItem = () => {
       dataDifference: 360,
     },
     {
-      name: <i class="fa fa-arrows-v" aria-hidden="true"></i>,
+      name: <i className="fa fa-arrows-v" aria-hidden="true"></i>,
       action: "changeGraph",
     },
   ];
@@ -127,17 +129,15 @@ const SecurityItem = () => {
 
   return (
     <Layout>
-      {securities[securityType]?.data.find((item) => item.tiker === tiker) ? (
+      {
         <SideBar
-          menuItems={subMenuBriefcase}
-          activeMenuItem={`/briefcase/${securityType}`}
+          menuItems={
+            pathname.split('/')[1] === "briefcase"
+              ? subMenuBriefcase : subMenuShowcase
+          }
+          activeMenuItem={`/${pathname.split('/')[1]}/${pathname.split('/')[2]}`}
         />
-      ) : (
-        <SideBar
-          menuItems={subMenuShowcase}
-          activeMenuItem="/showcase/topviews"
-        />
-      )}
+      }
       <Layout.Content>
         <div className={styles.container}>
           <div className={styles.cards}>

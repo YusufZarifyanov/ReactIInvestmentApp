@@ -1,10 +1,12 @@
 import styles from "./Overview.module.scss";
 import { Layout, List } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Overview = ({ data, briefcaseCalculation }) => {
   const securities = Object.keys(data)
 
+  const { pathname } = useLocation()
+  
   return (
     <Layout.Content>
       <div className={styles.main}>
@@ -25,7 +27,7 @@ const Overview = ({ data, briefcaseCalculation }) => {
                     renderItem={(item) => (
                       <Link
                         to={{
-                          pathname: `/security/${security}/${item.tiker}`,
+                          pathname: `/${pathname.split('/')[1]}/${pathname.split('/')[2]}/${item.tiker}`,
                           dataItem: item,
                         }}
                       >

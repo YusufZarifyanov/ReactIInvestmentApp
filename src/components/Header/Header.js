@@ -14,7 +14,6 @@ import {
 import { Link, withRouter } from "react-router-dom";
 import cn from 'classnames'
 import styles from './Header.module.scss'
-import { securities } from "../../data/briefcase/securities";
 
 const menuItems = [
   {
@@ -50,14 +49,6 @@ const Header = ({ location }) => {
       </Menu.Item>
     )
   })
-
-  const ticker = currentPath.split('/')[3]
-  
-  if (ticker) {
-    securities[currentPath.split('/')[2]].data.find(item => item.tiker === ticker)
-    ? menuSelectItems.push("/briefcase/review")
-    : menuSelectItems.push("/showcase/topviews")
-  }
 
   const [activeBurger, setActiveBurger] = useState(false)
 
