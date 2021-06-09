@@ -1,39 +1,52 @@
-import { Tabs } from 'antd';
+import { List } from "antd";
 import React from 'react';
-import Securities from '../Securities/Securities';
+import { Link, useLocation } from "react-router-dom";
+import styles from "./UpsDowns.module.scss";
 
 const UpsDowns = ({ data }) => {
+  const { pathname } = useLocation()
+
+  const upsDownsTypesArray = Object.keys(data)
 
   return (
-    <Tabs
-      centered
-      type="card"
-      tabPosition="top"
-      defaultActiveKey="ups"
-    >
-      <Tabs.TabPane
-        tab={
-          <span>
-            Взлеты
-          </span>
-        }
-        key="ups">
-        <Securities
-          data={data.filter(item => item.is_active === true)}
-          securityType='shares' />
-      </Tabs.TabPane>
-      <Tabs.TabPane
-        tab={
-          <span>
-            Падения
-          </span>
-        }
-        key="downs">
-        <Securities
-          data={data.filter(item => item.is_active === false)}
-          securityType='shares' />
-      </Tabs.TabPane>
-    </Tabs>
+    <div className={styles.body}>
+      {
+        upsDownsTypesArray.map((type) => (
+          <div key={type} className={styles.card}>
+            <div className={styles.elemHeader}>{data[type].name}</div>
+            <div className={styles.elem}>
+              <List
+                dataSource={data[type].data}
+                renderItem={(item) => (
+                  <Link
+                    to={{
+                      pathname: `/${pathname.split('/')[1]}/${pathname.split('/')[2]}/${item.tiker}`,
+                      dataItem: item,
+                    }}
+                  >
+                    <List.Item className={styles.listItem}>
+                      <List.Item.Meta
+                        className={styles.meta}
+                        avatar={
+                          <img
+                            className={styles.img}
+                            src={item.src}
+                            alt={item.name}
+                          ></img>
+                        }
+                        title={item.name}
+                        description={`${item.cost} ${item.currency}`}
+                      />
+                    </List.Item>
+                  </Link>
+                )}
+              />
+            </div>
+            <div className={styles.makeColumnTall}></div>
+          </div>
+        ))
+      }
+    </div>
   )
 }
 

@@ -17,7 +17,7 @@ const components = {
   },
   upsdowns: {
     component: UpsDowns,
-    data: upsDowns.shares.data,
+    data: upsDowns,
   },
   events: {
     component: Events,
