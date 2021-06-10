@@ -6,18 +6,45 @@ import { useParams } from "react-router";
 
 import { subMenuBriefcase } from "../../data/sub_menu";
 import { securities } from "../../data/briefcase/securities";
+import { useRedirect } from "../../hooks/useRedirect";
+
+const components = {
+  review: {
+    component: Overview,
+    data: securities,
+  },
+  currency: {
+    component: Securities,
+    data: securities.currency.data,
+  },
+  shares: {
+    component: Securities,
+    data: securities.shares.data,
+  },
+  bonds: {
+    component: Securities,
+    data: securities.bonds.data,
+  },
+  funds: {
+    component: Securities,
+    data: securities.funds.data,
+  },
+}
 
 const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
-
-  const hasParam = Object.keys(securities).find(
-    (key) => key === briefcaseSubmenuId
-  );
 
   const briefcase = {
     amount: 1000,
     someData: []
   }
+
+  const Component = useRedirect(
+    components,
+    "/briefcase/review",
+    briefcaseSubmenuId,
+    "review"
+  )
 
   return (
     <Layout>
@@ -26,12 +53,9 @@ const Briefcase = () => {
         activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
       {briefcaseSubmenuId === "review" ? (
-        <Overview data={securities} briefcaseCalculation={briefcase} />
+        <Component briefcaseCalculation={briefcase} />
       ) : (
-        <Securities
-          data={securities[hasParam]?.data}
-          securityType={briefcaseSubmenuId}
-        />
+        <Component />
       )}
     </Layout>
   );
