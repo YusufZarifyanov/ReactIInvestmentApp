@@ -2,6 +2,7 @@ import { Card, Avatar, Statistic } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Securities.module.scss";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
+import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 const Securities = ({ data }) => {
 
@@ -12,7 +13,7 @@ const Securities = ({ data }) => {
       {data && data.map((el) => (
         <Link
           to={{
-            pathname: `/${pathname.split('/')[1]}/${pathname.split('/')[2]}/${el.tiker}`,
+            pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${el.tiker}`,
             dataItem: el,
           }}
           className={styles.link}
@@ -32,7 +33,11 @@ const Securities = ({ data }) => {
                 <div>
                   <p className={styles.name}>{el.name}</p>
                   <p className={styles.count}>
-                    {`${el.count} шт. - ${el.cost} ${el.currency}`}
+                    {
+                      getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
+                        ? `${el.count} шт. - ${el.cost} ${el.currency}`
+                        : `${el.cost} ${el.currency}`
+                    }
                   </p>
                 </div>
               </div>
