@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import styles from "./UpsDowns.module.scss";
+import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 const UpsDowns = ({ data }) => {
   const { pathname } = useLocation()
@@ -21,7 +22,7 @@ const UpsDowns = ({ data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/${pathname.split('/')[1]}/${pathname.split('/')[2]}/${item.tiker}`,
+                      pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.tiker}`,
                       dataItem: item,
                     }}
                   >
