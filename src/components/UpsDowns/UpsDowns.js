@@ -1,6 +1,7 @@
-import { List } from "antd";
+import { List, Statistic } from "antd";
 import React from 'react';
 import { Link, useLocation } from "react-router-dom";
+import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import styles from "./UpsDowns.module.scss";
 
 const UpsDowns = ({ data }) => {
@@ -37,6 +38,27 @@ const UpsDowns = ({ data }) => {
                         title={item.name}
                         description={`${item.cost} ${item.currency}`}
                       />
+                      {item.is_active ? (
+                        <Statistic
+                          className={styles.statistik}
+                          // title="Active"
+                          value={11.28}
+                          precision={2}
+                          valueStyle={{ color: "#3f8600" }}
+                          prefix={<ArrowUpOutlined />}
+                          suffix="%"
+                        />
+                      ) : (
+                        <Statistic
+                          className={styles.statistik}
+                          // title="Idle"
+                          value={9.3}
+                          precision={2}
+                          valueStyle={{ color: "#cf1322" }}
+                          prefix={<ArrowDownOutlined />}
+                          suffix="%"
+                        />
+                      )}
                     </List.Item>
                   </Link>
                 )}
