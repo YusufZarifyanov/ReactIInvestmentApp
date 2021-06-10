@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { securities } from "../../data/briefcase/securities";
 // import chartData from "../../data/briefcase/ChartData"
+import { upsDowns } from "../../data/showcase/ups_downs";
+import { topViews } from "../../data/showcase/top_views";
 
 import styles from "./SecurityItem.module.scss";
 
@@ -12,7 +14,7 @@ import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 // import unirest from "unirest";
 
 const SecurityItem = () => {
-  const { securityType, tiker } = useParams();
+  const { securityType, activeSideBar, tiker } = useParams();
   const { pathname } = useLocation();
 
   const [graph, setGraph] = useState(false);
@@ -46,21 +48,39 @@ const SecurityItem = () => {
 
   let dataElem;
 
-  let hasParam = Object.keys(securities).find((key) => key === securityType);
-  if (!hasParam) {
-    console.log("Все плохо!");
-  } else {
+  function findTargetTicker(array) {
     let flag = false;
-    for (let el of securities[hasParam].data) {
+    for (let el of array) {
       if (el.tiker === tiker && !flag) {
         dataElem = el;
         flag = true;
         break;
       }
     }
-    if (!flag) {
-      console.log("Опять все плохо!");
+  }
+
+  let hasParam
+
+  function makeOneDimensionArrayFromObject(obj) {
+    return Object.values(obj).reduce((acc, val) => acc.concat(val.data), []);
+  }
+
+  if (securityType) {
+
+    if (securityType === "review") {
+      hasParam = makeOneDimensionArrayFromObject(securities)
+      findTargetTicker(hasParam);
+    } else {
+      hasParam = Object.keys(securities).find((key) => key === securityType);
+      findTargetTicker(securities[hasParam].data);
     }
+
+  } else if (activeSideBar) {
+    activeSideBar === "topviews"
+      ? hasParam = makeOneDimensionArrayFromObject(topViews)
+      : hasParam = makeOneDimensionArrayFromObject(upsDowns)
+
+    findTargetTicker(hasParam)
   }
 
   const handleChange = (action, dateDifference) => {
@@ -174,7 +194,15 @@ const SecurityItem = () => {
               <p className={styles.price}>
                 {`${dataElem?.currency} ${dataElem?.cost}`}
               </p>
-              <button className={styles.btn}>Приобрести</button>
+
+              <button className={styles.btn}>
+                {
+                  securityType ? "Купить еще" : "Приобрести"
+                }
+              </button>
+              {
+                securityType && <button className={styles.btn}>Продать</button>
+              }
             </div>
           </div>
           <div className={styles.btnList}>
