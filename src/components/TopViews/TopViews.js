@@ -4,6 +4,7 @@ import { subMenuBriefcase } from "../../data/sub_menu"
 import Overview from '../Overview/Overview';
 import Securities from '../Securities/Securities';
 import './TopViews.scss'
+import { getPathPartByOrdinalNumber } from '../../functions/getPathPartByOrdinalNumber';
 
 const TopViews = ({ data }) => {
   const [security, setSecurity] = useState("review")
@@ -28,15 +29,14 @@ const TopViews = ({ data }) => {
               {subMenuItem.name}
             </span>
           }
-          key={subMenuItem.path.split('/')[2]}>
+          key={getPathPartByOrdinalNumber(subMenuItem.path, 2)}>
           {
-            subMenuItem.path.split('/')[2] === "review" ?
+            getPathPartByOrdinalNumber(subMenuItem.path, 2) === "review" ?
               (
                 <Overview data={data} />
               ) : (
                 <Securities
-                  data={data[security]?.data}
-                  securityType={security} />
+                  data={data[security]?.data} />
               )
           }
         </Tabs.TabPane>
