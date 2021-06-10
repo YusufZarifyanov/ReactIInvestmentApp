@@ -13,11 +13,11 @@ const Securities = ({ data }) => {
       {data && data.map((el) => (
         <Link
           to={{
-            pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${el.tiker}`,
+            pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${el.ticker}`,
             dataItem: el,
           }}
           className={styles.link}
-          key={el.tiker}
+          key={el.ticker}
         >
           <Card
 

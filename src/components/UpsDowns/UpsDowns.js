@@ -22,7 +22,7 @@ const UpsDowns = ({ data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.tiker}`,
+                      pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.ticker}`,
                       dataItem: item,
                     }}
                   >

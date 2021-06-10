@@ -15,7 +15,7 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 // import unirest from "unirest";
 
 const SecurityItem = () => {
-  const { securityType, activeSideBar, tiker } = useParams();
+  const { securityType, activeSideBar, ticker } = useParams();
   const { pathname } = useLocation();
 
   const [graph, setGraph] = useState(false);
@@ -52,7 +52,7 @@ const SecurityItem = () => {
   function findTargetTicker(array) {
     let flag = false;
     for (let el of array) {
-      if (el.tiker === tiker && !flag) {
+      if (el.ticker === ticker && !flag) {
         dataElem = el;
         flag = true;
         break;

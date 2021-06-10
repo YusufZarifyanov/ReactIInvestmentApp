@@ -9,11 +9,11 @@ import SecurityItem from "./containers/SecurityItem/SecurityItem";
 
 const routes = [
   {
-    path: "/briefcase/:securityType/:tiker",
+    path: "/briefcase/:securityType/:ticker",
     component: SecurityItem,
   },
   {
-    path: "/showcase/:activeSideBar/:tiker",
+    path: "/showcase/:activeSideBar/:ticker",
     component: SecurityItem,
   },
   {
