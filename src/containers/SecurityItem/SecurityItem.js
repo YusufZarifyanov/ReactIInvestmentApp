@@ -11,6 +11,7 @@ import styles from "./SecurityItem.module.scss";
 import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
+import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 // import unirest from "unirest";
 
 const SecurityItem = () => {
@@ -152,10 +153,10 @@ const SecurityItem = () => {
       {
         <SideBar
           menuItems={
-            pathname.split('/')[1] === "briefcase"
+            getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
               ? subMenuBriefcase : subMenuShowcase
           }
-          activeMenuItem={`/${pathname.split('/')[1]}/${pathname.split('/')[2]}`}
+          activeMenuItem={`/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}`}
         />
       }
       <Layout.Content>
