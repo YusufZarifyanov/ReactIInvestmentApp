@@ -1,6 +1,7 @@
 import styles from "./Overview.module.scss";
 import { Layout, List } from "antd";
 import { Link, useLocation } from "react-router-dom";
+import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 const Overview = ({ data, briefcaseCalculation }) => {
   const securities = Object.keys(data)
@@ -27,7 +28,7 @@ const Overview = ({ data, briefcaseCalculation }) => {
                     renderItem={(item) => (
                       <Link
                         to={{
-                          pathname: `/${pathname.split('/')[1]}/${pathname.split('/')[2]}/${item.tiker}`,
+                          pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.tiker}`,
                           dataItem: item,
                         }}
                       >
