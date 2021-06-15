@@ -6,6 +6,38 @@
     position: -webkit-sticky;
     position: sticky; 
     top: 64px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menuItem {
+    overflow: hidden;
+  }
+
+  .menuLink {
+    display: block;
+    color: #000000d9;
+    height: 40px !important;
+    line-height: 40px !important;
+    margin: 4px 0 !important;
+    padding: 0 16px !important;
+
+    &:hover {
+      color: #1890ff;
+    }
+
+    span {
+      margin-right: 5px;
+    }
+  }
+
+  .menuLink.selected {
+      color: #1890ff;
+      background-color: #e6f7ff;
+      border-right: 3px solid #1890ff;
   }
     
   .burgerBtn {
