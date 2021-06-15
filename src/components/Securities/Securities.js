@@ -5,7 +5,6 @@ import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 const Securities = ({ data }) => {
-
   const { pathname } = useLocation()
 
   return (
@@ -29,14 +28,14 @@ const Securities = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar className={styles.icon} src={el.src} />
+                <Avatar className={styles.icon} src={el.logo} />
                 <div>
                   <p className={styles.name}>{el.name}</p>
                   <p className={styles.count}>
                     {
                       getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
-                        ? `${el.count} шт. - ${el.cost} ${el.currency}`
-                        : `${el.cost} ${el.currency}`
+                        ? `${el.count} шт. - ${el["Global Quote"]["02. open"]} $`
+                        : `${el["Global Quote"]["02. open"]} $`
                     }
                   </p>
                 </div>

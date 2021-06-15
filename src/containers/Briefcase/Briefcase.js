@@ -5,8 +5,9 @@ import Securities from "../../components/Securities/Securities";
 import { useParams } from "react-router";
 
 import { subMenuBriefcase } from "../../data/sub_menu";
-import { securities } from "../../data/briefcase/securities";
+import securities from "../../data/briefcase/securities";
 import { useRedirect } from "../../hooks/useRedirect";
+
 
 const components = {
   review: {
@@ -29,22 +30,22 @@ const components = {
     component: Securities,
     data: securities.funds.data,
   },
-}
+};
 
 const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
 
   const briefcase = {
     amount: 1000,
-    someData: []
-  }
+    someData: [],
+  };
 
   const Component = useRedirect(
     components,
     "/briefcase/review",
     briefcaseSubmenuId,
     "review"
-  )
+  );
 
   return (
     <Layout>

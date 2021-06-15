@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
-import { securities } from "../../data/briefcase/securities";
+import securities from "../../data/briefcase/securities";
 // import chartData from "../../data/briefcase/ChartData"
 import { upsDowns } from "../../data/showcase/ups_downs";
 import { topViews } from "../../data/showcase/top_views";
@@ -12,7 +12,7 @@ import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
-// import unirest from "unirest";
+
 
 const SecurityItem = () => {
   const { securityType, activeSideBar, ticker } = useParams();
@@ -33,7 +33,6 @@ const SecurityItem = () => {
       .then((res) => res.json())
       .then((json) => {
         json = json["Time Series (Daily)"]
-        console.log(json)
         const yAxes = { open: [], high: [], low: [], close: [], adjusted: [] };
         const xAxes = Object.keys(json);
         for (let item of Object.keys(json)) {
@@ -60,7 +59,7 @@ const SecurityItem = () => {
     }
   }
 
-  let hasParam
+  let hasParam;
 
   function makeOneDimensionArrayFromObject(obj) {
     return Object.values(obj).reduce((acc, val) => acc.concat(val.data), []);
@@ -166,7 +165,7 @@ const SecurityItem = () => {
               <div className={styles.info}>
                 <div className={styles.infoName}>
                   <p className={styles.name}>{dataElem?.name}</p>
-                  <p className={styles.ticket}>ticket</p>
+                  <p className={styles.ticket}>{dataElem?.ticker}</p>
                 </div>
                 <div className={styles.infoDescription}>
                   <div className={styles.value}>
@@ -186,7 +185,7 @@ const SecurityItem = () => {
               </div>
               <img
                 alt="example"
-                src={dataElem?.src}
+                src={dataElem?.logo}
                 className={styles.img}
               ></img>
             </div>

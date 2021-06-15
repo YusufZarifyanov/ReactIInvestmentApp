@@ -4,8 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 const Overview = ({ data, briefcaseCalculation }) => {
+  console.log(data)
   const securities = Object.keys(data)
-
   const { pathname } = useLocation()
   
   return (
@@ -38,15 +38,15 @@ const Overview = ({ data, briefcaseCalculation }) => {
                             avatar={
                               <img
                                 className={styles.img}
-                                src={item.src}
-                                alt={item.name}
+                                src={item.logo}
+                                alt={item.ticker}
                               ></img>
                             }
-                            title={item.name}
-                            description={briefcaseCalculation ? `${item.count} шт. - ${item.cost} ${item.currency}` : `${item.cost} ${item.currency}`}
+                            title={item.ticker}
+                            description={briefcaseCalculation ? `${item.count} шт. - ${item["Global Quote"]["02. open"]} $` : `${item.cost} $`}
                           />
                           {
-                            briefcaseCalculation && <div>{`${item.count * item.cost} ${item.currency}`}</div>
+                            briefcaseCalculation && <div>{`${item.count * item["Global Quote"]["02. open"]} $`}</div>
                           }
                         </List.Item>
                       </Link>
