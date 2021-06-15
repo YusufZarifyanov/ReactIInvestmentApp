@@ -1,5 +1,7 @@
+@import '../../variables';
+
 .sider {
-  background-color: white !important;
+  background-color: $maincolor !important;
   z-index: 8;
 
   .menu {
@@ -46,7 +48,7 @@
     right: -24px;
     top: 4px;
     display: none;
-    color: #fff;
+    color: $maincolor;
     background-color: #001529;
     font-size: 24px;
     cursor: pointer;

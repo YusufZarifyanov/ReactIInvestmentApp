@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -15,7 +17,7 @@
   .title {
     font-size: 24px !important;
     line-height: 32px !important;
-    color: #fff !important;
+    color: $maincolor !important;
     margin-bottom: 0 !important;
     cursor: pointer;
   }
@@ -32,12 +34,12 @@
     margin: 0 !important;
     height: 64px !important;
     line-height: 64px !important;
-    color: rgba(255, 255, 255, 0.65);
+    color: $secondarycolor;
     padding: 0 16px;
     transition: color 0.15s, background-color 0.3s;
 
     &:hover {
-      color: #fff;
+      color: $maincolor;
       background-color: #1890ff;
     }
 
@@ -47,7 +49,7 @@
   }
 
   .menuItem.selected {
-    color: #fff;
+    color: $maincolor;
     background-color: #1890FF;
   }
   
@@ -80,7 +82,7 @@
   
     .burgerBtn {
       display: block;
-      color: #fff !important;
+      color: $maincolor !important;
       font-size: 24px;
     }
   }
