@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Layout,
-  Menu,
   Typography,
 } from "antd";
 import {
@@ -11,19 +10,19 @@ import {
   QuestionCircleFilled,
   ShoppingFilled,
 } from "@ant-design/icons";
-import { Link, withRouter } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import cn from 'classnames'
 import styles from './Header.module.scss'
 
 const menuItems = [
   {
     name: "Мой Портфель",
-    path: "/briefcase/review",
+    path: "/briefcase/",
     icon: <ShoppingFilled />,
   },
   {
     name: "Витрина",
-    path: "/showcase/topviews",
+    path: "/showcase/",
     icon: <AppstoreFilled />,
   },
   {
@@ -33,23 +32,7 @@ const menuItems = [
   },
 ];
 
-const Header = ({ location }) => {
-  const currentPath = location.pathname;
-  const menuSelectItems = [];
-
-  const mainMenu = menuItems.map(item => {
-    if (item.path.split('/')[1] === currentPath.split('/')[1]) {
-      menuSelectItems.push(item.path);
-    };
-    return (
-      <Menu.Item className={styles.menuItem} key={item.path} icon={item.icon}>
-        <Link to={item.path}>
-          {item.name}
-        </Link>
-      </Menu.Item>
-    )
-  })
-
+const Header = () => {
   const [activeBurger, setActiveBurger] = useState(false)
 
   function handleActiveBurger() {
@@ -64,30 +47,42 @@ const Header = ({ location }) => {
     <Layout.Header
       className={styles.header}
     >
-      <Link to="/" className={styles.link}>
+      <NavLink to="/" className={styles.link}>
         <Typography.Title
           onClick={setActiveBurgerToFalse}
           className={styles.title}
         >
           IZI Investment
-      </Typography.Title>
-      </Link>
+        </Typography.Title>
+      </NavLink>
       <div
         className={styles.burgerBtn}
         onClick={handleActiveBurger} >
         {activeBurger ? <CloseOutlined /> : <MenuOutlined />}
       </div>
-      <Menu
-        theme="dark"
-        mode="vertical"
-        selectedKeys={menuSelectItems}
+      <nav
         className={cn(styles.menu, activeBurger ? styles.active : '')}
         onClick={setActiveBurgerToFalse}
       >
-        {mainMenu}
-      </Menu>
+        {
+          menuItems.map(item => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={styles.menuItem}
+              activeClassName={styles.selected}
+            >
+              <span>
+                {item.icon}
+              </span>
+              {item.name}
+            </NavLink>
+          )
+          )
+        }
+      </nav>
     </Layout.Header>
   );
 }
 
-export default withRouter(Header);
+export default Header;

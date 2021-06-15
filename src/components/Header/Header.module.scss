@@ -24,12 +24,31 @@
     z-index: 10;
     display: flex;
     justify-content: space-between;
+    background-color: #001529;
   }
   
   .menuItem {
+    display: block;
     margin: 0 !important;
     height: 64px !important;
     line-height: 64px !important;
+    color: rgba(255, 255, 255, 0.65);
+    padding: 0 16px;
+    transition: color 0.15s, background-color 0.3s;
+
+    &:hover {
+      color: #fff;
+      background-color: #1890ff;
+    }
+
+    span {
+      margin-right: 5px;
+    }
+  }
+
+  .menuItem.selected {
+    color: #fff;
+    background-color: #1890FF;
   }
   
   .burgerBtn {
@@ -42,7 +61,7 @@
     }
   
     .menu.active {
-      display: block !important;
+      display: flex !important;
       position: absolute;
       right: 0px;
       top: 64px;
@@ -56,6 +75,7 @@
       height: 40px !important;
       line-height: 40px !important;
       margin: 4px 0 !important;
+      padding: 0 32px 16px !important;
     }
   
     .burgerBtn {
