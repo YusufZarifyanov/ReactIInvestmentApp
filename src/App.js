@@ -40,6 +40,7 @@ function App() {
         {routes.map((route, i) => (
           <Route key={i} path={route.path} component={route.component} />
         ))}
+        <Redirect from="/showcase" to="/showcase/topviews" />
         <Redirect to="/briefcase/review" />
       </Switch>
     </Layout>
