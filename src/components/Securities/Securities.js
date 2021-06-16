@@ -6,7 +6,7 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 
 const Securities = ({ data }) => {
   const { pathname } = useLocation()
-
+  console.log(data)
   return (
     <div className={styles.content}>
       {data && data.map((el) => (
@@ -28,14 +28,14 @@ const Securities = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar className={styles.icon} src={el.logo} />
+                <Avatar className={styles.icon} src={`https://logo.clearbit.com/${el.symbol}.com`} />
                 <div>
-                  <p className={styles.name}>{el.name}</p>
+                  <p className={styles.name}>{el.shortName}</p>
                   <p className={styles.count}>
                     {
                       getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
-                        ? `${el.count} шт. - ${el["Global Quote"]["02. open"]} $`
-                        : `${el["Global Quote"]["02. open"]} $`
+                        ? `2 шт. - ${el.regularMarketPrice} $`
+                        : `${el.regularMarketPrice} $`
                     }
                   </p>
                 </div>

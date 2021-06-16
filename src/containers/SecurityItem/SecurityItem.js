@@ -23,11 +23,24 @@ const SecurityItem = () => {
     "2021-05-30 15:9:19",
     "2021-06-06 15:9:19",
   ]);
+  const [tickerData, setTickerData] = useState({})
   const [chartData, setChartData] = useState(undefined);
 
   useEffect(() => {
     const API_KEY = "VAUVU4KVB5DXM9ED";
     const API_Call = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=AAL&outputsize=full&apikey=${API_KEY}`;
+
+    fetch(`https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=${ticker}`, {
+      headers: {
+        "x-rapidapi-key":
+          "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+        "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+        useQueryString: true,
+      },
+    })
+    .then(res => res.json())
+    .then(json => setTickerData(json.quoteResponse.result[0]))
+    .catch(err => console.log(err));
 
     fetch(API_Call)
       .then((res) => res.json())
@@ -145,7 +158,7 @@ const SecurityItem = () => {
     },
   ];
 
-  console.log(chartData);
+  console.log(tickerData);
 
   return (
     <Layout>
@@ -164,14 +177,14 @@ const SecurityItem = () => {
             <div className={styles.securitiesType}>
               <div className={styles.info}>
                 <div className={styles.infoName}>
-                  <p className={styles.name}>{dataElem?.name}</p>
-                  <p className={styles.ticket}>{dataElem?.ticker}</p>
+                  <p className={styles.name}>{tickerData?.shortName}</p>
+                  <p className={styles.ticket}>{tickerData?.symbol}</p>
                 </div>
                 <div className={styles.infoDescription}>
-                  <div className={styles.value}>
+                  <div className={styles.postMarketPrice}>
                     <p style={{ fontSize: "14px" }}>Доходность к погашению:</p>
                     <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                      {dataElem?.value}%
+                      {dataElem?.postMarketPrice}%
                     </p>
                   </div>
 
@@ -192,7 +205,7 @@ const SecurityItem = () => {
             <div className={styles.securitiesPrice}>
               <p className={styles.date}>Цена акции 27 мая 2021г.</p>
               <p className={styles.price}>
-                {`${dataElem?.currency} ${dataElem?.cost}`}
+                {`${dataElem?.postMarketPrice} ${dataElem?.postMarketPrice}`}
               </p>
 
               <button className={styles.btn}>

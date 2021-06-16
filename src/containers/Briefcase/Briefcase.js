@@ -40,33 +40,59 @@ const Briefcase = () => {
 
   useEffect(async () => {
     const securitiesKeys = Object.keys(securities);
+    const dataSecurity = {
+      review: {
+        component: Overview,
+        data:[],
+      },
+      currency: {
+        component: Securities,
+        data: [],
+      },
+      shares: {
+        component: Securities,
+        data: [],
+      },
+      bonds: {
+        component: Securities,
+        data: [],
+      },
+      funds: {
+        component: Securities,
+        data: [],
+      },
+    }
     for (let securityKey of securitiesKeys) {
       let tickerString = "";
       for (let ticker of securities[securityKey].tickers) {
         tickerString += `${ticker},`;
       }
 
-      let dataSecurity = await fetch(
+      let securitiesInfo = await fetch(
         "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
           tickerString,
         {
           headers: {
             "x-rapidapi-key":
-              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },
         }
       )
         .then((res) => res.json())
+        // .then(json => console.log(json))
         .catch((err) => console.log(err));
-      dataSecurity = dataSecurity.quoteResponse.result;
-      setComponents({
-        securityKey: dataSecurity,
-      });
+      console.log(securitiesInfo)
+      securitiesInfo  = securitiesInfo.quoteResponse.result;
+      dataSecurity[securityKey].data = securitiesInfo;
+      dataSecurity['review'].data.push(securitiesInfo);
     }
+    setComponents(dataSecurity)
   }, []);
 
+  console.log(components);
+  
   const Component = useRedirect(
     components,
     "/briefcase/review",
@@ -74,7 +100,7 @@ const Briefcase = () => {
     "review"
   );
 
-  console.log(components);
+  
 
   return (
     <Layout>

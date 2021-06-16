@@ -5,8 +5,16 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 
 const Overview = ({ data, briefcaseCalculation }) => {
   console.log(data)
-  const securities = Object.keys(data)
   const { pathname } = useLocation()
+
+  const dataWithHeaders = {
+    'currency': data[0],
+    'shares': data[1],
+    'bonds': data[2],
+    'funds': data[3],
+  }
+
+  const securities = Object.keys(dataWithHeaders)
   
   return (
     <Layout.Content>
@@ -21,14 +29,14 @@ const Overview = ({ data, briefcaseCalculation }) => {
           {
             securities.map((security) => (
               <div key={security} className={styles.card}>
-                <div className={styles.elemHeader}>{data[security].name}</div>
+                <div className={styles.elemHeader}>{security}</div>
                 <div className={styles.elem}>
                   <List
-                    dataSource={data[security].data}
+                    dataSource={dataWithHeaders[security]}
                     renderItem={(item) => (
                       <Link
                         to={{
-                          pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.ticker}`,
+                          pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.symbol}`,
                           dataItem: item,
                         }}
                       >
@@ -38,15 +46,15 @@ const Overview = ({ data, briefcaseCalculation }) => {
                             avatar={
                               <img
                                 className={styles.img}
-                                src={item.logo}
-                                alt={item.ticker}
+                                src={`https://logo.clearbit.com/${item.symbol}.com`}
+                                alt={item.symbol}
                               ></img>
                             }
-                            title={item.ticker}
-                            description={briefcaseCalculation ? `${item.count} шт. - ${item["Global Quote"]["02. open"]} $` : `${item.cost} $`}
+                            title={item.symbol}
+                            description={briefcaseCalculation ? `${2} шт. - ${item.regularMarketPrice} $` : `${item.regularMarketPrice} $`}
                           />
                           {
-                            briefcaseCalculation && <div>{`${item.count * item["Global Quote"]["02. open"]} $`}</div>
+                            briefcaseCalculation && <div>{`${2 * item.regularMarketPrice} $`}</div>
                           }
                         </List.Item>
                       </Link>

@@ -48,23 +48,23 @@ module.exports = {
   currency: {
     name: "Валюта",
     data: [],
-    tickers: ["AAPL", "MSFT"],
+    tickers: ["AAPL"],
   },
   shares: {
     name: "Акции",
     data: [],
-    tickers: ["JNJ"],
+    tickers: ["MSFT"],
   },
 
   bonds: {
     name: "Облигации",
     data: [],
-    tickers: ["BAC"],
+    tickers: ["BABA"],
   },
 
   funds: {
     name: "Фонды",
     data: [],
-    tickers: ["MA"],
+    tickers: ["IBM"],
   },
 };
