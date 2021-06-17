@@ -1,13 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import { fakeResponseForEvents as dataEvents } from '../../../data/showcase/fakeResponseEvents';
 
 const initialState = {
-  data: null,
+  news: null,
   loading: false,
+  error: '',
 };
 
-export const fetchData = createAsyncThunk('events/fetchData', async () => {
-  // const response = await lalala
-  // return response.todos
+export const fetchNews = createAsyncThunk('events/fetchNews', async () => {
+  const response = await fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/news/v2/list?region=US&snippetCount=28", {
+    method: "POST",
+    headers: {
+      "content-type": "text/plain",
+      "x-rapidapi-key": "cf6ea43f25msh23327306488aa7bp1c5258jsn0b77144eed9b",
+      "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+    },
+    body: "",
+  });
+
+  return await response.json();
+  // return dataEvents
 });
 
 const slice = createSlice({
@@ -16,12 +28,16 @@ const slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(fetchData.pending, state => {
+      .addCase(fetchNews.pending, state => {
         state.loading = true;
       })
-      .addCase(fetchData.fulfilled, (state, action) => {
+      .addCase(fetchNews.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload;
+        state.news = action.payload;
+      })
+      .addCase(fetchNews.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
   }
 });
