@@ -179,7 +179,7 @@ const SecurityItem = () => {
                 </div>
                 <img
                   alt="example"
-                  src={tickerData?.logo}
+                  src={`https://s3.polygon.io/logos/${tickerData?.symbol.toLowerCase()}/logo.png`}
                   className={styles.img}
                 ></img>
               </div>

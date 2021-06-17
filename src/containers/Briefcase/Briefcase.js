@@ -75,7 +75,7 @@ const Briefcase = () => {
         {
           headers: {
             "x-rapidapi-key":
-              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },

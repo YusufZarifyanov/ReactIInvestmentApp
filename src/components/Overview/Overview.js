@@ -51,7 +51,7 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
                             avatar={
                               <img
                                 className={styles.img}
-                                src={`https://logo.clearbit.com/${item.symbol}.com`}
+                                src={`https://s3.polygon.io/logos/${item.symbol.toLowerCase()}/logo.png`}
                                 alt={item.symbol}
                               ></img>
                             }
