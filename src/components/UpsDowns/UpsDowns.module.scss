@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .body {
   display: flex;
   margin: 0 0.5rem;
@@ -32,7 +34,7 @@
   
     .elem {
       overflow: auto;
-      background-color: #fff;
+      background-color: $maincolor;
       display: flex;
       flex-direction: column;
       max-height: 82vh;
@@ -60,7 +62,7 @@
   
     .makeColumnTall {
       flex: 1 1 auto;
-      background-color: #fff;
+      background-color: $maincolor;
     }
   }
 }

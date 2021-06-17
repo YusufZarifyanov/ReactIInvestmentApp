@@ -1,13 +1,13 @@
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   LeftOutlined,
   RightOutlined
 } from "@ant-design/icons";
-import styles from './SideBar.module.scss'
+import styles from './SideBar.module.scss';
 
-const SideBar = ({ menuItems, activeMenuItem }) => {
+const SideBar = ({ menuItems }) => {
   const [collapsed, setCollapsed] = useState(false)
   const [isOnBreakpoint, setIsOnBreakpoint] = useState(false)
 
@@ -29,15 +29,13 @@ const SideBar = ({ menuItems, activeMenuItem }) => {
       trigger={null}
       collapsible
       collapsed={collapsed}
-      collapsedWidth={1}
+      collapsedWidth={0.01}
       className={styles.sider}
       breakpoint="sm"
       onBreakpoint={onBreakpoint}
     >
-      <Menu
+      <ul
         className={styles.menu}
-        mode="inline"
-        selectedKeys={[activeMenuItem]}
       >
         <span
           className={styles.burgerBtn}
@@ -46,15 +44,24 @@ const SideBar = ({ menuItems, activeMenuItem }) => {
           {collapsed ? <RightOutlined /> : <LeftOutlined />}
         </span>
         {menuItems.map(item => (
-          <Menu.Item
+          <li
             key={item.path}
-            icon={item.icon}
-            onClick={isOnBreakpoint && setCollapsedToTrue}
+            className={styles.menuItem}
+            onClick={isOnBreakpoint ? setCollapsedToTrue : undefined}
           >
-            <Link to={item.path}>{item.name}</Link>
-          </Menu.Item>
+            <NavLink
+              className={styles.menuLink}
+              activeClassName={styles.selected}
+              to={item.path}
+            >
+              <span>
+                {item.icon}
+              </span>
+              {item.name}
+            </NavLink>
+          </li>
         ))}
-      </Menu>
+      </ul>
     </Layout.Sider>
   )
 };

@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -15,7 +17,7 @@
   .title {
     font-size: 24px !important;
     line-height: 32px !important;
-    color: #fff !important;
+    color: $maincolor !important;
     margin-bottom: 0 !important;
     cursor: pointer;
   }
@@ -24,12 +26,31 @@
     z-index: 10;
     display: flex;
     justify-content: space-between;
+    background-color: #001529;
   }
   
   .menuItem {
+    display: block;
     margin: 0 !important;
     height: 64px !important;
     line-height: 64px !important;
+    color: $secondarycolor;
+    padding: 0 16px;
+    transition: color 0.15s, background-color 0.3s;
+
+    &:hover {
+      color: $maincolor;
+      background-color: #1890ff;
+    }
+
+    span {
+      margin-right: 5px;
+    }
+  }
+
+  .menuItem.selected {
+    color: $maincolor;
+    background-color: #1890FF;
   }
   
   .burgerBtn {
@@ -42,7 +63,7 @@
     }
   
     .menu.active {
-      display: block !important;
+      display: flex !important;
       position: absolute;
       right: 0px;
       top: 64px;
@@ -56,11 +77,12 @@
       height: 40px !important;
       line-height: 40px !important;
       margin: 4px 0 !important;
+      padding: 0 32px 16px !important;
     }
   
     .burgerBtn {
       display: block;
-      color: #fff !important;
+      color: $maincolor !important;
       font-size: 24px;
     }
   }
