@@ -28,7 +28,7 @@ const Securities = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar className={styles.icon} src={`https://logo.clearbit.com/${el.symbol}.com`} />
+                <Avatar className={styles.icon} src={`https://s3.polygon.io/logos/${el.symbol.toLowerCase()}/logo.png`} />
                 <div>
                   <p className={styles.name}>{el.shortName}</p>
                   <p className={styles.count}>
