@@ -26,31 +26,37 @@ function convertTimestamp(timestamp) {
 
 const dateMas = [
   {
+    index: "1",
     name: "День",
     interval: "1m",
     range: "1d",
   },
   {
+    index: "2",
     name: "Неделя",
     interval: "15m",
     range: "5d",
   },
   {
+    index: "3",
     name: "Месяц",
     interval: "60m",
     range: "1mo",
   },
   {
+    index: "4",
     name: "Полгода",
     interval: "1d",
     range: "6mo",
   },
   {
+    index: "5",
     name: "Год",
     interval: "1d",
     range: "1y",
   },
   {
+    index: "6",
     name: <i className="fa fa-arrows-v" aria-hidden="true"></i>,
     action: "changeGraph",
   },
@@ -69,7 +75,8 @@ const SecurityItem = () => {
     range: "1d",
   });
   const [graphData, setGraphData] = useState(undefined);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState([true]);
+  const [activeBtn, setActiveBtn] = useState({index: 0});
 
   useEffect(() => {
     fetch(
@@ -94,7 +101,7 @@ const SecurityItem = () => {
           low: data["indicators"]["quote"][0]["low"],
           volume: data["indicators"]["quote"][0]["volume"],
         });
-        setLoading(false)
+        // setLoading(false)
       })
       .catch((err) => console.log(err));
 
@@ -103,7 +110,7 @@ const SecurityItem = () => {
       {
         headers: {
           "x-rapidapi-key":
-            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+            "b20a96a978msh810f50a83743adep1c9cccjsne479c88336ed",
           "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
           useQueryString: true,
         },
@@ -111,14 +118,21 @@ const SecurityItem = () => {
     )
       .then((res) => res.json())
       .then((json) => {
-        setTickerData(json.quoteResponse.result[0])
-        setLoading(false)
+        setTickerData(json.quoteResponse.result[0]);
+        // setLoading(false)
       })
       .catch((err) => console.log(err));
-  }, [graphSettings]);
 
-  const handleChange = (action, name, interval, range) => {
-    setLoading(true)
+      const newLoadings = [...loading];
+      newLoadings[activeBtn.index] = false;
+      setLoading(newLoadings)
+  }, [graphSettings, graph]);
+
+  const handleChange = (action, name, interval, range, index) => {
+    const newLoadings = [...loading];
+    newLoadings[index] = true;
+    setLoading(newLoadings);
+    setActiveBtn({index})
     if (action) {
       graph ? setGraph(false) : setGraph(true);
     } else if (name && interval && range) {
@@ -148,73 +162,72 @@ const SecurityItem = () => {
         />
       }
       <Layout.Content>
-        {loading ? (
-          <Spin />
-        ) : (
-          <div className={styles.container}>
-            <div className={styles.cards}>
-              <div className={styles.securitiesType}>
-                <div className={styles.info}>
-                  <div className={styles.infoName}>
-                    <p className={styles.name}>{tickerData?.shortName}</p>
-                    <p className={styles.ticket}>{tickerData?.symbol}</p>
+        <div className={styles.container}>
+          <div className={styles.cards}>
+            <div className={styles.securitiesType}>
+              <div className={styles.info}>
+                <div className={styles.infoName}>
+                  <p className={styles.name}>{tickerData?.shortName}</p>
+                  <p className={styles.ticket}>{tickerData?.symbol}</p>
+                </div>
+                <div className={styles.infoDescription}>
+                  <div className={styles.postMarketPrice}>
+                    <p style={{ fontSize: "14px" }}>Доходность к погашению:</p>
+                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                      {tickerData?.postMarketPrice}%
+                    </p>
                   </div>
-                  <div className={styles.infoDescription}>
-                    <div className={styles.postMarketPrice}>
-                      <p style={{ fontSize: "14px" }}>
-                        Доходность к погашению:
-                      </p>
-                      <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                        {tickerData?.postMarketPrice}%
-                      </p>
-                    </div>
 
-                    <div className={styles.description}>
-                      <p style={{ fontSize: "14px" }}>Рейтинг:</p>
-                      <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                        Низкий
-                      </p>
-                    </div>
+                  <div className={styles.description}>
+                    <p style={{ fontSize: "14px" }}>Рейтинг:</p>
+                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                      Низкий
+                    </p>
                   </div>
                 </div>
-                <img
-                  alt="example"
-                  src={`https://s3.polygon.io/logos/${tickerData?.symbol.toLowerCase()}/logo.png`}
-                  className={styles.img}
-                ></img>
               </div>
-              <div className={styles.securitiesPrice}>
-                <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-                <p className={styles.price}>
-                  {`${tickerData?.postMarketPrice} ${tickerData?.postMarketPrice}`}
-                </p>
+              <img
+                alt="example"
+                src={`https://s3.polygon.io/logos/${ticker.toLowerCase()}/logo.png`}
+                className={styles.img}
+              ></img>
+            </div>
+            <div className={styles.securitiesPrice}>
+              <p className={styles.date}>Цена акции 27 мая 2021г.</p>
+              <p className={styles.price}>
+                {`${tickerData?.postMarketPrice} ${tickerData?.postMarketPrice}`}
+              </p>
 
-                <button className={styles.btn}>
-                  {securityType ? "Купить еще" : "Приобрести"}
-                </button>
-                {securityType && (
-                  <button className={styles.btn}>Продать</button>
-                )}
-              </div>
+              <button className={styles.btn}>
+                {securityType ? "Купить еще" : "Приобрести"}
+              </button>
+              {securityType && <button className={styles.btn}>Продать</button>}
             </div>
-            <div className={styles.btnList}>
-              <Space size={[8, 16]} wrap>
-                {dateMas.map((el, index) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <Button
-                    key={index}
-                    onClick={() =>
-                      handleChange(el.action, el.name, el.interval, el.range)
-                    }
-                  >
-                    {el.name}
-                  </Button>
-                ))}
-              </Space>
-            </div>
-            {graphData && <Graph graphFlag={graph} graphData={graphData} />}
           </div>
-        )}
+          <div className={styles.btnList}>
+            <Space size={[8, 16]} wrap>
+              {dateMas.map((el, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Button
+                  key={index}
+                  loading={loading[index]}
+                  onClick={() =>
+                    handleChange(
+                      el.action,
+                      el.name,
+                      el.interval,
+                      el.range,
+                      index
+                    )
+                  }
+                >
+                  {el.name}
+                </Button>
+              ))}
+            </Space>
+          </div>
+          {graphData && <Graph graphFlag={graph} graphData={graphData} />}
+        </div>
       </Layout.Content>
     </Layout>
   );
