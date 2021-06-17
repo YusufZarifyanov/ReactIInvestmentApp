@@ -31,6 +31,7 @@ const Briefcase = () => {
       data: securities.funds.data,
     },
   });
+  const [loading, setLoading] = useState(true);
   const { briefcaseSubmenuId } = useParams();
 
   const briefcase = {
@@ -74,7 +75,7 @@ const Briefcase = () => {
         {
           headers: {
             "x-rapidapi-key":
-              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },
@@ -89,6 +90,7 @@ const Briefcase = () => {
       dataSecurity['review'].data.push(securitiesInfo);
     }
     setComponents(dataSecurity)
+    setLoading(false);
   }, []);
 
   console.log(components);
@@ -100,8 +102,6 @@ const Briefcase = () => {
     "review"
   );
 
-  
-
   return (
     <Layout>
       <SideBar
@@ -109,7 +109,7 @@ const Briefcase = () => {
         activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
       />
       {briefcaseSubmenuId === "review" ? (
-        <Component briefcaseCalculation={briefcase} />
+        <Component briefcaseCalculation={briefcase}  loading={loading}/>
       ) : (
         <Component />
       )}

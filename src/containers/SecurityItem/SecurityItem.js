@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
-
+import { Spin } from "antd";
 import styles from "./SecurityItem.module.scss";
 
 import { Layout, Space, Button } from "antd";
@@ -10,12 +10,12 @@ import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 function convertTimestamp(timestamp) {
-  let d = new Date(timestamp * 1000), 
+  let d = new Date(timestamp * 1000),
     yyyy = d.getFullYear(),
-    mm = ("0" + (d.getMonth() + 1)).slice(-2), 
-    dd = ("0" + d.getDate()).slice(-2), 
+    mm = ("0" + (d.getMonth() + 1)).slice(-2),
+    dd = ("0" + d.getDate()).slice(-2),
     h = d.getHours(),
-    min = ("0" + d.getMinutes()).slice(-2), 
+    min = ("0" + d.getMinutes()).slice(-2),
     sec = ("0" + d.getSeconds()).slice(-2),
     ampm = "AM",
     time;
@@ -56,7 +56,6 @@ const dateMas = [
   },
 ];
 
-
 const SecurityItem = () => {
   const { securityType, activeSideBar, ticker } = useParams();
   const { pathname } = useLocation();
@@ -70,9 +69,9 @@ const SecurityItem = () => {
     range: "1d",
   });
   const [graphData, setGraphData] = useState(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(graphSettings)
     fetch(
       `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=${graphSettings.interval}&symbol=${ticker}&range=${graphSettings.range}`,
       {
@@ -95,6 +94,7 @@ const SecurityItem = () => {
           low: data["indicators"]["quote"][0]["low"],
           volume: data["indicators"]["quote"][0]["volume"],
         });
+        setLoading(false)
       })
       .catch((err) => console.log(err));
 
@@ -110,16 +110,18 @@ const SecurityItem = () => {
       }
     )
       .then((res) => res.json())
-      .then((json) => setTickerData(json.quoteResponse.result[0]))
+      .then((json) => {
+        setTickerData(json.quoteResponse.result[0])
+        setLoading(false)
+      })
       .catch((err) => console.log(err));
   }, [graphSettings]);
 
   const handleChange = (action, name, interval, range) => {
-    console.log(action, name, interval, range)
+    setLoading(true)
     if (action) {
       graph ? setGraph(false) : setGraph(true);
     } else if (name && interval && range) {
-      console.log(1)
       setGraphSettings({
         name,
         interval,
@@ -129,9 +131,6 @@ const SecurityItem = () => {
       console.log("error in secirity graphic");
     }
   };
-  console.log(graphSettings);
-  console.log(tickerData);
-  console.log(graphData);
 
   return (
     <Layout>
@@ -149,65 +148,73 @@ const SecurityItem = () => {
         />
       }
       <Layout.Content>
-        <div className={styles.container}>
-          <div className={styles.cards}>
-            <div className={styles.securitiesType}>
-              <div className={styles.info}>
-                <div className={styles.infoName}>
-                  <p className={styles.name}>{tickerData?.shortName}</p>
-                  <p className={styles.ticket}>{tickerData?.symbol}</p>
-                </div>
-                <div className={styles.infoDescription}>
-                  <div className={styles.postMarketPrice}>
-                    <p style={{ fontSize: "14px" }}>Доходность к погашению:</p>
-                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                      {tickerData?.postMarketPrice}%
-                    </p>
+        {loading ? (
+          <Spin />
+        ) : (
+          <div className={styles.container}>
+            <div className={styles.cards}>
+              <div className={styles.securitiesType}>
+                <div className={styles.info}>
+                  <div className={styles.infoName}>
+                    <p className={styles.name}>{tickerData?.shortName}</p>
+                    <p className={styles.ticket}>{tickerData?.symbol}</p>
                   </div>
+                  <div className={styles.infoDescription}>
+                    <div className={styles.postMarketPrice}>
+                      <p style={{ fontSize: "14px" }}>
+                        Доходность к погашению:
+                      </p>
+                      <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                        {tickerData?.postMarketPrice}%
+                      </p>
+                    </div>
 
-                  <div className={styles.description}>
-                    <p style={{ fontSize: "14px" }}>Рейтинг:</p>
-                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                      Низкий
-                    </p>
+                    <div className={styles.description}>
+                      <p style={{ fontSize: "14px" }}>Рейтинг:</p>
+                      <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                        Низкий
+                      </p>
+                    </div>
                   </div>
                 </div>
+                <img
+                  alt="example"
+                  src={tickerData?.logo}
+                  className={styles.img}
+                ></img>
               </div>
-              <img
-                alt="example"
-                src={tickerData?.logo}
-                className={styles.img}
-              ></img>
-            </div>
-            <div className={styles.securitiesPrice}>
-              <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-              <p className={styles.price}>
-                {`${tickerData?.postMarketPrice} ${tickerData?.postMarketPrice}`}
-              </p>
+              <div className={styles.securitiesPrice}>
+                <p className={styles.date}>Цена акции 27 мая 2021г.</p>
+                <p className={styles.price}>
+                  {`${tickerData?.postMarketPrice} ${tickerData?.postMarketPrice}`}
+                </p>
 
-              <button className={styles.btn}>
-                {securityType ? "Купить еще" : "Приобрести"}
-              </button>
-              {securityType && <button className={styles.btn}>Продать</button>}
+                <button className={styles.btn}>
+                  {securityType ? "Купить еще" : "Приобрести"}
+                </button>
+                {securityType && (
+                  <button className={styles.btn}>Продать</button>
+                )}
+              </div>
             </div>
+            <div className={styles.btnList}>
+              <Space size={[8, 16]} wrap>
+                {dateMas.map((el, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Button
+                    key={index}
+                    onClick={() =>
+                      handleChange(el.action, el.name, el.interval, el.range)
+                    }
+                  >
+                    {el.name}
+                  </Button>
+                ))}
+              </Space>
+            </div>
+            {graphData && <Graph graphFlag={graph} graphData={graphData} />}
           </div>
-          <div className={styles.btnList}>
-            <Space size={[8, 16]} wrap>
-              {dateMas.map((el, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Button
-                  key={index}
-                  onClick={() =>
-                    handleChange(el.action, el.name, el.interval, el.range)
-                  }
-                >
-                  {el.name}
-                </Button>
-              ))}
-            </Space>
-          </div>
-          {graphData && <Graph graphFlag={graph} graphData={graphData} />}
-        </div>
+        )}
       </Layout.Content>
     </Layout>
   );
