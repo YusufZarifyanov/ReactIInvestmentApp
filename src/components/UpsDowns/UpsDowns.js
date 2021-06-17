@@ -8,12 +8,12 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 const UpsDowns = ({ data }) => {
   const { pathname } = useLocation()
 
-  const upsDownsTypesArray = Object.keys(data)
+  const upsDownsTypesArray = data && Object.keys(data)
 
   return (
     <div className={styles.body}>
       {
-        upsDownsTypesArray.map((type) => (
+        upsDownsTypesArray && upsDownsTypesArray.map((type) => (
           <div key={type} className={styles.card}>
             <div className={styles.elemHeader}>{data[type].name}</div>
             <div className={styles.elem}>
@@ -22,7 +22,7 @@ const UpsDowns = ({ data }) => {
                 renderItem={(item) => (
                   <Link
                     to={{
-                      pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.ticker}`,
+                      pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.symbol}`,
                       dataItem: item,
                     }}
                   >
@@ -32,18 +32,18 @@ const UpsDowns = ({ data }) => {
                         avatar={
                           <img
                             className={styles.img}
-                            src={item.src}
-                            alt={item.name}
+                            src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
+                            alt={item.longName}
                           ></img>
                         }
-                        title={item.name}
-                        description={`${item.cost} ${item.currency}`}
+                        title={item.longName}
+                        description={`${item.regularMarketPrice} ${item.currency}`}
                       />
-                      {item.is_active ? (
+                      {item.regularMarketChangePercent > 0 ? (
                         <Statistic
                           className={styles.statistik}
                           // title="Active"
-                          value={11.28}
+                          value={item.regularMarketChangePercent}
                           precision={2}
                           valueStyle={{ color: "#3f8600" }}
                           prefix={<ArrowUpOutlined />}
@@ -53,7 +53,7 @@ const UpsDowns = ({ data }) => {
                         <Statistic
                           className={styles.statistik}
                           // title="Idle"
-                          value={9.3}
+                          value={item.regularMarketChangePercent}
                           precision={2}
                           valueStyle={{ color: "#cf1322" }}
                           prefix={<ArrowDownOutlined />}
