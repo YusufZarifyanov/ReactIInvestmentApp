@@ -1,8 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
-const Graph = ({ graphFlag, xRange, chartData }) => {
-  console.log(chartData)
+const Graph = ({ graphFlag, graphData }) => {
+  console.log(graphData)
 
   return (
     <div>
@@ -14,8 +14,8 @@ const Graph = ({ graphFlag, xRange, chartData }) => {
               mode: "lines",
               // x: transformData(state.data)["x"],
               // y: transformData(state.data)["y"],
-              y: chartData.yAxes.close,
-              x: chartData.xAxes,
+              y: graphData.close,
+              x: graphData.xRange,
               marker: { color: "black" },
               displayModeBar: false,
             },
@@ -26,9 +26,6 @@ const Graph = ({ graphFlag, xRange, chartData }) => {
           }}
           layout={{
             xaxis: {
-              // autorange: true,
-              // domain: [0, 1],
-              range: xRange,
               type: "date",
             },
           }}
@@ -43,21 +40,21 @@ const Graph = ({ graphFlag, xRange, chartData }) => {
           style={{ width: "80%", margin: "0 auto", height: "400px" }}
           data={[
             {
-              x: chartData.xAxes,
+              x: graphData.xRange,
 
-              close: chartData.yAxes.close,
+              close: graphData.close,
 
               decreasing: { line: { color: "#7F7F7F" } },
 
-              high: chartData.yAxes.high,
+              high: graphData.high,
 
               increasing: { line: { color: "#17BECF" } },
 
               line: { color: "rgba(31,119,180,1)" },
 
-              low: chartData.yAxes.low,
+              low: graphData.low,
 
-              open:chartData.yAxes.open,
+              open:graphData.open,
 
               type: "candlestick",
               xaxis: "x",
@@ -77,9 +74,6 @@ const Graph = ({ graphFlag, xRange, chartData }) => {
               rangeslider: {
                 visible: false
               },
-              // autorange: true,
-              // domain: [0, 1],
-              range: xRange,
               type: "date",
             },
           }}

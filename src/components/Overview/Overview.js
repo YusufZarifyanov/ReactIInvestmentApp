@@ -1,34 +1,47 @@
 import styles from "./Overview.module.scss";
-import { Layout, List } from "antd";
+import { Layout, List, Spin } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
-const Overview = ({ data, briefcaseCalculation }) => {
-  const securities = Object.keys(data)
+const Overview = ({ data, briefcaseCalculation, loading }) => {
+  const { pathname } = useLocation();
 
-  const { pathname } = useLocation()
-  
+  const dataWithHeaders = {
+    currency: data[0],
+    shares: data[1],
+    bonds: data[2],
+    funds: data[3],
+  };
+
+  const securities = Object.keys(dataWithHeaders);
+
   return (
     <Layout.Content>
-      <div className={styles.main}>
-        {
-          briefcaseCalculation &&
-          <div className={styles.headerTotalSum}>
-            <h1>Общая сумма: {briefcaseCalculation.amount} $</h1>
-          </div>
-        }
-        <div className={styles.body}>
-          {
-            securities.map((security) => (
+      {loading ? (
+        <Spin />
+      ) : (
+        <div className={styles.main}>
+          {briefcaseCalculation && (
+            <div className={styles.headerTotalSum}>
+              <h1>Общая сумма: {briefcaseCalculation.amount} $</h1>
+            </div>
+          )}
+          <div className={styles.body}>
+            {securities.map((security) => (
               <div key={security} className={styles.card}>
-                <div className={styles.elemHeader}>{data[security].name}</div>
+                <div className={styles.elemHeader}>{security}</div>
                 <div className={styles.elem}>
                   <List
-                    dataSource={data[security].data}
+                    dataSource={dataWithHeaders[security]}
                     renderItem={(item) => (
                       <Link
                         to={{
-                          pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.ticker}`,
+                          pathname: `/${getPathPartByOrdinalNumber(
+                            pathname,
+                            1
+                          )}/${getPathPartByOrdinalNumber(pathname, 2)}/${
+                            item.symbol
+                          }`,
                           dataItem: item,
                         }}
                       >
@@ -38,16 +51,20 @@ const Overview = ({ data, briefcaseCalculation }) => {
                             avatar={
                               <img
                                 className={styles.img}
-                                src={item.src}
-                                alt={item.name}
+                                src={`https://logo.clearbit.com/${item.symbol}.com`}
+                                alt={item.symbol}
                               ></img>
                             }
-                            title={item.name}
-                            description={briefcaseCalculation ? `${item.count} шт. - ${item.cost} ${item.currency}` : `${item.cost} ${item.currency}`}
+                            title={item.symbol}
+                            description={
+                              briefcaseCalculation
+                                ? `${2} шт. - ${item.regularMarketPrice} $`
+                                : `${item.regularMarketPrice} $`
+                            }
                           />
-                          {
-                            briefcaseCalculation && <div>{`${item.count * item.cost} ${item.currency}`}</div>
-                          }
+                          {briefcaseCalculation && (
+                            <div>{`${2 * item.regularMarketPrice} $`}</div>
+                          )}
                         </List.Item>
                       </Link>
                     )}
@@ -55,10 +72,10 @@ const Overview = ({ data, briefcaseCalculation }) => {
                 </div>
                 <div className={styles.makeColumnTall}></div>
               </div>
-            ))
-          }
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </Layout.Content>
   );
 };

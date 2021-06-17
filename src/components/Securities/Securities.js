@@ -5,9 +5,8 @@ import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 
 const Securities = ({ data }) => {
-
   const { pathname } = useLocation()
-
+  console.log(data)
   return (
     <div className={styles.content}>
       {data && data.map((el) => (
@@ -29,14 +28,14 @@ const Securities = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar className={styles.icon} src={el.src} />
+                <Avatar className={styles.icon} src={`https://logo.clearbit.com/${el.symbol}.com`} />
                 <div>
-                  <p className={styles.name}>{el.name}</p>
+                  <p className={styles.name}>{el.shortName}</p>
                   <p className={styles.count}>
                     {
                       getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
-                        ? `${el.count} шт. - ${el.cost} ${el.currency}`
-                        : `${el.cost} ${el.currency}`
+                        ? `2 шт. - ${el.regularMarketPrice} $`
+                        : `${el.regularMarketPrice} $`
                     }
                   </p>
                 </div>
