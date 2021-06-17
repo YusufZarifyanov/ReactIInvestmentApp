@@ -7,26 +7,39 @@ import { subMenuShowcase } from "../../data/sub_menu";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
-import { fakeResponseForEvents as dataEvents } from '../../data/showcase/fakeResponseEvents';
 import { useRedirect } from "../../hooks/useRedirect";
-
-const components = {
-  topviews: {
-    component: TopViews,
-    data: topViews,
-  },
-  upsdowns: {
-    component: UpsDowns,
-    data: upsDowns,
-  },
-  events: {
-    component: Events,
-    data: dataEvents,
-  },
-}
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNews } from '../../store/slices/showcase/events';
+import { useEffect } from "react";
 
 const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    showcaseSubmenuId === "events" && dispatch(fetchNews());
+  }, []);
+
+  const news = useSelector(state => state.showcase.events.news);
+
+  useEffect(() => {
+    showcaseSubmenuId === "events" && !news && dispatch(fetchNews());
+  }, [showcaseSubmenuId, news, dispatch]);
+
+  const components = {
+    topviews: {
+      component: TopViews,
+      data: topViews,
+    },
+    upsdowns: {
+      component: UpsDowns,
+      data: upsDowns,
+    },
+    events: {
+      component: Events,
+      data: news?.data?.main?.stream,
+    },
+  }
 
   const Component = useRedirect(
     components,
