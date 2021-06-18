@@ -76,7 +76,7 @@ const SecurityItem = () => {
   });
   const [graphData, setGraphData] = useState(undefined);
   const [loading, setLoading] = useState([true]);
-  const [activeBtn, setActiveBtn] = useState({index: 0});
+  const [activeBtn, setActiveBtn] = useState({ index: 0 });
 
   useEffect(() => {
     fetch(
@@ -101,7 +101,9 @@ const SecurityItem = () => {
           low: data["indicators"]["quote"][0]["low"],
           volume: data["indicators"]["quote"][0]["volume"],
         });
-        // setLoading(false)
+        const newLoadings = [...loading];
+        newLoadings[activeBtn.index] = false;
+        setLoading(newLoadings);
       })
       .catch((err) => console.log(err));
 
@@ -110,7 +112,7 @@ const SecurityItem = () => {
       {
         headers: {
           "x-rapidapi-key":
-            "b20a96a978msh810f50a83743adep1c9cccjsne479c88336ed",
+            "2f3947e432msha2166069310ed2dp1c9812jsnbeb12f4306f7",
           "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
           useQueryString: true,
         },
@@ -119,20 +121,15 @@ const SecurityItem = () => {
       .then((res) => res.json())
       .then((json) => {
         setTickerData(json.quoteResponse.result[0]);
-        // setLoading(false)
       })
       .catch((err) => console.log(err));
-
-      const newLoadings = [...loading];
-      newLoadings[activeBtn.index] = false;
-      setLoading(newLoadings)
   }, [graphSettings, graph]);
 
   const handleChange = (action, name, interval, range, index) => {
     const newLoadings = [...loading];
     newLoadings[index] = true;
     setLoading(newLoadings);
-    setActiveBtn({index})
+    setActiveBtn({ index });
     if (action) {
       graph ? setGraph(false) : setGraph(true);
     } else if (name && interval && range) {
@@ -167,19 +164,19 @@ const SecurityItem = () => {
             <div className={styles.securitiesType}>
               <div className={styles.info}>
                 <div className={styles.infoName}>
-                  <p className={styles.name}>{tickerData?.shortName}</p>
-                  <p className={styles.ticket}>{tickerData?.symbol}</p>
+                  <p style={{ fontSize: "18px", fontWeight: "600" }}>{tickerData?.shortName}</p>
+                  <p style={{marginLeft: "1rem", fontSize:"10px"}}>{tickerData?.symbol}</p>
                 </div>
                 <div className={styles.infoDescription}>
                   <div className={styles.postMarketPrice}>
-                    <p style={{ fontSize: "14px" }}>Доходность к погашению:</p>
+                    <p>Доходность к погашению:</p>
                     <p style={{ fontSize: "18px", fontWeight: "600" }}>
                       {tickerData?.postMarketPrice}%
                     </p>
                   </div>
 
-                  <div className={styles.description}>
-                    <p style={{ fontSize: "14px" }}>Рейтинг:</p>
+                  <div style={{marginLeft: "2rem"}}>
+                    <p>Рейтинг:</p>
                     <p style={{ fontSize: "18px", fontWeight: "600" }}>
                       Низкий
                     </p>

@@ -5,9 +5,7 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  // min-height: 100vh;
-
-  // margin: 0 auto;
+  height: 100vh;
 
   .cards {
     display: flex;
@@ -37,18 +35,11 @@
         flex-direction: column;
         width: 70%;
         margin: 1rem auto;
+        font-size: 14px;
 
         .infoName {
           display: flex;
           width: 100%;
-          .name {
-            font-size: 18px;
-            font-weight: 800;
-          }
-
-          .ticket {
-            margin-left: 1rem;
-          }
         }
 
         .infoDescription {
@@ -58,11 +49,6 @@
           line-height: 0.8;
           .value {
             font-size: 14px;
-          }
-
-          .description {
-            margin-left: 2rem;
-            font-size: 10px;
           }
         }
       }
