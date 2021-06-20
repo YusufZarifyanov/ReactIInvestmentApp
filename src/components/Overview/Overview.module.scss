@@ -1,5 +1,14 @@
 @import '../../variables';
 
+.spin {
+  display: flex;
+  justify-content: center;
+  // margin: 0 auto;
+  // text-align: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .main {
   background: rgb(241, 241, 248);
   min-height: 100vh;
