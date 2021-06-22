@@ -6,7 +6,7 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 
 const Securities = ({ data }) => {
   const { pathname } = useLocation()
-  console.log(data)
+  
   return (
     <div className={styles.content}>
       {data && data.map((el, index) => (

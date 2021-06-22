@@ -6,6 +6,7 @@ import About from "./containers/About/About";
 import { Switch, Route, Redirect } from "react-router-dom";
 import styles from "./App.module.scss";
 import SecurityItem from "./containers/SecurityItem/SecurityItem";
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 const routes = [
   {
@@ -32,18 +33,20 @@ const routes = [
 
 function App() {
   return (
-    <Layout
-      className={styles.app}
-    >
-      <Header />
-      <Switch>
-        {routes.map((route, i) => (
-          <Route key={i} path={route.path} component={route.component} />
-        ))}
-        <Redirect from="/showcase" to="/showcase/topviews" />
-        <Redirect to="/briefcase/review" />
-      </Switch>
-    </Layout>
+    <ErrorBoundary>
+      <Layout
+        className={styles.app}
+      >
+        <Header />
+        <Switch>
+          {routes.map((route, i) => (
+            <Route key={i} path={route.path} component={route.component} />
+          ))}
+          <Redirect from="/showcase" to="/showcase/topviews" />
+          <Redirect to="/briefcase/review" />
+        </Switch>
+      </Layout>
+    </ErrorBoundary>
   );
 }
 

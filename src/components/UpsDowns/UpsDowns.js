@@ -33,11 +33,11 @@ const UpsDowns = ({ data }) => {
                           <img
                             className={styles.img}
                             src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
-                            alt={item.longName}
+                            alt={item.longName || item.shortName}
                           ></img>
                         }
-                        title={item.longName}
-                        description={`${item.regularMarketPrice} ${item.currency}`}
+                        title={item.longName || item.shortName}
+                        description={`${item.regularMarketPrice} ${item.currency || "$"}`}
                       />
                       {item.regularMarketChangePercent > 0 ? (
                         <Statistic
