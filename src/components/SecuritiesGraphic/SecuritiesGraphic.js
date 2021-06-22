@@ -29,7 +29,7 @@ const Graph = ({ graphFlag, graphData }) => {
               type: "date",
             },
           }}
-          style={{ width: "80%", margin: "0 auto", height: "400px" }}
+          style={{ width: "80%", margin: "0 auto" }}
         />
       ) : (
         <Plot
