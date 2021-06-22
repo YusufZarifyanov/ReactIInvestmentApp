@@ -18,7 +18,9 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
   return (
     <Layout.Content>
       {loading ? (
-        <Spin />
+      <div className={styles.spin}>
+        <Spin size="large"/>
+      </div>
       ) : (
         <div className={styles.main}>
           {briefcaseCalculation && (
