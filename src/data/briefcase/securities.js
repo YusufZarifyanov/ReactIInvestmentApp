@@ -12,37 +12,8 @@ exports.getSymbolData = async (ticker, numberOfSecurities) => {
   return {...tickerInfo, count: numberOfSecurities, ...tickerPrice};
 };
 
-// const currencyTikers = ["AAPL", "MSFT", "AMZN", "GOOGL", "FB", "TSM"];
-// const sharesTickers = ["BABA", "V", "JPM", "NVDA"];
-// const fundsTickers = ["JNJ", "MA", "BAC", "HD"];
-// const bondsTickers = ["XOM", "TTD", "PYPL", "ASML"];
 
 
-// const currencyInfo = [],
-//   sharesInfo = [],
-//   bondsInfo = [],
-//   fundsInfo = [];
-
-
-// const getTickerData = async () => {
-  // for (let currency of currencyTikers) {
-  //   currencyInfo.push(await getSymbolData(currency, 2));
-  // }
-
-  // for (let shares of sharesTickers) {
-  //   sharesInfo.push(await getSymbolData(shares, 3));
-  // }
-
-  // for (let bonds of bondsTickers) {
-  //   bondsInfo.push(await getSymbolData(bonds, 4));
-  // }
-
-  // for (let funds of fundsTickers) {
-  //   fundsInfo.push(await getSymbolData(funds, 5));
-  // }
-
-//   return;
-// };
 
 module.exports = {
   currency: {

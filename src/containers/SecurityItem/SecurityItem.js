@@ -84,7 +84,7 @@ const SecurityItem = () => {
       {
         headers: {
           "x-rapidapi-key":
-            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+            "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
           "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
           useQueryString: true,
         },
@@ -112,7 +112,7 @@ const SecurityItem = () => {
       {
         headers: {
           "x-rapidapi-key":
-            "2f3947e432msha2166069310ed2dp1c9812jsnbeb12f4306f7",
+            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
           "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
           useQueryString: true,
         },
@@ -120,6 +120,7 @@ const SecurityItem = () => {
     )
       .then((res) => res.json())
       .then((json) => {
+        console.log(json.quoteResponse.result[0]);
         setTickerData(json.quoteResponse.result[0]);
       })
       .catch((err) => console.log(err));
@@ -164,22 +165,20 @@ const SecurityItem = () => {
             <div className={styles.securitiesType}>
               <div className={styles.info}>
                 <div className={styles.infoName}>
-                  <p style={{ fontSize: "18px", fontWeight: "600" }}>{tickerData?.shortName}</p>
-                  <p style={{marginLeft: "1rem", fontSize:"10px"}}>{tickerData?.symbol}</p>
+                  <p>{tickerData?.shortName}</p>
+                  <p style={{ marginLeft: "1rem", fontSize: "10px" }}>
+                    {tickerData?.symbol}
+                  </p>
                 </div>
                 <div className={styles.infoDescription}>
-                  <div className={styles.postMarketPrice}>
+                  <div>
                     <p>Доходность к погашению:</p>
-                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                      {tickerData?.postMarketPrice}%
-                    </p>
+                    <p>{tickerData?.bidSize}%</p>
                   </div>
 
-                  <div style={{marginLeft: "2rem"}}>
+                  <div style={{ marginLeft: "2rem" }}>
                     <p>Рейтинг:</p>
-                    <p style={{ fontSize: "18px", fontWeight: "600" }}>
-                      Низкий
-                    </p>
+                    <p>Низкий</p>
                   </div>
                 </div>
               </div>
@@ -191,9 +190,7 @@ const SecurityItem = () => {
             </div>
             <div className={styles.securitiesPrice}>
               <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-              <p className={styles.price}>
-                {`${tickerData?.postMarketPrice} ${tickerData?.postMarketPrice}`}
-              </p>
+              <p className={styles.price}>{`${tickerData?.ask} $`}</p>
 
               <button className={styles.btn}>
                 {securityType ? "Купить еще" : "Приобрести"}
