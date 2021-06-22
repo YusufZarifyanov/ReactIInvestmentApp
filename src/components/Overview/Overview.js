@@ -17,11 +17,11 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
 
   return (
     <Layout.Content>
-      {loading ? (
+      {/* {loading ? (
       <div className={styles.spin}>
         <Spin size="large"/>
       </div>
-      ) : (
+      ) : ( */}
         <div className={styles.main}>
           {briefcaseCalculation && (
             <div className={styles.headerTotalSum}>
@@ -77,7 +77,7 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
             ))}
           </div>
         </div>
-      )}
+      {/* )} */}
     </Layout.Content>
   );
 };
