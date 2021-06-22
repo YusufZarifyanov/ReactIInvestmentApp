@@ -6,7 +6,7 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 
 const Securities = ({ data }) => {
   const { pathname } = useLocation()
-  console.log(data)
+  
   return (
     <div className={styles.content}>
       {data && data.map((el) => (
@@ -28,7 +28,7 @@ const Securities = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar className={styles.icon} src={`https://s3.polygon.io/logos/${el.symbol.toLowerCase()}/logo.png`} />
+                <Avatar className={styles.icon} src={`https://s3.polygon.io/logos/${el?.symbol?.toLowerCase()}/logo.png`} />
                 <div>
                   <p className={styles.name}>{el.shortName}</p>
                   <p className={styles.count}>

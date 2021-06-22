@@ -1,39 +1,37 @@
 import { Layout } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useParams } from "react-router";
-// import { upsDowns } from "../../data/showcase/ups_downs";
-import { topViews } from "../../data/showcase/top_views";
 import { subMenuShowcase } from "../../data/sub_menu";
 import TopViews from "../../components/TopViews/TopViews";
 import UpsDowns from "../../components/UpsDowns/UpsDowns";
 import Events from "../../components/Events/Events";
-// import { fakeResponseForEvents as dataEvents } from '../../data/showcase/fakeResponseEvents';
 import { useRedirect } from "../../hooks/useRedirect";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchNews } from '../../store/slices/showcase/events';
 import { useEffect } from "react";
-import { fetchUpsDowns } from "../../store/slices/showcase/upsdowns";
-import * as selectors from "../../store/selectors/showcase/upsdowns";
+import { fetchTopViews } from "../../store/slices/securities";
+import { fetchUpsDowns } from "../../store/slices/securities";
+import { fetchNews } from '../../store/slices/events';
 
 const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    showcaseSubmenuId === "upsdowns" && dispatch(fetchUpsDowns("AAPL,MSFT,BABA,IBM,TSLA,INTC,BA"));
+    showcaseSubmenuId === "topviews" && dispatch(fetchTopViews());
+    showcaseSubmenuId === "upsdowns" && dispatch(fetchUpsDowns());
     showcaseSubmenuId === "events" && dispatch(fetchNews());
   }, []);
 
-  const news = useSelector(state => state.showcase.events.news);
-
-  const upsdownsData = useSelector(selectors.upsdownsData);
-  const ups = useSelector(selectors.ups);
-  const downs = useSelector(selectors.downs);
+  const topViews = useSelector(state => state.securities.topViews);
+  const ups = useSelector(state => state.securities.upsDowns.ups);
+  const downs = useSelector(state => state.securities.upsDowns.downs);
+  const news = useSelector(state => state.events.news);
 
   useEffect(() => {
-    showcaseSubmenuId === "upsdowns" && !upsdownsData && dispatch(fetchUpsDowns("AAPL,MSFT,BABA,IBM,TSLA,INTC,BA"));
+    showcaseSubmenuId === "topviews" && !topViews && dispatch(fetchTopViews());
+    showcaseSubmenuId === "upsdowns" && (!ups.length || !downs.length) && dispatch(fetchUpsDowns());
     showcaseSubmenuId === "events" && !news && dispatch(fetchNews());
-  }, [showcaseSubmenuId, upsdownsData, news, dispatch]);
+  }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);
 
   const components = {
     topviews: {
@@ -57,7 +55,7 @@ const Showcase = () => {
     },
     events: {
       component: Events,
-      data: news?.data?.main?.stream,
+      data: news,
     },
   }
 

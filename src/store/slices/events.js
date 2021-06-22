@@ -6,6 +6,7 @@ const initialState = {
 };
 
 export const fetchNews = createAsyncThunk('events/fetchNews', async () => {
+  try {
   // const response = await fetch("https://apidojo-yahoo-finance-v1.p.rapidapi.com/news/v2/list?region=US&snippetCount=28", {
   //   method: "POST",
   //   headers: {
@@ -18,6 +19,9 @@ export const fetchNews = createAsyncThunk('events/fetchNews', async () => {
 
   // return await response.json();
   return dataEvents
+  } catch (error) {
+    console.log("error-->", error.message)
+  }
 });
 
 const slice = createSlice({
@@ -27,7 +31,7 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchNews.fulfilled, (state, action) => {
-        state.news = action.payload;
+        state.news = action.payload.data.main.stream;
       })
   }
 });
