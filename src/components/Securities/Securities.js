@@ -9,14 +9,14 @@ const Securities = ({ data }) => {
   console.log(data)
   return (
     <div className={styles.content}>
-      {data && data.map((el) => (
+      {data && data.map((el, index) => (
         <Link
           to={{
             pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${el.ticker}`,
             dataItem: el,
           }}
           className={styles.link}
-          key={el.ticker}
+          key={index}
         >
           <Card
 
@@ -28,7 +28,7 @@ const Securities = ({ data }) => {
           >
             <div className={styles.info}>
               <div className={styles.iconContainer}>
-                <Avatar className={styles.icon} src={`https://s3.polygon.io/logos/${el.symbol.toLowerCase()}/logo.png`} />
+                <Avatar className={styles.icon} src={`https://eodhistoricaldata.com/img/logos/US/${el.symbol}.png`} />
                 <div>
                   <p className={styles.name}>{el.shortName}</p>
                   <p className={styles.count}>
