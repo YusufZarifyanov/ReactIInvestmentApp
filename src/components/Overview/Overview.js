@@ -5,15 +5,18 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 
 const Overview = ({ data, briefcaseCalculation, loading }) => {
   const { pathname } = useLocation();
+  let dataWithHeaders
 
-  const dataWithHeaders = {
-    currency: data[0],
-    shares: data[1],
-    bonds: data[2],
-    funds: data[3],
-  };
+  if (briefcaseCalculation) {
+    dataWithHeaders = {
+      currency: data[0],
+      shares: data[1],
+      bonds: data[2],
+      funds: data[3],
+    };
+  }
 
-  const securities = Object.keys(dataWithHeaders);
+  const securities = briefcaseCalculation ? Object.keys(dataWithHeaders) : Object.keys(data);
 
   return (
     <Layout.Content>
@@ -22,61 +25,60 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
         <Spin size="large"/>
       </div>
       ) : ( */}
-        <div className={styles.main}>
-          {briefcaseCalculation && (
-            <div className={styles.headerTotalSum}>
-              <h1>Общая сумма: {briefcaseCalculation.amount} $</h1>
-            </div>
-          )}
-          <div className={styles.body}>
-            {securities.map((security) => (
-              <div key={security} className={styles.card}>
-                <div className={styles.elemHeader}>{security}</div>
-                <div className={styles.elem}>
-                  <List
-                    dataSource={dataWithHeaders[security]}
-                    renderItem={(item) => (
-                      <Link
-                        to={{
-                          pathname: `/${getPathPartByOrdinalNumber(
-                            pathname,
-                            1
-                          )}/${getPathPartByOrdinalNumber(pathname, 2)}/${
-                            item.symbol
-                          }`,
-                          dataItem: item,
-                        }}
-                      >
-                        <List.Item className={styles.listItem}>
-                          <List.Item.Meta
-                            className={styles.meta}
-                            avatar={
-                              <img
-                                className={styles.img}
-                                src={`https://s3.polygon.io/logos/${item.symbol.toLowerCase()}/logo.png`}
-                                alt={item.symbol}
-                              ></img>
-                            }
-                            title={item.symbol}
-                            description={
-                              briefcaseCalculation
-                                ? `${2} шт. - ${item.regularMarketPrice} $`
-                                : `${item.regularMarketPrice} $`
-                            }
-                          />
-                          {briefcaseCalculation && (
-                            <div>{`${2 * item.regularMarketPrice} $`}</div>
-                          )}
-                        </List.Item>
-                      </Link>
-                    )}
-                  />
-                </div>
-                <div className={styles.makeColumnTall}></div>
-              </div>
-            ))}
+      <div className={styles.main}>
+        {briefcaseCalculation && (
+          <div className={styles.headerTotalSum}>
+            <h1>Общая сумма: {briefcaseCalculation.amount} $</h1>
           </div>
+        )}
+        <div className={styles.body}>
+          {securities.map((security) => (
+            <div key={security} className={styles.card}>
+              <div className={styles.elemHeader}>{briefcaseCalculation ? security: data[security].name}</div>
+              <div className={styles.elem}>
+                <List
+                  dataSource={briefcaseCalculation ? dataWithHeaders[security] : data[security].data}
+                  renderItem={(item) => (
+                    <Link
+                      to={{
+                        pathname: `/${getPathPartByOrdinalNumber(
+                          pathname,
+                          1
+                        )}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.symbol
+                          }`,
+                        dataItem: item,
+                      }}
+                    >
+                      <List.Item className={styles.listItem}>
+                        <List.Item.Meta
+                          className={styles.meta}
+                          avatar={
+                            <img
+                              className={styles.img}
+                              src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
+                              alt={item.symbol}
+                            ></img>
+                          }
+                          title={briefcaseCalculation ? item.symbol : item.name}
+                          description={
+                            briefcaseCalculation
+                              ? `${2} шт. - ${item.regularMarketPrice} $`
+                              : `${item.cost} $`
+                          }
+                        />
+                        {briefcaseCalculation && (
+                          <div>{`${2 * item.regularMarketPrice} $`}</div>
+                        )}
+                      </List.Item>
+                    </Link>
+                  )}
+                />
+              </div>
+              <div className={styles.makeColumnTall}></div>
+            </div>
+          ))}
         </div>
+      </div>
       {/* )} */}
     </Layout.Content>
   );
