@@ -1,9 +1,12 @@
 import styles from "./Overview.module.scss";
-import { Layout, List, Spin } from "antd";
+import { Layout, List, Spin, Row, Col, Skeleton } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { useSelector } from "react-redux";
 
-const Overview = ({ data, briefcaseCalculation, loading }) => {
+const Overview = ({ data, briefcaseCalculation }) => {
+  const loading = useSelector(state => state.securities.topViews.loading);
+
   const { pathname } = useLocation();
   let dataWithHeaders
 
@@ -17,6 +20,29 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
   }
 
   const securities = briefcaseCalculation ? Object.keys(dataWithHeaders) : Object.keys(data);
+
+  if (!briefcaseCalculation && loading) {
+    return (
+      <Row className={styles.row} gutter={16}>{
+        [0, 1, 2, 3].map(item => (
+          // todo
+          <Col key={item} className={styles.col} xs={24} sm={24} md={12} lg={12} xl={12} xxl={6}>
+            <Skeleton.Button className={styles.skeletonTitle} active={true} />
+            <Skeleton
+              active={true}
+              avatar
+              title={false}
+              paragraph={{
+                rows: 2,
+              }}
+            >
+            </Skeleton>
+          </Col>
+        ))
+      }
+      </Row>
+    )
+  }
 
   return (
     <Layout.Content>
@@ -34,7 +60,7 @@ const Overview = ({ data, briefcaseCalculation, loading }) => {
         <div className={styles.body}>
           {securities.map((security) => (
             <div key={security} className={styles.card}>
-              <div className={styles.elemHeader}>{briefcaseCalculation ? security: data[security].name}</div>
+              <div className={styles.elemHeader}>{briefcaseCalculation ? security : data[security].name}</div>
               <div className={styles.elem}>
                 <List
                   dataSource={briefcaseCalculation ? dataWithHeaders[security] : data[security].data}

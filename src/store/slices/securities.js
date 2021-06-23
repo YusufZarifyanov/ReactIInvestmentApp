@@ -21,6 +21,7 @@ const initialState = {
       name: "Фонды",
       data: [],
     },
+    loading: false,
   },
   upsDowns: {
     ups: [],
@@ -129,10 +130,14 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    .addCase(fetchTopViews.pending, state => {
+      state.topViews.loading = true;
+    })
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
+      state.topViews.loading = false;
         state.topViews = topViews;
       })
-      .addCase(fetchUpsDowns.pending, (state, action) => {
+      .addCase(fetchUpsDowns.pending, state => {
         state.upsDowns.loading = true;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
