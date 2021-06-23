@@ -16,12 +16,6 @@ const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    showcaseSubmenuId === "topviews" && dispatch(fetchTopViews());
-    showcaseSubmenuId === "upsdowns" && dispatch(fetchUpsDowns());
-    showcaseSubmenuId === "events" && dispatch(fetchNews());
-  }, []);
-
   const topViews = useSelector(state => state.securities.topViews);
   const ups = useSelector(state => state.securities.upsDowns.ups);
   const downs = useSelector(state => state.securities.upsDowns.downs);
