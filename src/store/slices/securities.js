@@ -70,7 +70,9 @@ export const fetchUpsDowns = createAsyncThunk(
         }
       );
 
-      return await response.json();
+
+      const result = await response.json();
+      return result.finance.result[0].quotes;
     } catch (error) {
       console.log("fetchUpsDowns error", error.message);
     }
@@ -109,11 +111,11 @@ const slice = createSlice({
       .addCase(fetchTopViews.fulfilled, (state, action) => {
         state.topViews = action.payload;
       })
-      .addCase(fetchUpsDowns.fulfilled, (state, action) => {
-        state.upsDowns.ups = action.payload.finance.result[0].quotes.filter(
+      .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
+        state.upsDowns.ups = upsDowns.filter(
           (quote) => quote.regularMarketChangePercent > 0
         );
-        state.upsDowns.downs = action.payload.finance.result[0].quotes.filter(
+        state.upsDowns.downs = upsDowns.filter(
           (quote) => quote.regularMarketChangePercent < 0
         );
       })
