@@ -25,7 +25,7 @@ const Events = ({ data }) => {
             <br />
             <br />
             <Skeleton
-              active
+              active={true}
               title={false}
               paragraph={{
                 rows: 2,
