@@ -2,8 +2,11 @@ import React from 'react';
 import { List, Card, Skeleton, Row, Col } from "antd";
 import placeholder from '../../placeholder_img.png';
 import styles from './Events.module.scss';
+import { Link } from "react-router-dom";
 
 const Events = ({ data }) => {
+
+  const preventDefault = (event) => event.preventDefault();
 
   if (!data?.length) {
     return (
@@ -58,16 +61,18 @@ const Events = ({ data }) => {
       dataSource={data && data}
       renderItem={(item) => (
         <List.Item>
-          <Card
-            hoverable
-            cover={
-              <img
-                alt={item.content.title}
-                src={item.content.thumbnail ? item.content.thumbnail?.resolutions[3].url : placeholder} />
-            }
-          >
-            <Card.Meta title={item.content.title} description={item.content.pubDate} />
-          </Card>
+          <Link onClick={!item?.content?.clickThroughUrl && preventDefault} to={{ pathname: `${item?.content?.clickThroughUrl?.url}` }} target="_blank">
+            <Card
+              hoverable
+              cover={
+                <img
+                  alt={item.content.title}
+                  src={item.content.thumbnail ? item.content.thumbnail?.resolutions[3].url : placeholder} />
+              }
+            >
+              <Card.Meta title={item.content.title} description={item.content.pubDate} />
+            </Card>
+          </Link>
         </List.Item>
       )}
     />
