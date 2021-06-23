@@ -22,7 +22,11 @@ const Showcase = () => {
   const news = useSelector(state => state.events.news);
 
   useEffect(() => {
-    showcaseSubmenuId === "topviews" && !topViews && dispatch(fetchTopViews());
+    showcaseSubmenuId === "topviews" && (
+      !topViews.currency.data.length &&
+      !topViews.shares.data.length &&
+      !topViews.bonds.data.length &&
+      !topViews.funds.data.length) && dispatch(fetchTopViews());
     showcaseSubmenuId === "upsdowns" && (!ups.length && !downs.length) && dispatch(fetchUpsDowns());
     showcaseSubmenuId === "events" && !news && dispatch(fetchNews());
   }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);

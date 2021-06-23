@@ -4,7 +4,24 @@ import { topViews } from "../../data/showcase/top_views";
 
 const initialState = {
   overview: [],
-  topViews: [],
+  topViews: {
+    currency: {
+      name: "Валюта",
+      data: [],
+    },
+    shares: {
+      name: "Акции",
+      data: [],
+    },
+    bonds: {
+      name: "Облигации",
+      data: [],
+    },
+    funds: {
+      name: "Фонды",
+      data: [],
+    },
+  },
   upsDowns: {
     ups: [],
     downs: [],
@@ -47,7 +64,11 @@ export const fetchTopViews = createAsyncThunk(
       // )
 
       // return await response.json();
-      return topViews;
+      return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+          resolve(topViews);
+        }, 1500);
+      });
     } catch (error) {
       console.log("fetchTopViews error", error.message);
     }
@@ -108,8 +129,8 @@ const slice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTopViews.fulfilled, (state, action) => {
-        state.topViews = action.payload;
+      .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
+        state.topViews = topViews;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
         state.upsDowns.ups = upsDowns.filter(
