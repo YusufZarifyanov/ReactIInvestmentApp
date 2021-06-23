@@ -29,7 +29,7 @@ const Showcase = () => {
 
   useEffect(() => {
     showcaseSubmenuId === "topviews" && !topViews && dispatch(fetchTopViews());
-    showcaseSubmenuId === "upsdowns" && (!ups.length || !downs.length) && dispatch(fetchUpsDowns());
+    showcaseSubmenuId === "upsdowns" && (!ups.length && !downs.length) && dispatch(fetchUpsDowns());
     showcaseSubmenuId === "events" && !news && dispatch(fetchNews());
   }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);
 

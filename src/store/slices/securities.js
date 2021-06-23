@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { topViews } from "../../data/showcase/top_views";
+// import { upsDowns } from "../../data/showcase/ups_downs";
 
 const initialState = {
   overview: [],
@@ -9,30 +10,22 @@ const initialState = {
     downs: [],
   },
   myBriefcase: {
-    shares: [
-      {
-        name: "Audi",
-        count: 3,
-        cost: 41.92,
-        currency: "$",
-        src: "https://img.icons8.com/ios/452/audi.png",
-        is_active: true,
-        value: 11.89,
-        ticker: "B",
-      },
-    ],
-    bonds: [
-      {
-        name: "Audi",
-        count: 3,
-        cost: 41.92,
-        currency: "$",
-        src: "https://img.icons8.com/ios/452/audi.png",
-        is_active: true,
-        value: 11.89,
-        ticker: "B",
-      },
-    ],
+    currency: {
+      name: "Валюта",
+      data: [],
+    },
+    shares: {
+      name: "Акции",
+      data: [],
+    },
+    bonds: {
+      name: "Облигации",
+      data: [],
+    },
+    funds: {
+      name: "Фонды",
+      data: [],
+    },
   },
 };
 
@@ -56,7 +49,7 @@ export const fetchTopViews = createAsyncThunk(
       // return await response.json();
       return topViews;
     } catch (error) {
-      console.log("error-->", error.message);
+      console.log("fetchTopViews error", error.message);
     }
   }
 );
@@ -79,7 +72,7 @@ export const fetchUpsDowns = createAsyncThunk(
 
       return await response.json();
     } catch (error) {
-      console.log("error-->", error.message);
+      console.log("fetchUpsDowns error", error.message);
     }
   }
 );
@@ -88,7 +81,7 @@ export const fetchOverview = createAsyncThunk(
   "securities/fetchOverview",
   async (stringTickers) => {
     try {
-      const tickerString = "IBM";
+      // const tickerString = "IBM";
       const response = await fetch(
         "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" + stringTickers,
         {
