@@ -25,6 +25,7 @@ const initialState = {
   upsDowns: {
     ups: [],
     downs: [],
+    loading: false,
   },
   myBriefcase: {
     currency: {
@@ -91,7 +92,6 @@ export const fetchUpsDowns = createAsyncThunk(
         }
       );
 
-
       const result = await response.json();
       return result.finance.result[0].quotes;
     } catch (error) {
@@ -132,7 +132,11 @@ const slice = createSlice({
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
         state.topViews = topViews;
       })
+      .addCase(fetchUpsDowns.pending, (state, action) => {
+        state.upsDowns.loading = true;
+      })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
+        state.upsDowns.loading = false;
         state.upsDowns.ups = upsDowns.filter(
           (quote) => quote.regularMarketChangePercent > 0
         );
