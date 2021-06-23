@@ -33,7 +33,7 @@ const UpsDowns = ({ data }) => {
                           <img
                             className={styles.img}
                             src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
-                            alt={item.longName || item.shortName}
+                            alt={item.symbol}
                           ></img>
                         }
                         title={item.longName || item.shortName}
