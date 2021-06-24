@@ -22,7 +22,7 @@ const Events = ({ data }) => {
     return (
       <Row className={styles.row} gutter={16}>{
         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(item => (
-          <Col key={item} xs={24} sm={12} md={12} lg={8} xl={8} xxl={6}>
+          <Col key={item} xs={24} sm={12} lg={8} xxl={6}>
             <Skeleton.Image />
             <br />
             <br />

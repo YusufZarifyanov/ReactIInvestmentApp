@@ -20,12 +20,12 @@
     display: flex;
     margin: 0 0.5rem;
 
-    @media screen and (max-width: 1400px) {
+    @media screen and (max-width: 1199px) {
       display: flex;
       flex-flow: row wrap;
     }
 
-    @media screen and (max-width: 769px) {
+    @media screen and (max-width: 767px) {
       display: flex;
       flex-direction: column;
     }
@@ -36,7 +36,7 @@
       display: flex;
       flex-direction: column;
 
-      @media screen and (max-width: 1400px) {
+      @media screen and (max-width: 1199px) {
         width: 50%;
 
         &:last-child,
@@ -45,7 +45,7 @@
         }
       }
 
-      @media screen and (max-width: 769px) {
+      @media screen and (max-width: 767px) {
         width: 100%;
 
         &:last-child {

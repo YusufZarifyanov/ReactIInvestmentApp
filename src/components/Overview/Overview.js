@@ -1,8 +1,9 @@
 import styles from "./Overview.module.scss";
-import { Layout, List, Spin, Row, Col, Skeleton } from "antd";
+import { Layout, List, Spin, Row, Col, Skeleton, Statistic } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
 import { useSelector } from "react-redux";
+import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 
 const Overview = ({ data, briefcaseCalculation }) => {
   const topViewsLoading = useSelector(state => state.securities.topViews.loading);
@@ -19,8 +20,7 @@ const Overview = ({ data, briefcaseCalculation }) => {
         }
         <Row className={styles.row} gutter={16}>{
           [0, 1, 2, 3].map(item => (
-            // todo
-            <Col key={item} xs={24} sm={24} md={12} lg={12} xl={12} xxl={6}>
+            <Col key={item} xs={24} md={12} xl={6}>
               <Skeleton.Button className={styles.skeletonTitle} active={true} />
               <Skeleton
                 active={true}
@@ -90,6 +90,23 @@ const Overview = ({ data, briefcaseCalculation }) => {
                         {briefcaseCalculation && (
                           <div>{`${2 * item.regularMarketPrice} $`}</div>
                         )}
+                        {!briefcaseCalculation && (item.is_active ? (
+                          <Statistic
+                            value={11.28}
+                            precision={2}
+                            valueStyle={{ color: "#3f8600", fontSize: "1rem" }}
+                            prefix={<ArrowUpOutlined />}
+                            suffix="%"
+                          />
+                        ) : (
+                          <Statistic
+                            value={9.3}
+                            precision={2}
+                            valueStyle={{ color: "#cf1322", fontSize: "1rem" }}
+                            prefix={<ArrowDownOutlined />}
+                            suffix="%"
+                          />
+                        ))}
                       </List.Item>
                     </Link>
                   )}

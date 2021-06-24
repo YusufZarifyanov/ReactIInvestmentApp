@@ -17,7 +17,7 @@ const UpsDowns = ({ data }) => {
     return (
       <Row className={styles.row} gutter={16}>{
         [0, 1].map(item => (
-          <Col key={item} className={styles.col} xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+          <Col key={item} className={styles.col} xs={24} md={12}>
             <Skeleton.Button className={styles.skeletonTitle} active={true} />
             <Skeleton
               active={true}
