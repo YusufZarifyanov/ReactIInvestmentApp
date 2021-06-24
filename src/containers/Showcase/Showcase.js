@@ -8,8 +8,9 @@ import Events from "../../components/Events/Events";
 import { useRedirect } from "../../hooks/useRedirect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchTopViews, fetchUpsDowns, resetWarning } from "../../store/slices/securities";
+import { fetchTopViews, fetchUpsDowns } from "../../store/slices/securities";
 import { fetchNews } from '../../store/slices/events';
+import { resetWarning } from "../../store/slices/modals";
 
 const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
@@ -19,7 +20,7 @@ const Showcase = () => {
   const ups = useSelector(state => state.securities.upsDowns.ups);
   const downs = useSelector(state => state.securities.upsDowns.downs);
   const news = useSelector(state => state.events.news);
-  const warning = useSelector(state => state.securities.warning);
+  const warning = useSelector(state => state.modals.warning);
 
   useEffect(() => {
     showcaseSubmenuId === "topviews" && (
@@ -28,7 +29,7 @@ const Showcase = () => {
       !topViews.bonds.data.length &&
       !topViews.funds.data.length) && dispatch(fetchTopViews());
     showcaseSubmenuId === "upsdowns" && (!ups.length && !downs.length) && dispatch(fetchUpsDowns());
-    showcaseSubmenuId === "events" && !news && dispatch(fetchNews());
+    showcaseSubmenuId === "events" && !news.length && dispatch(fetchNews());
   }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);
 
   const components = {

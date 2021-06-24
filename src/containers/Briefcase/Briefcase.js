@@ -9,10 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSecurities,
   fetchAllSecurities,
-  changeCurrentSecurity,
-  resetWarning
+  changeCurrentSecurity
 } from "../../store/slices/securities";
 import { useRedirect } from "../../hooks/useRedirect";
+import { resetWarning } from "../../store/slices/modals";
 
 const Briefcase = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Briefcase = () => {
   // const [loading, setLoading] = useState(true);
   const { briefcaseSubmenuId } = useParams();
 
-  const warning = useSelector(state => state.securities.warning);
+  const warning = useSelector(state => state.modals.warning);
 
   function closeModalWindow() {
     dispatch(resetWarning());

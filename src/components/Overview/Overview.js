@@ -5,31 +5,37 @@ import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinal
 import { useSelector } from "react-redux";
 
 const Overview = ({ data, briefcaseCalculation }) => {
-  const loading = useSelector(state => state.securities.topViews.loading);
-  
+  const topViewsLoading = useSelector(state => state.securities.topViews.loading);
+  const myBriefcaseLoading = useSelector(state => state.securities.myBriefcase.loading);
+
   const { pathname } = useLocation();
   const dataKeys = Object.keys(data);
 
-  if (!briefcaseCalculation && loading) {
+  if (topViewsLoading || myBriefcaseLoading) {
     return (
-      <Row className={styles.row} gutter={16}>{
-        [0, 1, 2, 3].map(item => (
-          // todo
-          <Col key={item} className={styles.col} xs={24} sm={24} md={12} lg={12} xl={12} xxl={6}>
-            <Skeleton.Button className={styles.skeletonTitle} active={true} />
-            <Skeleton
-              active={true}
-              avatar
-              title={false}
-              paragraph={{
-                rows: 2,
-              }}
-            >
-            </Skeleton>
-          </Col>
-        ))
-      }
-      </Row>
+      <Layout.Content>
+        {
+          briefcaseCalculation && <Skeleton.Button className={styles.skeletonBriefcaseTitle} active={true} />
+        }
+        <Row className={styles.row} gutter={16}>{
+          [0, 1, 2, 3].map(item => (
+            // todo
+            <Col key={item} xs={24} sm={24} md={12} lg={12} xl={12} xxl={6}>
+              <Skeleton.Button className={styles.skeletonTitle} active={true} />
+              <Skeleton
+                active={true}
+                avatar
+                title={false}
+                paragraph={{
+                  rows: 2,
+                }}
+              >
+              </Skeleton>
+            </Col>
+          ))
+        }
+        </Row>
+      </Layout.Content>
     )
   }
 
