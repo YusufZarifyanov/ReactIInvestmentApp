@@ -16,19 +16,17 @@ const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    showcaseSubmenuId === "topviews" && dispatch(fetchTopViews());
-    showcaseSubmenuId === "upsdowns" && dispatch(fetchUpsDowns());
-    showcaseSubmenuId === "events" && dispatch(fetchNews());
-  }, []);
-
   const topViews = useSelector(state => state.securities.topViews);
   const ups = useSelector(state => state.securities.upsDowns.ups);
   const downs = useSelector(state => state.securities.upsDowns.downs);
   const news = useSelector(state => state.events.news);
 
   useEffect(() => {
-    showcaseSubmenuId === "topviews" && !topViews && dispatch(fetchTopViews());
+    showcaseSubmenuId === "topviews" && (
+      !topViews.currency.data.length &&
+      !topViews.shares.data.length &&
+      !topViews.bonds.data.length &&
+      !topViews.funds.data.length) && dispatch(fetchTopViews());
     showcaseSubmenuId === "upsdowns" && (!ups.length && !downs.length) && dispatch(fetchUpsDowns());
     showcaseSubmenuId === "events" && !news && dispatch(fetchNews());
   }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);

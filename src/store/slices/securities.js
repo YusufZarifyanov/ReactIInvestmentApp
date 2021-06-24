@@ -7,6 +7,7 @@ const initialState = {
   upsDowns: {
     ups: [],
     downs: [],
+    loading: false,
   },
   myBriefcase: {
     currentSecurity: "currency",
@@ -51,7 +52,11 @@ export const fetchTopViews = createAsyncThunk(
       // )
 
       // return await response.json();
-      return topViews;
+      return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+          resolve(topViews);
+        }, 1500);
+      });
     } catch (error) {
       console.log("fetchTopViews error", error.message);
     }
@@ -74,7 +79,8 @@ export const fetchUpsDowns = createAsyncThunk(
         }
       );
 
-      return await response.json();
+      const result = await response.json();
+      return result.finance.result[0].quotes;
     } catch (error) {
       console.log("fetchUpsDowns error", error.message);
     }
@@ -119,14 +125,22 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTopViews.fulfilled, (state, action) => {
-        state.topViews = action.payload;
+    .addCase(fetchTopViews.pending, state => {
+      state.topViews.loading = true;
+    })
+      .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
+      state.topViews.loading = false;
+        state.topViews = topViews;
       })
-      .addCase(fetchUpsDowns.fulfilled, (state, action) => {
-        state.upsDowns.ups = action.payload.finance.result[0].quotes.filter(
+      .addCase(fetchUpsDowns.pending, state => {
+        state.upsDowns.loading = true;
+      })
+      .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
+        state.upsDowns.loading = false;
+        state.upsDowns.ups = upsDowns.filter(
           (quote) => quote.regularMarketChangePercent > 0
         );
-        state.upsDowns.downs = action.payload.finance.result[0].quotes.filter(
+        state.upsDowns.downs = upsDowns.filter(
           (quote) => quote.regularMarketChangePercent < 0
         );
       })

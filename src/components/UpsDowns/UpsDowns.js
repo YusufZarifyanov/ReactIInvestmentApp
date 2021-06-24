@@ -1,14 +1,39 @@
-import { List, Statistic } from "antd";
+import { List, Statistic, Row, Col, Skeleton } from "antd";
 import React from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import styles from "./UpsDowns.module.scss";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { useSelector } from "react-redux";
 
 const UpsDowns = ({ data }) => {
+  const loading = useSelector(state => state.securities.upsDowns.loading);
+  
   const { pathname } = useLocation()
 
   const upsDownsTypesArray = data && Object.keys(data)
+
+  if (loading) {
+    return (
+      <Row className={styles.row} gutter={16}>{
+        [0, 1].map(item => (
+          <Col key={item} className={styles.col} xs={24} sm={24} md={12} lg={12} xl={12} xxl={12}>
+            <Skeleton.Button className={styles.skeletonTitle} active={true} />
+            <Skeleton
+              active={true}
+              avatar
+              title={false}
+              paragraph={{
+                rows: 2,
+              }}
+            >
+            </Skeleton>
+          </Col>
+        ))
+      }
+      </Row>
+    )
+  }
 
   return (
     <div className={styles.body}>
@@ -33,7 +58,7 @@ const UpsDowns = ({ data }) => {
                           <img
                             className={styles.img}
                             src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
-                            alt={item.longName || item.shortName}
+                            alt={item.symbol}
                           ></img>
                         }
                         title={item.longName || item.shortName}

@@ -12,7 +12,7 @@ const Securities = ({ data }) => {
       {data && data.map((el, index) => (
         <Link
           to={{
-            pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${el.ticker}`,
+            pathname: `/${getPathPartByOrdinalNumber(pathname, 1)}/${getPathPartByOrdinalNumber(pathname, 2)}/${el.symbol}`,
             dataItem: el,
           }}
           className={styles.link}
@@ -30,12 +30,12 @@ const Securities = ({ data }) => {
               <div className={styles.iconContainer}>
                 <Avatar className={styles.icon} src={`https://eodhistoricaldata.com/img/logos/US/${el.symbol}.png`} />
                 <div>
-                  <p className={styles.name}>{el.shortName}</p>
+                  <p className={styles.name}>{getPathPartByOrdinalNumber(pathname, 1) === "briefcase" ? el.shortName : el.name}</p>
                   <p className={styles.count}>
                     {
                       getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
                         ? `2 шт. - ${el.regularMarketPrice} $`
-                        : `${el.regularMarketPrice} $`
+                        : `${el.cost} $`
                     }
                   </p>
                 </div>

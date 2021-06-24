@@ -1,7 +1,11 @@
 import styles from "./Overview.module.scss";
-import { Layout, List, Spin } from "antd";
+import { Layout, List, Spin, Row, Col, Skeleton } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { useSelector } from "react-redux";
+
+// const Overview = ({ data, briefcaseCalculation }) => {
+//   const loading = useSelector(state => state.securities.topViews.loading);
 
 const Overview = ({ data, briefcaseCalculation }) => {
   console.log(data);
