@@ -3,7 +3,6 @@ import { topViews } from "../../data/showcase/top_views";
 // import { upsDowns } from "../../data/showcase/ups_downs";
 
 const initialState = {
-  overview: [],
   topViews: {
     currency: {
       name: "Валюта",
@@ -29,22 +28,28 @@ const initialState = {
     loading: false,
   },
   myBriefcase: {
+    currentSecurity: "currency",
     currency: {
       name: "Валюта",
+      tickers: ["AAPL", "IBM"],
       data: [],
     },
     shares: {
       name: "Акции",
+      tickers: ["MSFT"],
       data: [],
     },
     bonds: {
       name: "Облигации",
+      tickers: ["BABA"],
       data: [],
     },
     funds: {
       name: "Фонды",
+      tickers: ["IBM"],
       data: [],
     },
+    review: {},
   },
   warning: '',
 };
@@ -106,17 +111,18 @@ export const fetchUpsDowns = createAsyncThunk(
   }
 );
 
-export const fetchOverview = createAsyncThunk(
+export const fetchSecurities = createAsyncThunk(
   "securities/fetchOverview",
-  async (stringTickers) => {
+  async (tickers) => {
+    console.log(tickers.join(","));
     try {
-      // const tickerString = "IBM";
       const response = await fetch(
-        "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" + stringTickers,
+        "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+        tickers.join(","),
         {
           headers: {
             "x-rapidapi-key":
-              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },
@@ -129,24 +135,69 @@ export const fetchOverview = createAsyncThunk(
   }
 );
 
+export const fetchAllSecurities = createAsyncThunk(
+  "securities/fetchAllSecurities",
+  async (securities) => {
+    try {
+      const securityObj = {
+        currency: [],
+        bonds: [],
+        shares: [],
+        funds: [],
+      };
+      const keys = Object.keys(securities);
+      for (let securityKey of keys) {
+        console.log(securities[securityKey].join(","));
+        const response = await fetch(
+          "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+          securities[securityKey].join(","),
+          {
+            headers: {
+              "x-rapidapi-key":
+                "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+              "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+              useQueryString: true,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .catch((err) => console.log("fetch overview error:", err.message));
+
+        securityObj[securityKey] = response;
+      }
+      return securityObj;
+    } catch (error) {
+      console.log("error-->", error.message);
+    }
+  }
+);
+
 const slice = createSlice({
   name: "securities",
   initialState,
   reducers: {
     resetWarning(state) {
       state.warning = '';
-    }
+    },
+    changeCurrentSecurity(state, action) {
+      state.myBriefcase.currentSecurity = action.payload;
+    },
+    getState(state, action) {
+      return {
+        ...state,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTopViews.pending, state => {
+      .addCase(fetchTopViews.pending, (state) => {
         state.topViews.loading = true;
       })
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
         state.topViews.loading = false;
         state.topViews = topViews;
       })
-      .addCase(fetchUpsDowns.pending, state => {
+      .addCase(fetchUpsDowns.pending, (state) => {
         state.upsDowns.loading = true;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
@@ -164,16 +215,32 @@ const slice = createSlice({
           );
         }
       })
-      .addCase(fetchOverview.fulfilled, (state, { payload }) => {
-        if (payload.message) {
-          state.warning = payload.message;
-        } else {
-          state.warning = '';
-          state.overview = payload.quoteResponse?.result;
+      .addCase(fetchSecurities.fulfilled, (state, action) => {
+        if (state.myBriefcase.currentSecurity === "currency") {
+          state.myBriefcase.currency.data = action.payload.quoteResponse.result;
         }
+        if (state.myBriefcase.currentSecurity === "bonds") {
+          state.myBriefcase.bonds.data = action.payload.quoteResponse.result;
+        }
+        if (state.myBriefcase.currentSecurity === "shares") {
+          state.myBriefcase.shares.data = action.payload.quoteResponse.result;
+        }
+        if (state.myBriefcase.currentSecurity === "funds") {
+          state.myBriefcase.funds.data = action.payload.quoteResponse.result;
+        }
+      })
+      .addCase(fetchAllSecurities.fulfilled, (state, action) => {
+        state.myBriefcase.currency.data =
+          action.payload.currency.quoteResponse.result;
+        state.myBriefcase.bonds.data =
+          action.payload.bonds.quoteResponse.result;
+        state.myBriefcase.shares.data =
+          action.payload.shares.quoteResponse.result;
+        state.myBriefcase.funds.data =
+          action.payload.funds.quoteResponse.result;
       });
   },
 });
 
+export const { getState, changeCurrentSecurity, resetWarning } = slice.actions;
 export default slice.reducer;
-export const { resetWarning } = slice.actions

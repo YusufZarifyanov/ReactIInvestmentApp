@@ -6,20 +6,9 @@ import { useSelector } from "react-redux";
 
 const Overview = ({ data, briefcaseCalculation }) => {
   const loading = useSelector(state => state.securities.topViews.loading);
-
+  
   const { pathname } = useLocation();
-  let dataWithHeaders
-
-  if (briefcaseCalculation) {
-    dataWithHeaders = {
-      currency: data[0],
-      shares: data[1],
-      bonds: data[2],
-      funds: data[3],
-    };
-  }
-
-  const securities = briefcaseCalculation ? Object.keys(dataWithHeaders) : Object.keys(data);
+  const dataKeys = Object.keys(data);
 
   if (!briefcaseCalculation && loading) {
     return (
@@ -58,12 +47,12 @@ const Overview = ({ data, briefcaseCalculation }) => {
           </div>
         )}
         <div className={styles.body}>
-          {securities.map((security) => (
-            <div key={security} className={styles.card}>
-              <div className={styles.elemHeader}>{briefcaseCalculation ? security : data[security].name}</div>
+          {dataKeys.map((securityKey) => (
+            <div key={securityKey} className={styles.card}>
+              <div className={styles.elemHeader}>{data[securityKey].name}</div>
               <div className={styles.elem}>
                 <List
-                  dataSource={briefcaseCalculation ? dataWithHeaders[security] : data[security].data}
+                  dataSource={data[securityKey].data}
                   renderItem={(item) => (
                     <Link
                       to={{

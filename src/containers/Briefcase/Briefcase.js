@@ -5,14 +5,19 @@ import Securities from "../../components/Securities/Securities";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase } from "../../data/sub_menu";
-import securities from "../../data/briefcase/securities";
-import { useRedirect } from "../../hooks/useRedirect";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOverview, resetWarning } from "../../store/slices/securities";
+import {
+  fetchSecurities,
+  fetchAllSecurities,
+  changeCurrentSecurity,
+  resetWarning
+} from "../../store/slices/securities";
+import { useRedirect } from "../../hooks/useRedirect";
 
 const Briefcase = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+
+  // const [loading, setLoading] = useState(true);
   const { briefcaseSubmenuId } = useParams();
 
   const warning = useSelector(state => state.securities.warning);
@@ -26,41 +31,58 @@ const Briefcase = () => {
     someData: [],
   };
 
-  // useEffect(() => {
-  //   dispatch(fetchOverview("BABA"));
-  // }, []);
-  const currency = useSelector(state => state.securities.overview);
-  const shares = useSelector(state => state.securities.overview);
-  const bonds = useSelector(state => state.securities.overview);
-  const funds = useSelector(state => state.securities.overview);
-  const review = [].concat([currency, shares, bonds, funds]);
+  const currency = useSelector(
+    (state) => state.securities.myBriefcase.currency
+  );
+  const bonds = useSelector((state) => state.securities.myBriefcase.bonds);
+  const shares = useSelector((state) => state.securities.myBriefcase.shares);
+  const funds = useSelector((state) => state.securities.myBriefcase.funds);
+
+  const securities = { currency, bonds, shares, funds };
+
+  useEffect(() => {
+    dispatch(changeCurrentSecurity(briefcaseSubmenuId));
+    briefcaseSubmenuId === "review" &&
+      dispatch(
+        fetchAllSecurities({
+          currency: securities.currency.tickers,
+          bonds: securities.bonds.tickers,
+          shares: securities.shares.tickers,
+          funds: securities.funds.tickers,
+        })
+      );
+    briefcaseSubmenuId === "currency" &&
+      dispatch(fetchSecurities(securities.currency.tickers));
+    briefcaseSubmenuId === "bonds" &&
+      dispatch(fetchSecurities(securities.bonds.tickers));
+    briefcaseSubmenuId === "shares" &&
+      dispatch(fetchSecurities(securities.shares.tickers));
+    briefcaseSubmenuId === "funds" &&
+      dispatch(fetchSecurities(securities.funds.tickers));
+  }, []);
 
   const components = {
     review: {
       component: Overview,
-      data: review,
+      data: securities,
     },
     currency: {
       component: Securities,
-      data: currency,
+      data: currency.data,
     },
     shares: {
       component: Securities,
-      data: shares,
+      data: shares.data,
     },
     bonds: {
       component: Securities,
-      data: bonds,
+      data: bonds.data,
     },
     funds: {
       component: Securities,
-      data: funds,
+      data: funds.data,
     },
-  }
-
-  useEffect(() => {
-    !currency.length && !shares.length && !bonds.length && !funds.length && dispatch(fetchOverview("BABA"));
-  }, [currency, shares, bonds, funds, dispatch])
+  };
 
   const Component = useRedirect(
     components,
@@ -92,7 +114,7 @@ const Briefcase = () => {
           activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
         />
         {briefcaseSubmenuId === "review" ? (
-          <Component briefcaseCalculation={briefcase} loading={loading} />
+          <Component briefcaseCalculation={briefcase} />
         ) : (
           <Component />
         )}
