@@ -31,6 +31,7 @@ const initialState = {
       tickers: ["IBM"],
       data: [],
     },
+    review: {},
   },
 };
 
@@ -90,6 +91,7 @@ export const fetchUpsDowns = createAsyncThunk(
 export const fetchSecurities = createAsyncThunk(
   "securities/fetchOverview",
   async (tickers) => {
+    console.log(tickers.join(","));
     try {
       const response = await fetch(
         "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
@@ -97,13 +99,50 @@ export const fetchSecurities = createAsyncThunk(
         {
           headers: {
             "x-rapidapi-key":
-              "be36c9998dmsh00baf9ac7578857p108300jsne4f64848085a",
+              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },
         }
       ).catch((err) => console.log("fetch overview error:", err.message));
       return await response.json();
+    } catch (error) {
+      console.log("error-->", error.message);
+    }
+  }
+);
+
+export const fetchAllSecurities = createAsyncThunk(
+  "securities/fetchAllSecurities",
+  async (securities) => {
+    try {
+      const securityObj = {
+        currency: [],
+        bonds: [],
+        shares: [],
+        funds: [],
+      };
+      const keys = Object.keys(securities);
+      for (let securityKey of keys) {
+        console.log(securities[securityKey].join(","));
+        const response = await fetch(
+          "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+            securities[securityKey].join(","),
+          {
+            headers: {
+              "x-rapidapi-key":
+                "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+              "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+              useQueryString: true,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .catch((err) => console.log("fetch overview error:", err.message));
+
+        securityObj[securityKey] = response;
+      }
+      return securityObj;
     } catch (error) {
       console.log("error-->", error.message);
     }
@@ -125,14 +164,14 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchTopViews.pending, state => {
-      state.topViews.loading = true;
-    })
+      .addCase(fetchTopViews.pending, (state) => {
+        state.topViews.loading = true;
+      })
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
-      state.topViews.loading = false;
+        state.topViews.loading = false;
         state.topViews = topViews;
       })
-      .addCase(fetchUpsDowns.pending, state => {
+      .addCase(fetchUpsDowns.pending, (state) => {
         state.upsDowns.loading = true;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
@@ -145,17 +184,6 @@ const slice = createSlice({
         );
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
-        // switch (state.myBriefcase.currentSecurity) {
-        //   case "currency":
-        //     state.myBriefcase.currency.data =
-        //       action.payload.quoteResponse.result;
-        //   case "bonds":
-        //     state.myBriefcase.bonds.data = action.payload.quoteResponse.result;
-        //   case "shares":
-        //     state.myBriefcase.shares.data = action.payload.quoteResponse.result;
-        //   case "funds":
-        //     state.myBriefcase.funds.data = action.payload.quoteResponse.result;
-        // }
         if (state.myBriefcase.currentSecurity === "currency") {
           state.myBriefcase.currency.data = action.payload.quoteResponse.result;
         }
@@ -168,6 +196,16 @@ const slice = createSlice({
         if (state.myBriefcase.currentSecurity === "funds") {
           state.myBriefcase.funds.data = action.payload.quoteResponse.result;
         }
+      })
+      .addCase(fetchAllSecurities.fulfilled, (state, action) => {
+        state.myBriefcase.currency.data =
+          action.payload.currency.quoteResponse.result;
+        state.myBriefcase.bonds.data =
+          action.payload.bonds.quoteResponse.result;
+        state.myBriefcase.shares.data =
+          action.payload.shares.quoteResponse.result;
+        state.myBriefcase.funds.data =
+          action.payload.funds.quoteResponse.result;
       });
   },
 });
