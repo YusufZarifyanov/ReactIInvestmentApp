@@ -46,6 +46,7 @@ const initialState = {
       data: [],
     },
   },
+  warning: '',
 };
 
 export const fetchTopViews = createAsyncThunk(
@@ -94,9 +95,13 @@ export const fetchUpsDowns = createAsyncThunk(
       );
 
       const result = await response.json();
-      return result.finance.result[0].quotes;
+      if (result.message) {
+        return result
+      } else {
+        return result.finance.result[0].quotes;
+      }
     } catch (error) {
-      console.log("fetchUpsDowns error", error.message);
+      console.log("fetchUpsDowns error -->", error.message);
     }
   }
 );
@@ -127,32 +132,48 @@ export const fetchOverview = createAsyncThunk(
 const slice = createSlice({
   name: "securities",
   initialState,
-  reducers: {},
+  reducers: {
+    resetWarning(state) {
+      state.warning = '';
+    }
+  },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchTopViews.pending, state => {
-      state.topViews.loading = true;
-    })
+      .addCase(fetchTopViews.pending, state => {
+        state.topViews.loading = true;
+      })
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
-      state.topViews.loading = false;
+        state.topViews.loading = false;
         state.topViews = topViews;
       })
       .addCase(fetchUpsDowns.pending, state => {
         state.upsDowns.loading = true;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
-        state.upsDowns.loading = false;
-        state.upsDowns.ups = upsDowns.filter(
-          (quote) => quote.regularMarketChangePercent > 0
-        );
-        state.upsDowns.downs = upsDowns.filter(
-          (quote) => quote.regularMarketChangePercent < 0
-        );
+        if (upsDowns.message) {
+          state.upsDowns.loading = false;
+          state.warning = upsDowns.message;
+        } else {
+          state.upsDowns.loading = false;
+          state.warning = '';
+          state.upsDowns.ups = upsDowns.filter(
+            (quote) => quote.regularMarketChangePercent > 0
+          );
+          state.upsDowns.downs = upsDowns.filter(
+            (quote) => quote.regularMarketChangePercent < 0
+          );
+        }
       })
-      .addCase(fetchOverview.fulfilled, (state, action) => {
-        state.overview = action.payload.quoteResponse.result;
+      .addCase(fetchOverview.fulfilled, (state, { payload }) => {
+        if (payload.message) {
+          state.warning = payload.message;
+        } else {
+          state.warning = '';
+          state.overview = payload.quoteResponse?.result;
+        }
       });
   },
 });
 
 export default slice.reducer;
+export const { resetWarning } = slice.actions

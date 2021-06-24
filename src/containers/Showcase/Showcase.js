@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Modal } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import { useParams } from "react-router";
 import { subMenuShowcase } from "../../data/sub_menu";
@@ -8,8 +8,7 @@ import Events from "../../components/Events/Events";
 import { useRedirect } from "../../hooks/useRedirect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchTopViews } from "../../store/slices/securities";
-import { fetchUpsDowns } from "../../store/slices/securities";
+import { fetchTopViews, fetchUpsDowns, resetWarning } from "../../store/slices/securities";
 import { fetchNews } from '../../store/slices/events';
 
 const Showcase = () => {
@@ -20,6 +19,7 @@ const Showcase = () => {
   const ups = useSelector(state => state.securities.upsDowns.ups);
   const downs = useSelector(state => state.securities.upsDowns.downs);
   const news = useSelector(state => state.events.news);
+  const warning = useSelector(state => state.securities.warning);
 
   useEffect(() => {
     showcaseSubmenuId === "topviews" && (
@@ -64,16 +64,37 @@ const Showcase = () => {
     "topviews"
   )
 
+  function closeModalWindow() {
+    dispatch(resetWarning());
+  }
+
   return (
-    <Layout>
-      <SideBar
-        menuItems={subMenuShowcase}
-        activeMenuItem={`/showcase/${showcaseSubmenuId}`}
-      />
-      <Layout.Content>
-        <Component />
-      </Layout.Content>
-    </Layout>
+    <>
+      {warning && <Modal
+        title="Warning"
+        centered
+        visible={warning}
+        onOk={closeModalWindow}
+        onCancel={closeModalWindow}
+        destroyOnClose={true}
+        cancelButtonProps={
+          {
+            disabled: true
+          }
+        }
+      >
+        <p>{warning}</p>
+      </Modal>}
+      <Layout>
+        <SideBar
+          menuItems={subMenuShowcase}
+          activeMenuItem={`/showcase/${showcaseSubmenuId}`}
+        />
+        <Layout.Content>
+          <Component />
+        </Layout.Content>
+      </Layout>
+    </>
   );
 };
 
