@@ -5,21 +5,23 @@ import { setWarning } from "./modals";
 
 const initialState = {
   topViews: {
-    currency: {
-      name: "Валюта",
-      data: [],
-    },
-    shares: {
-      name: "Акции",
-      data: [],
-    },
-    bonds: {
-      name: "Облигации",
-      data: [],
-    },
-    funds: {
-      name: "Фонды",
-      data: [],
+    main: {
+      currency: {
+        name: "Валюта",
+        data: [],
+      },
+      shares: {
+        name: "Акции",
+        data: [],
+      },
+      bonds: {
+        name: "Облигации",
+        data: [],
+      },
+      funds: {
+        name: "Фонды",
+        data: [],
+      },
     },
     loading: false,
   },
@@ -216,10 +218,7 @@ const slice = createSlice({
           state.topViews.loading = false;
         } else {
           state.topViews.loading = false;
-          state.topViews.currency.data = topViews.currency.data;
-          state.topViews.shares.data = topViews.shares.data;
-          state.topViews.bonds.data = topViews.bonds.data;
-          state.topViews.funds.data = topViews.funds.data;
+          state.topViews.main = topViews;
         }
       })
       .addCase(fetchUpsDowns.pending, (state) => {

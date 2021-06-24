@@ -16,7 +16,7 @@ const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
   const dispatch = useDispatch();
 
-  const topViews = useSelector(state => state.securities.topViews);
+  const topViews = useSelector(state => state.securities.topViews.main);
   const ups = useSelector(state => state.securities.upsDowns.ups);
   const downs = useSelector(state => state.securities.upsDowns.downs);
   const news = useSelector(state => state.events.news);
