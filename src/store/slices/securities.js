@@ -3,27 +3,31 @@ import { topViews } from "../../data/showcase/top_views";
 // import { upsDowns } from "../../data/showcase/ups_downs";
 
 const initialState = {
-  overview: [],
   topViews: [],
   upsDowns: {
     ups: [],
     downs: [],
   },
   myBriefcase: {
+    currentSecurity: "currency",
     currency: {
       name: "Валюта",
+      tickers: ["AAPL", "IBM"],
       data: [],
     },
     shares: {
       name: "Акции",
+      tickers: ["MSFT"],
       data: [],
     },
     bonds: {
       name: "Облигации",
+      tickers: ["BABA"],
       data: [],
     },
     funds: {
       name: "Фонды",
+      tickers: ["IBM"],
       data: [],
     },
   },
@@ -77,17 +81,17 @@ export const fetchUpsDowns = createAsyncThunk(
   }
 );
 
-export const fetchOverview = createAsyncThunk(
+export const fetchSecurities = createAsyncThunk(
   "securities/fetchOverview",
-  async (stringTickers) => {
+  async (tickers) => {
     try {
-      // const tickerString = "IBM";
       const response = await fetch(
-        "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" + stringTickers,
+        "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+          tickers.join(","),
         {
           headers: {
             "x-rapidapi-key":
-              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+              "be36c9998dmsh00baf9ac7578857p108300jsne4f64848085a",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },
@@ -103,7 +107,16 @@ export const fetchOverview = createAsyncThunk(
 const slice = createSlice({
   name: "securities",
   initialState,
-  reducers: {},
+  reducers: {
+    changeCurrentSecurity(state, action) {
+      state.myBriefcase.currentSecurity = action.payload;
+    },
+    getState(state, action) {
+      return {
+        ...state,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTopViews.fulfilled, (state, action) => {
@@ -117,10 +130,34 @@ const slice = createSlice({
           (quote) => quote.regularMarketChangePercent < 0
         );
       })
-      .addCase(fetchOverview.fulfilled, (state, action) => {
-        state.overview = action.payload.quoteResponse.result;
+      .addCase(fetchSecurities.fulfilled, (state, action) => {
+        // switch (state.myBriefcase.currentSecurity) {
+        //   case "currency":
+        //     state.myBriefcase.currency.data =
+        //       action.payload.quoteResponse.result;
+        //   case "bonds":
+        //     state.myBriefcase.bonds.data = action.payload.quoteResponse.result;
+        //   case "shares":
+        //     state.myBriefcase.shares.data = action.payload.quoteResponse.result;
+        //   case "funds":
+        //     state.myBriefcase.funds.data = action.payload.quoteResponse.result;
+        // }
+        if (state.myBriefcase.currentSecurity === "currency") {
+          state.myBriefcase.currency.data = action.payload.quoteResponse.result;
+        }
+        if (state.myBriefcase.currentSecurity === "bonds") {
+          state.myBriefcase.bonds.data = action.payload.quoteResponse.result;
+        }
+        if (state.myBriefcase.currentSecurity === "shares") {
+          state.myBriefcase.shares.data = action.payload.quoteResponse.result;
+        }
+        if (state.myBriefcase.currentSecurity === "funds") {
+          state.myBriefcase.funds.data = action.payload.quoteResponse.result;
+        }
       });
   },
 });
+
+export const { getState, changeCurrentSecurity } = slice.actions;
 
 export default slice.reducer;
