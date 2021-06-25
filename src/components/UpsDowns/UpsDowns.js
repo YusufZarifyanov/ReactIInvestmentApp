@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const UpsDowns = ({ data }) => {
   const loading = useSelector(state => state.securities.upsDowns.loading);
-  
+
   const { pathname } = useLocation()
 
   const upsDownsTypesArray = data && Object.keys(data)
@@ -55,11 +55,13 @@ const UpsDowns = ({ data }) => {
                       <List.Item.Meta
                         className={styles.meta}
                         avatar={
-                          <img
-                            className={styles.img}
-                            src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
-                            alt={item.symbol}
-                          ></img>
+                          <div className={styles.imgWrapper}>
+                            <img
+                              className={styles.img}
+                              src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
+                              alt={item.symbol}
+                            />
+                          </div>
                         }
                         title={item.longName || item.shortName}
                         description={`${item.regularMarketPrice} ${item.currency || "$"}`}

@@ -74,11 +74,13 @@ const Overview = ({ data, briefcaseCalculation }) => {
                         <List.Item.Meta
                           className={styles.meta}
                           avatar={
-                            <img
-                              className={styles.img}
-                              src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
-                              alt={item.symbol}
-                            ></img>
+                            <div className={styles.imgWrapper}>
+                              <img
+                                className={styles.img}
+                                src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
+                                alt={item.symbol}
+                              />
+                            </div>
                           }
                           title={briefcaseCalculation ? item.symbol : item.name}
                           description={
