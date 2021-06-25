@@ -46,12 +46,10 @@ const slice = createSlice({
         state.loading = true
       })
       .addCase(fetchNews.fulfilled, (state, { payload: news }) => {
-        if (news.message) {
-          state.loading = false;
-        } else {
-          state.loading = false;
+        if (!news.message) {
           state.news = news;
         }
+        state.loading = false;
       })
   }
 });
