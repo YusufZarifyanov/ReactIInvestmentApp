@@ -214,21 +214,16 @@ const slice = createSlice({
         state.topViews.loading = true;
       })
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
-        if (topViews.message) {
-          state.topViews.loading = false;
-        } else {
-          state.topViews.loading = false;
+        if (!topViews.message) {
           state.topViews.main = topViews;
         }
+        state.topViews.loading = false;
       })
       .addCase(fetchUpsDowns.pending, (state) => {
         state.upsDowns.loading = true;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
-        if (upsDowns.message) {
-          state.upsDowns.loading = false;
-        } else {
-          state.upsDowns.loading = false;
+        if (!upsDowns.message) {
           state.upsDowns.ups = upsDowns.filter(
             (quote) => quote.regularMarketChangePercent > 0
           );
@@ -236,15 +231,13 @@ const slice = createSlice({
             (quote) => quote.regularMarketChangePercent < 0
           );
         }
+        state.upsDowns.loading = false;
       })
       .addCase(fetchSecurities.pending, (state) => {
         state.myBriefcase.loading = true;
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
-        if (action.payload.message) {
-          state.myBriefcase.loading = false;
-        } else {
-          state.myBriefcase.loading = false;
+        if (!action.payload.message) {
           if (state.myBriefcase.currentSecurity === "currency") {
             state.myBriefcase.currency.data = action.payload.quoteResponse.result;
           }
@@ -258,15 +251,13 @@ const slice = createSlice({
             state.myBriefcase.funds.data = action.payload.quoteResponse.result;
           }
         }
+        state.myBriefcase.loading = false;
       })
       .addCase(fetchAllSecurities.pending, (state) => {
         state.myBriefcase.loading = true;
       })
       .addCase(fetchAllSecurities.fulfilled, (state, action) => {
-        if (action.payload.message) {
-          state.myBriefcase.loading = false;
-        } else {
-          state.myBriefcase.loading = false;
+        if (!action.payload.message) {
           state.myBriefcase.currency.data =
             action.payload.currency.quoteResponse.result;
           state.myBriefcase.bonds.data =
@@ -276,6 +267,7 @@ const slice = createSlice({
           state.myBriefcase.funds.data =
             action.payload.funds.quoteResponse.result;
         }
+        state.myBriefcase.loading = false;
       });
   },
 });
