@@ -1,7 +1,7 @@
 import styles from "./Overview.module.scss";
 import { Layout, List, Spin, Row, Col, Skeleton, Statistic } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
 import { useSelector } from "react-redux";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 

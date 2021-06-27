@@ -4,7 +4,7 @@ import { subMenuBriefcase } from "../../data/sub_menu"
 import Overview from '../Overview/Overview';
 import Securities from '../Securities/Securities';
 import './TopViews.scss'
-import { getPathPartByOrdinalNumber } from '../../functions/getPathPartByOrdinalNumber';
+import { getPathPartByOrdinalNumber } from '../../utils/getPathPartByOrdinalNumber';
 
 const TopViews = ({ data }) => {
   const [security, setSecurity] = useState("review")

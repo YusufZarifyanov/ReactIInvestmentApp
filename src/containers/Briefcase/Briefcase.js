@@ -59,37 +59,38 @@ const Briefcase = () => {
       dispatch(fetchSecurities(securities.shares.tickers));
     briefcaseSubmenuId === "funds" &&
       dispatch(fetchSecurities(securities.funds.tickers));
+    //default value
   }, []);
 
-  const components = {
-    review: {
-      component: Overview,
-      data: securities,
-    },
-    currency: {
-      component: Securities,
-      data: currency.data,
-    },
-    shares: {
-      component: Securities,
-      data: shares.data,
-    },
-    bonds: {
-      component: Securities,
-      data: bonds.data,
-    },
-    funds: {
-      component: Securities,
-      data: funds.data,
-    },
-  };
+  // const components = {
+  //   review: {
+  //     component: Overview,
+  //     data: securities,
+  //   },
+  //   currency: {
+  //     component: Securities,
+  //     data: currency.data,
+  //   },
+  //   shares: {
+  //     component: Securities,
+  //     data: shares.data,
+  //   },
+  //   bonds: {
+  //     component: Securities,
+  //     data: bonds.data,
+  //   },
+  //   funds: {
+  //     component: Securities,
+  //     data: funds.data,
+  //   },
+  // };
 
-  const Component = useRedirect(
-    components,
-    "/briefcase/review",
-    briefcaseSubmenuId,
-    "review"
-  );
+  // const Component = useRedirect(
+  //   components,
+  //   "/briefcase/review",
+  //   briefcaseSubmenuId,
+  //   "review"
+  // );
 
   return (
     <>
@@ -114,9 +115,10 @@ const Briefcase = () => {
           activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
         />
         {briefcaseSubmenuId === "review" ? (
-          <Component briefcaseCalculation={briefcase} />
+          <Overview data={securities}  briefcaseCalculation={briefcase}></Overview>
+          // <Component briefcaseCalculation={briefcase} />
         ) : (
-          <Component />
+         <Securities data={securities[briefcaseSubmenuId].data}></Securities>
         )}
       </Layout>
     </>

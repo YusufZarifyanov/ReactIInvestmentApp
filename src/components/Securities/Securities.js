@@ -2,7 +2,7 @@ import { Card, Avatar, Statistic } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Securities.module.scss";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
-import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
 
 const Securities = ({ data }) => {
   const { pathname } = useLocation()
