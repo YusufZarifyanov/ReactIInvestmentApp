@@ -104,20 +104,12 @@ export const fetchUpsDowns = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       const response = await axios({
-<<<<<<< HEAD
         method: "GET",
         url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers",
         headers: {
           "x-rapidapi-key":
             "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
           "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-=======
-        method: 'GET',
-        url: process.env.REACT_APP_UPSDOWNS_URL,
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_UPSDOWNS_API_KEY,
-          "x-rapidapi-host": process.env.REACT_APP_UPSDOWNS_RAPIDAPI_HOST,
->>>>>>> d5faa416116fc63d02adafab4168985d12343249
           useQueryString: true,
         },
       });
