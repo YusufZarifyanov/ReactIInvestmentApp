@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { topViews } from "../../data/showcase/top_views";
 import { setWarning } from "./modals";
 // import { upsDowns } from "../../data/showcase/ups_downs";
-import axios from 'axios';
+import axios from "axios";
 
 const initialState = {
   topViews: {
@@ -56,6 +56,7 @@ const initialState = {
     // review: {},
     loading: false,
   },
+  graph: {},
 };
 
 export const fetchTopViews = createAsyncThunk(
@@ -103,10 +104,11 @@ export const fetchUpsDowns = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       const response = await axios({
-        method: 'GET',
+        method: "GET",
         url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers",
         headers: {
-          "x-rapidapi-key": "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
+          "x-rapidapi-key":
+            "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
           "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
           useQueryString: true,
         },
@@ -119,7 +121,7 @@ export const fetchUpsDowns = createAsyncThunk(
         dispatch(setWarning(error.response.data.message));
         return error.response.data;
       } else {
-        console.log('fetchUpsDowns Error -->', error);
+        console.log("fetchUpsDowns Error -->", error);
         dispatch(setWarning(error.message));
         return error;
       }
@@ -132,16 +134,18 @@ export const fetchSecurities = createAsyncThunk(
   async (tickers, { dispatch }) => {
     try {
       const response = await axios({
-        method: 'GET',
-        url: "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" + tickers.join(","),
+        method: "GET",
+        url:
+          "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+          tickers.join(","),
         headers: {
           "x-rapidapi-key":
-            "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
           "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
           useQueryString: true,
         },
       });
-
+      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -149,7 +153,7 @@ export const fetchSecurities = createAsyncThunk(
         dispatch(setWarning(error.response.data.message));
         return error.response.data;
       } else {
-        console.log('fetchSecurities Error -->', error);
+        console.log("fetchSecurities Error -->", error);
         dispatch(setWarning(error.message));
         return error;
       }
@@ -170,27 +174,59 @@ export const fetchAllSecurities = createAsyncThunk(
       const keys = Object.keys(securities);
       for (let securityKey of keys) {
         const response = await axios({
-          method: 'GET',
-          url: "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+          method: "GET",
+          url:
+            "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
             securities[securityKey].join(","),
           headers: {
             "x-rapidapi-key":
-              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
             "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
             useQueryString: true,
           },
         });
 
-        securityObj[securityKey] = response;
-        return securityObj;
+        securityObj[securityKey] = response.data;
       }
+      console.log(securityObj);
+      return securityObj;
     } catch (error) {
       if (error.response) {
         console.log("fetchAllSecurities error in response -->", error.response);
         dispatch(setWarning(error.response.data.message));
         return error.response.data;
       } else {
-        console.log('fetchAllSecurities Error -->', error);
+        console.log("fetchAllSecurities Error -->", error);
+        dispatch(setWarning(error.message));
+        return error;
+      }
+    }
+  }
+);
+
+export const fetchGraphData = createAsyncThunk(
+  "securities/fetchGraphData",
+  async (queryParams, { dispatch }) => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
+        headers: {
+          "x-rapidapi-key":
+            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
+          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+          useQueryString: true,
+        },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        console.log("fetchSecurities error in response", error.response);
+        dispatch(setWarning(error.response.data.message));
+        return error.response.data;
+      } else {
+        console.log("fetchSecurities Error -->", error);
         dispatch(setWarning(error.message));
         return error;
       }
@@ -241,8 +277,10 @@ const slice = createSlice({
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
         if (!action.payload.message) {
+          state.graph["meta"] = action.payload.quoteResponse.result;
           if (state.myBriefcase.currentSecurity === "currency") {
-            state.myBriefcase.currency.data = action.payload.quoteResponse.result;
+            state.myBriefcase.currency.data =
+              action.payload.quoteResponse.result;
           }
           if (state.myBriefcase.currentSecurity === "bonds") {
             state.myBriefcase.bonds.data = action.payload.quoteResponse.result;
@@ -271,6 +309,14 @@ const slice = createSlice({
             action.payload.funds.quoteResponse.result;
         }
         state.myBriefcase.loading = false;
+      })
+      .addCase(fetchGraphData.fulfilled, (state, action) => {
+        if (!action.payload.message) {
+          state.graph = {
+            xRange: action.payload.chart.result[0].timestamp,
+            ...action.payload.chart.result[0].indicators.quote[0],
+          };
+        }
       });
   },
 });
