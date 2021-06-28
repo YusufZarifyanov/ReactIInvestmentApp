@@ -104,10 +104,10 @@ export const fetchUpsDowns = createAsyncThunk(
     try {
       const response = await axios({
         method: 'GET',
-        url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers",
+        url: process.env.REACT_APP_UPSDOWNS_URL,
         headers: {
-          "x-rapidapi-key": "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+          "x-rapidapi-key": process.env.REACT_APP_UPSDOWNS_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_UPSDOWNS_RAPIDAPI_HOST,
           useQueryString: true,
         },
       });
@@ -133,11 +133,10 @@ export const fetchSecurities = createAsyncThunk(
     try {
       const response = await axios({
         method: 'GET',
-        url: "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" + tickers.join(","),
+        url: process.env.REACT_APP_SECURITIES_URL + tickers.join(","),
         headers: {
-          "x-rapidapi-key":
-            "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
-          "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+          "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
           useQueryString: true,
         },
       });
@@ -171,12 +170,10 @@ export const fetchAllSecurities = createAsyncThunk(
       for (let securityKey of keys) {
         const response = await axios({
           method: 'GET',
-          url: "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
-            securities[securityKey].join(","),
+          url: process.env.REACT_APP_SECURITIES_URL + securities[securityKey].join(","),
           headers: {
-            "x-rapidapi-key":
-              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
-            "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+            "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
+            "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
             useQueryString: true,
           },
         });

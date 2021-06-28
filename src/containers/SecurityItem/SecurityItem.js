@@ -80,12 +80,12 @@ const SecurityItem = () => {
 
   useEffect(() => {
     fetch(
-      `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=${graphSettings.interval}&symbol=${ticker}&range=${graphSettings.range}`,
+      `${process.env.REACT_APP_SECURITY_ITEM_URL}?interval=${graphSettings.interval}&symbol=${ticker}&range=${graphSettings.range}`,
       {
         headers: {
           "x-rapidapi-key":
-            "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
-          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+            process.env.REACT_APP_SECURITY_ITEM_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_SECURITY_ITEM_RAPIDAPI_HOST,
           useQueryString: true,
         },
       }
@@ -108,12 +108,11 @@ const SecurityItem = () => {
       .catch((err) => console.log(err));
 
     fetch(
-      `https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=${ticker}`,
+      `${process.env.REACT_APP_SECURITIES_URL}${ticker}`,
       {
         headers: {
-          "x-rapidapi-key":
-            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
-          "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+          "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
           useQueryString: true,
         },
       }
@@ -184,7 +183,7 @@ const SecurityItem = () => {
               </div>
               <img
                 alt="example"
-                src={`https://s3.polygon.io/logos/${ticker.toLowerCase()}/logo.png`}
+                src={`${process.env.REACT_APP_POLYGON_FOR_LOGO}${ticker.toLowerCase()}/logo.png`}
                 className={styles.img}
               ></img>
             </div>
