@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { topViews } from "../../data/showcase/top_views";
 import { setWarning } from "./modals";
 // import { upsDowns } from "../../data/showcase/ups_downs";
+import axios from 'axios';
 
 const initialState = {
   topViews: {
@@ -62,23 +63,29 @@ export const fetchTopViews = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       //todo:
-      // const response = await fetch(
-      //   "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-popular-watchlists",
-      //   {
-      //     headers: {
-      //       "x-rapidapi-key":
-      //         "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-      //       "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-      //       useQueryString: true,
-      //     },
-      //   }
-      // )
+      //   const response = await axios({
+      //     method: 'GET',
+      //     url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-popular-watchlists",
+      //       headers: {
+      //         "x-rapidapi-key":
+      //           "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
+      //         "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+      //         useQueryString: true,
+      //       },
+      //   });
 
-      // const result = await response.json();
-      // if (result.message) {
-      //   dispatch(setWarning(result.message))
-      //   return result
-      // } else {
+      //   return response.topViews;
+      // } catch (error) {
+      //   if (error.response) {
+      //     console.log("fetchTopViews error in response", error.response);
+      //     dispatch(setWarning(error.response.data.message));
+      //     return error.response.data;
+      //   } else {
+      //     console.log('fetchTopViews Error -->', error);
+      //     dispatch(setWarning(error.message));
+      //     return error;
+      //   }
+
       return new Promise(function (resolve, reject) {
         setTimeout(() => {
           resolve(topViews);
@@ -95,57 +102,57 @@ export const fetchUpsDowns = createAsyncThunk(
   "securities/fetchUpsDowns",
   async (_, { dispatch }) => {
     try {
-      const response = await fetch(
-        "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers",
-        {
-          headers: {
-            "x-rapidapi-key":
-              "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-            "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-            useQueryString: true,
-          },
-        }
-      );
+      const response = await axios({
+        method: 'GET',
+        url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers",
+        headers: {
+          "x-rapidapi-key": "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
+          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+          useQueryString: true,
+        },
+      });
 
-      const result = await response.json();
-      if (result.message) {
-        dispatch(setWarning(result.message))
-        return result
-      } else {
-        return result.finance.result[0].quotes;
-      }
+      return response.data.finance.result[0].quotes;
     } catch (error) {
-      console.log("fetchUpsDowns error -->", error.message);
+      if (error.response) {
+        console.log("fetchUpsDowns error in response", error.response);
+        dispatch(setWarning(error.response.data.message));
+        return error.response.data;
+      } else {
+        console.log('fetchUpsDowns Error -->', error);
+        dispatch(setWarning(error.message));
+        return error;
+      }
     }
   }
 );
 
 export const fetchSecurities = createAsyncThunk(
-  "securities/fetchOverview",
+  "securities/fetchSecurities",
   async (tickers, { dispatch }) => {
     try {
-      const response = await fetch(
-        "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
-        tickers.join(","),
-        {
-          headers: {
-            "x-rapidapi-key":
-              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
-            "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
-            useQueryString: true,
-          },
-        }
-      ).catch((err) => console.log("fetch overview error:", err.message));
+      const response = await axios({
+        method: 'GET',
+        url: "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" + tickers.join(","),
+        headers: {
+          "x-rapidapi-key":
+            "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+          "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+          useQueryString: true,
+        },
+      });
 
-      const result = await response.json();
-      if (result.message) {
-        dispatch(setWarning(result.message))
-        return result
-      } else {
-        return result
-      }
+      return response.data;
     } catch (error) {
-      console.log("error-->", error.message);
+      if (error.response) {
+        console.log("fetchSecurities error in response", error.response);
+        dispatch(setWarning(error.response.data.message));
+        return error.response.data;
+      } else {
+        console.log('fetchSecurities Error -->', error);
+        dispatch(setWarning(error.message));
+        return error;
+      }
     }
   }
 );
@@ -161,36 +168,32 @@ export const fetchAllSecurities = createAsyncThunk(
         funds: [],
       };
       const keys = Object.keys(securities);
-      let result
       for (let securityKey of keys) {
-        console.log(securities[securityKey].join(","));
-        const response = await fetch(
-          "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
-          securities[securityKey].join(","),
-          {
-            headers: {
-              "x-rapidapi-key":
-                "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
-              "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
-              useQueryString: true,
-            },
-          }
-        )
-          .then((res) => res.json())
-          .catch((err) => console.log("fetch overview error:", err.message));
+        const response = await axios({
+          method: 'GET',
+          url: "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+            securities[securityKey].join(","),
+          headers: {
+            "x-rapidapi-key":
+              "a70d0b9072msh5b07905beb24538p18761bjsn718f790b01c0",
+            "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+            useQueryString: true,
+          },
+        });
 
         securityObj[securityKey] = response;
-        result = response
-      }
-
-      if (result.message) {
-        dispatch(setWarning(result.message))
-        return result
-      } else {
         return securityObj;
       }
     } catch (error) {
-      console.log("error-->", error.message);
+      if (error.response) {
+        console.log("fetchAllSecurities error in response -->", error.response);
+        dispatch(setWarning(error.response.data.message));
+        return error.response.data;
+      } else {
+        console.log('fetchAllSecurities Error -->', error);
+        dispatch(setWarning(error.message));
+        return error;
+      }
     }
   }
 );
