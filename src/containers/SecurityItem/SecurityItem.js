@@ -10,7 +10,6 @@ import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
-import { convertTimestamp } from "../../utils";
 import { dateArray } from "../../utils/data";
 
 const SecurityItem = () => {
@@ -30,15 +29,18 @@ const SecurityItem = () => {
   const [loading, setLoading] = useState([true]);
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
 
-  let graphData = useSelector((state) => state.securities.graph);
-  let tickerData = graphData.meta;
-  console.group(graphData);
-  console.log(tickerData);
-  useEffect(() => {
-    dispatch(fetchGraphData({ ...graphSettings, ticker }));
-    dispatch(fetchSecurities([ticker]));
-  }, []);
+  let graphData = useSelector((state) => state.securities.graph.data);
+  let tickerData = useSelector((state) =>  state.securities.graph.meta);
 
+  useEffect(() => {
+    dispatch(fetchSecurities([ticker]));
+    dispatch(fetchGraphData({ ...graphSettings, ticker }));
+    const newLoadings = [...loading];
+    newLoadings[activeBtn.index] = false;
+    setLoading(newLoadings);
+  }, [graphSettings, graph]);
+
+ 
   const handleChange = (action, name, interval, range, index) => {
     const newLoadings = [...loading];
     newLoadings[index] = true;

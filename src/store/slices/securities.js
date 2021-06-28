@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { topViews } from "../../data/showcase/top_views";
 import { setWarning } from "./modals";
+import {convertTimestamp} from "../../utils/index"
 // import { upsDowns } from "../../data/showcase/ups_downs";
 import axios from "axios";
 
@@ -56,7 +57,11 @@ const initialState = {
     // review: {},
     loading: false,
   },
-  graph: {},
+  graph: {
+    data: {},
+    meta: {},
+    loading: false
+  },
 };
 
 export const fetchTopViews = createAsyncThunk(
@@ -145,7 +150,6 @@ export const fetchSecurities = createAsyncThunk(
           useQueryString: true,
         },
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -188,7 +192,6 @@ export const fetchAllSecurities = createAsyncThunk(
 
         securityObj[securityKey] = response.data;
       }
-      console.log(securityObj);
       return securityObj;
     } catch (error) {
       if (error.response) {
@@ -218,7 +221,6 @@ export const fetchGraphData = createAsyncThunk(
           useQueryString: true,
         },
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -277,7 +279,7 @@ const slice = createSlice({
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
         if (!action.payload.message) {
-          state.graph["meta"] = action.payload.quoteResponse.result;
+          state.graph.meta = action.payload.quoteResponse.result[0];
           if (state.myBriefcase.currentSecurity === "currency") {
             state.myBriefcase.currency.data =
               action.payload.quoteResponse.result;
@@ -310,13 +312,17 @@ const slice = createSlice({
         }
         state.myBriefcase.loading = false;
       })
+      .addCase(fetchGraphData.pending, (state) => {
+        state.graph.loading = true;
+      })
       .addCase(fetchGraphData.fulfilled, (state, action) => {
         if (!action.payload.message) {
-          state.graph = {
-            xRange: action.payload.chart.result[0].timestamp,
+          state.graph.data = {
+            xRange: action.payload.chart.result[0].timestamp.map(el => convertTimestamp(el)),
             ...action.payload.chart.result[0].indicators.quote[0],
           };
         }
+        state.graph.loading = false;
       });
   },
 });

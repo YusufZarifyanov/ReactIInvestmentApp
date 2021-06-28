@@ -2,8 +2,6 @@ import React, { Component, useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
 const Graph = ({ graphFlag, graphData }) => {
-  console.log(graphData)
-
   return (
     <div>
       {!graphFlag ? (
