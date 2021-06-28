@@ -12,11 +12,11 @@ export const fetchNews = createAsyncThunk('events/fetchNews', async (_, { dispat
   try {
     const response = await axios({
       method: 'POST',
-      url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/news/v2/list?region=US&snippetCount=28",
+      url: `${process.env.REACT_APP_EVENTS_URL}?region=US&snippetCount=28`,
       headers: {
         "content-type": "text/plain",
-        "x-rapidapi-key": "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-        "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+        "x-rapidapi-key": process.env.REACT_APP_EVENTS_API_KEY,
+        "x-rapidapi-host": process.env.REACT_APP_EVENTS_RAPIDAPI_HOST,
       }
     });
 

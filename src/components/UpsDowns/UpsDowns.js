@@ -58,7 +58,7 @@ const UpsDowns = ({ data }) => {
                           <div className={styles.imgWrapper}>
                             <img
                               className={styles.img}
-                              src={`https://s3.polygon.io/logos/${item?.symbol?.toLowerCase()}/logo.png`}
+                              src={`${process.env.REACT_APP_POLYGON_FOR_LOGO}${item?.symbol?.toLowerCase()}/logo.png`}
                               alt={item.symbol}
                             />
                           </div>
