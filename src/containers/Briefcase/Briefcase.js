@@ -2,14 +2,14 @@ import { Layout, Modal } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Overview from "../../components/Overview/Overview";
 import Securities from "../../components/Securities/Securities";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSecurities,
   fetchAllSecurities,
-  changeCurrentSecurity
+  changeCurrentSecurity,
 } from "../../store/slices/securities";
 import { useRedirect } from "../../hooks/useRedirect";
 import { resetWarning } from "../../store/slices/modals";
@@ -20,11 +20,13 @@ const Briefcase = () => {
   // const [loading, setLoading] = useState(true);
   const { briefcaseSubmenuId } = useParams();
 
-  const warning = useSelector(state => state.modals.warning);
+  const warning = useSelector((state) => state.modals.warning);
 
   function closeModalWindow() {
     dispatch(resetWarning());
   }
+
+  const history = useHistory();
 
   const briefcase = {
     amount: 1000,
@@ -39,27 +41,37 @@ const Briefcase = () => {
   const funds = useSelector((state) => state.securities.myBriefcase.funds);
 
   const securities = { currency, bonds, shares, funds };
+  const securitiesKeys = Object.keys(securities);
 
   useEffect(() => {
-    dispatch(changeCurrentSecurity(briefcaseSubmenuId));
-    briefcaseSubmenuId === "review" &&
-      dispatch(
-        fetchAllSecurities({
-          currency: securities.currency.tickers,
-          bonds: securities.bonds.tickers,
-          shares: securities.shares.tickers,
-          funds: securities.funds.tickers,
-        })
-      );
-    briefcaseSubmenuId === "currency" &&
-      dispatch(fetchSecurities(securities.currency.tickers));
-    briefcaseSubmenuId === "bonds" &&
-      dispatch(fetchSecurities(securities.bonds.tickers));
-    briefcaseSubmenuId === "shares" &&
-      dispatch(fetchSecurities(securities.shares.tickers));
-    briefcaseSubmenuId === "funds" &&
-      dispatch(fetchSecurities(securities.funds.tickers));
-    //default value
+    if (securitiesKeys.indexOf(briefcaseSubmenuId) !== -1) {
+      dispatch(changeCurrentSecurity(briefcaseSubmenuId));
+    }
+
+    switch (briefcaseSubmenuId) {
+      case "currency":
+        dispatch(fetchSecurities(securities.currency.tickers));
+      case "bonds":
+        dispatch(fetchSecurities(securities.bonds.tickers));
+      case "shares":
+        dispatch(fetchSecurities(securities.shares.tickers));
+      case "funds":
+        dispatch(fetchSecurities(securities.funds.tickers));
+      default: {
+        if (briefcaseSubmenuId !== "review") {
+          history.push("/briefcase/review");
+        }
+        dispatch(
+          fetchAllSecurities({
+            currency: securities.currency.tickers,
+            bonds: securities.bonds.tickers,
+            shares: securities.shares.tickers,
+            funds: securities.funds.tickers,
+          })
+        );
+        break;
+      }
+    }
   }, []);
 
   // const components = {
@@ -94,31 +106,34 @@ const Briefcase = () => {
 
   return (
     <>
-      {warning && <Modal
-        title="Warning"
-        centered
-        visible={warning}
-        onOk={closeModalWindow}
-        onCancel={closeModalWindow}
-        destroyOnClose={true}
-        cancelButtonProps={
-          {
-            disabled: true
-          }
-        }
-      >
-        <p>{warning}</p>
-      </Modal>}
+      {warning && (
+        <Modal
+          title="Warning"
+          centered
+          visible={warning}
+          onOk={closeModalWindow}
+          onCancel={closeModalWindow}
+          destroyOnClose={true}
+          cancelButtonProps={{
+            disabled: true,
+          }}
+        >
+          <p>{warning}</p>
+        </Modal>
+      )}
       <Layout>
         <SideBar
           menuItems={subMenuBriefcase}
           activeMenuItem={`/briefcase/${briefcaseSubmenuId}`}
         />
-        {briefcaseSubmenuId === "review" ? (
-          <Overview data={securities}  briefcaseCalculation={briefcase}></Overview>
-          // <Component briefcaseCalculation={briefcase} />
+        {briefcaseSubmenuId === "review" ||
+        securitiesKeys.indexOf(briefcaseSubmenuId) === -1 ? (
+          <Overview
+            data={securities}
+            briefcaseCalculation={briefcase}
+          ></Overview>
         ) : (
-         <Securities data={securities[briefcaseSubmenuId].data}></Securities>
+          <Securities data={securities[briefcaseSubmenuId].data}></Securities>
         )}
       </Layout>
     </>
