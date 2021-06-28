@@ -52,7 +52,7 @@ const initialState = {
       tickers: ["IBM"],
       data: [],
     },
-    review: {},
+    // review: {},
     loading: false,
   },
 };

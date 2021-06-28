@@ -1,21 +1,27 @@
+exports.myBriefcase = {
+  currency: {
+    name: "Валюта",
+    tickers: ["AAPL", "IBM"],
+    data: [],
+  },
+  shares: {
+    name: "Акции",
+    tickers: ["MSFT"],
+    data: [],
+  },
+  bonds: {
+    name: "Облигации",
+    tickers: ["BABA"],
+    data: [],
+  },
+  funds: {
+    name: "Фонды",
+    tickers: ["IBM"],
+    data: [],
+  },
+}
 
-exports.getSymbolData = async (ticker, numberOfSecurities) => {
-  const tickerInfo = await fetch(
-    `https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=c304pgqad3ifkigc82q0`
-  )
-    .then((data) => data.json())
-    .catch((err) => console.log(err));
-
-  const tickerPrice = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=VAUVU4KVB5DXM9ED`)
-  .then(res => res.json())
-  .catch((err) => console.log(err));
-  return {...tickerInfo, count: numberOfSecurities, ...tickerPrice};
-};
-
-
-
-
-module.exports = {
+const graphData = {
   currency: {
     name: "Валюта",
     data: [],
@@ -39,3 +45,11 @@ module.exports = {
     tickers: ["IBM"],
   },
 };
+
+
+
+module.exports = {
+  myBriefcase,
+  graphData
+}
+

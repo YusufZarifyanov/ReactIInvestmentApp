@@ -7,7 +7,7 @@ import styles from "./SecurityItem.module.scss";
 import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
-import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
 
 function convertTimestamp(timestamp) {
   let d = new Date(timestamp * 1000),
@@ -22,7 +22,7 @@ function convertTimestamp(timestamp) {
 
   time = yyyy + "-" + mm + "-" + dd + " " + h + ":" + min + ":" + sec;
   return time;
-}
+} //go utils
 
 const dateMas = [
   {
@@ -60,7 +60,7 @@ const dateMas = [
     name: <i className="fa fa-arrows-v" aria-hidden="true"></i>,
     action: "changeGraph",
   },
-];
+]; //go utils
 
 const SecurityItem = () => {
   const { securityType, activeSideBar, ticker } = useParams();

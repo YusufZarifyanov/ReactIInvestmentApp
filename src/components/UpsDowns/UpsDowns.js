@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { ArrowUpOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import styles from "./UpsDowns.module.scss";
-import { getPathPartByOrdinalNumber } from "../../functions/getPathPartByOrdinalNumber";
+import { getPathPartByOrdinalNumber } from '../../utils/getPathPartByOrdinalNumber';
 import { useSelector } from "react-redux";
 
 const UpsDowns = ({ data }) => {
