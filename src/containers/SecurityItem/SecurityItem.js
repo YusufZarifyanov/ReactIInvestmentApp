@@ -30,7 +30,7 @@ const SecurityItem = () => {
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
 
   let graphData = useSelector((state) => state.securities.graph.data);
-  let tickerData = useSelector((state) =>  state.securities.graph.meta);
+  let tickerData = useSelector((state) => state.securities.graph.meta);
 
   useEffect(() => {
     dispatch(fetchSecurities([ticker]));
@@ -40,7 +40,6 @@ const SecurityItem = () => {
     setLoading(newLoadings);
   }, [graphSettings, graph]);
 
- 
   const handleChange = (action, name, interval, range, index) => {
     const newLoadings = [...loading];
     newLoadings[index] = true;
