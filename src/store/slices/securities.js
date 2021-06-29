@@ -94,11 +94,10 @@ export const fetchUpsDowns = createAsyncThunk(
     try {
       const response = await axios({
         method: "GET",
-        url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-trending-tickers",
+        url: process.env.REACT_APP_UPSDOWNS_URL,
         headers: {
-          "x-rapidapi-key":
-            "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+          "x-rapidapi-key": process.env.REACT_APP_UPSDOWNS_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_UPSDOWNS_RAPIDAPI_HOST,
           useQueryString: true,
         },
       });
@@ -164,22 +163,21 @@ export const fetchGraph = createAsyncThunk(
     try {
       const response = await axios({
         method: "GET",
-        url: `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
+        url: `${process.env.REACT_APP_SECURITY_ITEM_URL}?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
         headers: {
-          "x-rapidapi-key":
-            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
-          "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+          "x-rapidapi-key": process.env.REACT_APP_SECURITY_ITEM_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_SECURITY_ITEM_RAPIDAPI_HOST,
           useQueryString: true,
         },
       });
       return response.data;
     } catch (error) {
       if (error.response) {
-        console.log("fetchSecurities error in response", error.response);
+        console.log("fetchGraphData error in response", error.response);
         dispatch(setWarning(error.response.data.message));
         return error.response.data;
       } else {
-        console.log("fetchSecurities Error -->", error);
+        console.log("fetchGraphData Error -->", error);
         dispatch(setWarning(error.message));
         return error;
       }
