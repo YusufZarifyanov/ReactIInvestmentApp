@@ -130,12 +130,11 @@ export const fetchSecurities = createAsyncThunk(
           const securityResponse = await axios({
             method: "GET",
             url:
-              "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+              process.env.REACT_APP_SECURITIES_URL +
               tickers[securityKey].join(","),
             headers: {
-              "x-rapidapi-key":
-                "b20a96a978msh810f50a83743adep1c9cccjsne479c88336ed",
-              "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+              "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
+              "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
               useQueryString: true,
             },
           });
