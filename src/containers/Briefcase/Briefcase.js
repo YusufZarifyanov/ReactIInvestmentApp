@@ -8,16 +8,14 @@ import { subMenuBriefcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSecurities,
-  fetchAllSecurities,
-  changeCurrentSecurity,
+  fetchGraph
 } from "../../store/slices/securities";
-import { useRedirect } from "../../hooks/useRedirect";
+import { tickersData } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 
 const Briefcase = () => {
   const dispatch = useDispatch();
 
-  // const [loading, setLoading] = useState(true);
   const { briefcaseSubmenuId } = useParams();
 
   const warning = useSelector((state) => state.modals.warning);
@@ -33,46 +31,19 @@ const Briefcase = () => {
     someData: [],
   };
 
-  const currency = useSelector(
-    (state) => state.securities.myBriefcase.currency
-  );
-  const bonds = useSelector((state) => state.securities.myBriefcase.bonds);
-  const shares = useSelector((state) => state.securities.myBriefcase.shares);
-  const funds = useSelector((state) => state.securities.myBriefcase.funds);
+  const securities = useSelector((state) => state.securities.myBriefcase.data);
 
-  const securities = { currency, bonds, shares, funds };
-  const securitiesKeys = Object.keys(securities);
+  const bodyForSecurityThunk = {
+    currency: tickersData.currency,
+    shares: tickersData.shares,
+    bonds:tickersData.bonds,
+    funds: tickersData.funds,
+  };
+  const securitiesKeys = Object.keys(bodyForSecurityThunk);
 
   useEffect(() => {
-    if (securitiesKeys.indexOf(briefcaseSubmenuId) !== -1) {
-      dispatch(changeCurrentSecurity(briefcaseSubmenuId));
-    }
-
-    switch (briefcaseSubmenuId) {
-      case "currency":
-        dispatch(fetchSecurities(securities.currency.tickers));
-      case "bonds":
-        dispatch(fetchSecurities(securities.bonds.tickers));
-      case "shares":
-        dispatch(fetchSecurities(securities.shares.tickers));
-      case "funds":
-        dispatch(fetchSecurities(securities.funds.tickers));
-      default: {
-        if (briefcaseSubmenuId !== "review") {
-          history.push("/briefcase/review");
-        }
-        dispatch(
-          fetchAllSecurities({
-            currency: securities.currency.tickers,
-            bonds: securities.bonds.tickers,
-            shares: securities.shares.tickers,
-            funds: securities.funds.tickers,
-          })
-        );
-        break;
-      }
-    }
-  }, []);
+      dispatch(fetchSecurities(bodyForSecurityThunk));
+  }, [briefcaseSubmenuId]);
 
   // const components = {
   //   review: {
@@ -133,7 +104,7 @@ const Briefcase = () => {
             briefcaseCalculation={briefcase}
           ></Overview>
         ) : (
-          <Securities data={securities[briefcaseSubmenuId].data}></Securities>
+          <Securities data={securities[briefcaseSubmenuId]}></Securities>
         )}
       </Layout>
     </>

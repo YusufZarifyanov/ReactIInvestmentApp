@@ -1,22 +1,21 @@
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
-import { Spin } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGraphData, fetchSecurities } from "../../store/slices/securities";
+import { fetchGraph, fetchSecurities,changeCurrentSecurity, } from "../../store/slices/securities";
 import styles from "./SecurityItem.module.scss";
 
 import { Layout, Space, Button } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
-import { dateArray } from "../../utils/data";
+import { dateArray, tickersData } from "../../utils/data";
+import { findTicker } from "../../utils/helperFunctions";
 
 const SecurityItem = () => {
   const dispatch = useDispatch();
   const { securityType, activeSideBar, ticker } = useParams();
   const { pathname } = useLocation();
-
   const [graph, setGraph] = useState(false);
 
   // const [tickerData, setTickerData] = useState({});
@@ -29,16 +28,44 @@ const SecurityItem = () => {
   const [loading, setLoading] = useState([true]);
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
 
-  let graphData = useSelector((state) => state.securities.graph.data);
-  let tickerData = useSelector((state) =>  state.securities.graph.meta);
+  let graphData = useSelector((state) => state.securities.currentSecurity.graph);
+  let tickerData = useSelector((state) =>  state.securities.myBriefcase.data);
+  let findMyTicker;
+
+  if (tickerData) {
+    if (securityType !== "review") {
+      tickerData = tickerData[securityType];
+      findMyTicker = findTicker(tickerData, ticker);
+    if (findMyTicker !== -1) tickerData = findMyTicker;
+    else console.log("Обработка исключения"); 
+    } else {
+      const keys = Object.keys(tickerData);
+      for (let key of keys) {
+        findMyTicker = findTicker(tickerData[key], ticker);
+        if (findMyTicker !== -1) {
+          tickerData = findMyTicker;
+          break;
+        } 
+      }
+      if (findMyTicker === -1) console.log("Обработка исключения"); 
+    }
+  }
 
   useEffect(() => {
-    dispatch(fetchSecurities([ticker]));
-    dispatch(fetchGraphData({ ...graphSettings, ticker }));
+    dispatch(fetchGraph({ ...graphSettings, ticker }));
     const newLoadings = [...loading];
     newLoadings[activeBtn.index] = false;
     setLoading(newLoadings);
   }, [graphSettings, graph]);
+
+  useEffect(() => {
+    dispatch(fetchSecurities({
+      currency: tickersData.currency,
+      shares: tickersData.shares,
+      bonds:tickersData.bonds,
+      funds: tickersData.funds,
+    }));
+  }, [])
 
  
   const handleChange = (action, name, interval, range, index) => {

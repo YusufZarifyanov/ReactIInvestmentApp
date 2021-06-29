@@ -8,7 +8,6 @@ import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 const Overview = ({ data, briefcaseCalculation }) => {
   const topViewsLoading = useSelector(state => state.securities.topViews.loading);
   const myBriefcaseLoading = useSelector(state => state.securities.myBriefcase.loading);
-
   const { pathname } = useLocation();
   const dataKeys = Object.keys(data);
 
@@ -38,7 +37,6 @@ const Overview = ({ data, briefcaseCalculation }) => {
       </Layout.Content>
     )
   }
-
   return (
     <Layout.Content>
       {/* {loading ? (
@@ -58,7 +56,7 @@ const Overview = ({ data, briefcaseCalculation }) => {
               <div className={styles.elemHeader}>{data[securityKey].name}</div>
               <div className={styles.elem}>
                 <List
-                  dataSource={data[securityKey].data}
+                  dataSource={data[securityKey]}
                   renderItem={(item) => (
                     <Link
                       to={{

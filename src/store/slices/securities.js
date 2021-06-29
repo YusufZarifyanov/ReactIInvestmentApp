@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { topViews } from "../../data/showcase/top_views";
 import { setWarning } from "./modals";
-import {convertTimestamp} from "../../utils/index"
+import { convertTimestamp } from "../../utils/helperFunctions";
 // import { upsDowns } from "../../data/showcase/ups_downs";
 import axios from "axios";
 
@@ -33,34 +33,18 @@ const initialState = {
     loading: false,
   },
   myBriefcase: {
-    currentSecurity: "currency",
-    currency: {
-      name: "Валюта",
-      tickers: ["AAPL", "IBM"],
-      data: [],
-    },
-    shares: {
-      name: "Акции",
-      tickers: ["MSFT"],
-      data: [],
-    },
-    bonds: {
-      name: "Облигации",
-      tickers: ["BABA"],
-      data: [],
-    },
-    funds: {
-      name: "Фонды",
-      tickers: ["IBM"],
-      data: [],
+    data: {
+      currency: [],
+      shares: [],
+      bonds: [],
+      funds: [],
     },
     // review: {},
     loading: false,
   },
-  graph: {
-    data: {},
-    meta: {},
-    loading: false
+  currentSecurity: {
+    graph: {},
+    loading: false,
   },
 };
 
@@ -138,19 +122,28 @@ export const fetchSecurities = createAsyncThunk(
   "securities/fetchSecurities",
   async (tickers, { dispatch }) => {
     try {
-      const response = await axios({
-        method: "GET",
-        url:
-          "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
-          tickers.join(","),
-        headers: {
-          "x-rapidapi-key":
-            "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
-          "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
-          useQueryString: true,
-        },
-      });
-      return response.data;
+      let response = {};
+      const keys = Object.keys(tickers);
+      for (let securityKey of keys) {
+        if (tickers[securityKey].length <= 0) {
+          response[securityKey] = [];
+        } else {
+          const securityResponse = await axios({
+            method: "GET",
+            url:
+              "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
+              tickers[securityKey].join(","),
+            headers: {
+              "x-rapidapi-key":
+                "b20a96a978msh810f50a83743adep1c9cccjsne479c88336ed",
+              "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
+              useQueryString: true,
+            },
+          });
+          response[securityKey] = securityResponse.data.quoteResponse.result;
+        }
+      }
+      return response;
     } catch (error) {
       if (error.response) {
         console.log("fetchSecurities error in response", error.response);
@@ -165,50 +158,8 @@ export const fetchSecurities = createAsyncThunk(
   }
 );
 
-export const fetchAllSecurities = createAsyncThunk(
-  "securities/fetchAllSecurities",
-  async (securities, { dispatch }) => {
-    try {
-      const securityObj = {
-        currency: [],
-        bonds: [],
-        shares: [],
-        funds: [],
-      };
-      const keys = Object.keys(securities);
-      for (let securityKey of keys) {
-        const response = await axios({
-          method: "GET",
-          url:
-            "https://yahoo-finance-low-latency.p.rapidapi.com/v6/finance/quote?symbols=" +
-            securities[securityKey].join(","),
-          headers: {
-            "x-rapidapi-key":
-              "ac7b597b45mshb7a6a40f5c1ead9p131c54jsn7802703f73cf",
-            "x-rapidapi-host": "yahoo-finance-low-latency.p.rapidapi.com",
-            useQueryString: true,
-          },
-        });
-
-        securityObj[securityKey] = response.data;
-      }
-      return securityObj;
-    } catch (error) {
-      if (error.response) {
-        console.log("fetchAllSecurities error in response -->", error.response);
-        dispatch(setWarning(error.response.data.message));
-        return error.response.data;
-      } else {
-        console.log("fetchAllSecurities Error -->", error);
-        dispatch(setWarning(error.message));
-        return error;
-      }
-    }
-  }
-);
-
-export const fetchGraphData = createAsyncThunk(
-  "securities/fetchGraphData",
+export const fetchGraph = createAsyncThunk(
+  "securities/fetchGraph",
   async (queryParams, { dispatch }) => {
     try {
       const response = await axios({
@@ -240,9 +191,6 @@ const slice = createSlice({
   name: "securities",
   initialState,
   reducers: {
-    changeCurrentSecurity(state, action) {
-      state.myBriefcase.currentSecurity = action.payload;
-    },
     getState(state, action) {
       return {
         ...state,
@@ -279,53 +227,25 @@ const slice = createSlice({
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
         if (!action.payload.message) {
-          state.graph.meta = action.payload.quoteResponse.result[0];
-          if (state.myBriefcase.currentSecurity === "currency") {
-            state.myBriefcase.currency.data =
-              action.payload.quoteResponse.result;
-          }
-          if (state.myBriefcase.currentSecurity === "bonds") {
-            state.myBriefcase.bonds.data = action.payload.quoteResponse.result;
-          }
-          if (state.myBriefcase.currentSecurity === "shares") {
-            state.myBriefcase.shares.data = action.payload.quoteResponse.result;
-          }
-          if (state.myBriefcase.currentSecurity === "funds") {
-            state.myBriefcase.funds.data = action.payload.quoteResponse.result;
-          }
+          state.myBriefcase.data = action.payload;
         }
-        state.myBriefcase.loading = false;
       })
-      .addCase(fetchAllSecurities.pending, (state) => {
-        state.myBriefcase.loading = true;
-      })
-      .addCase(fetchAllSecurities.fulfilled, (state, action) => {
-        if (!action.payload.message) {
-          state.myBriefcase.currency.data =
-            action.payload.currency.quoteResponse.result;
-          state.myBriefcase.bonds.data =
-            action.payload.bonds.quoteResponse.result;
-          state.myBriefcase.shares.data =
-            action.payload.shares.quoteResponse.result;
-          state.myBriefcase.funds.data =
-            action.payload.funds.quoteResponse.result;
-        }
-        state.myBriefcase.loading = false;
-      })
-      .addCase(fetchGraphData.pending, (state) => {
+      .addCase(fetchGraph.pending, (state) => {
         state.graph.loading = true;
       })
-      .addCase(fetchGraphData.fulfilled, (state, action) => {
+      .addCase(fetchGraph.fulfilled, (state, action) => {
         if (!action.payload.message) {
-          state.graph.data = {
-            xRange: action.payload.chart.result[0].timestamp.map(el => convertTimestamp(el)),
+          state.currentSecurity.graph = {
+            xRange: action.payload.chart.result[0].timestamp.map((el) =>
+              convertTimestamp(el)
+            ),
             ...action.payload.chart.result[0].indicators.quote[0],
           };
         }
-        state.graph.loading = false;
+        state.currentSecurity.loading = false;
       });
   },
 });
 
-export const { getState, changeCurrentSecurity } = slice.actions;
+export const { getState } = slice.actions;
 export default slice.reducer;

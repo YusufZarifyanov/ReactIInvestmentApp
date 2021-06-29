@@ -1,3 +1,10 @@
+export const tickersData = {
+  currency: ["AAPL", "IBM"],
+  shares: ["MSFT"],
+  bonds:["BABA"],
+  funds: ["IBM"],
+};
+
 export const dateArray = [
   {
     index: "1",
@@ -34,4 +41,6 @@ export const dateArray = [
     name: <i className="fa fa-arrows-v" aria-hidden="true"></i>,
     action: "changeGraph",
   },
-]; //go utils
+];
+
+
