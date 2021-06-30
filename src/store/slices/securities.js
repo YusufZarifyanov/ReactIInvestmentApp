@@ -3,7 +3,7 @@ import { topViews } from "../../data/showcase/top_views";
 import { setWarning } from "./modals";
 import { convertTimestamp } from "../../utils/helperFunctions";
 // import { upsDowns } from "../../data/showcase/ups_downs";
-import axios from "axios";
+import { v1Axios, lowLatencyAxios } from "../../utils/axios";
 
 const initialState = {
   topViews: {
@@ -53,15 +53,9 @@ export const fetchTopViews = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       //todo:
-      //   const response = await axios({
+      //   const response = await v1Axios({
       //     method: 'GET',
-      //     url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-popular-watchlists",
-      //       headers: {
-      //         "x-rapidapi-key":
-      //           "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-      //         "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-      //         useQueryString: true,
-      //       },
+      //     url: "/market/get-popular-watchlists",
       //   });
 
       //   return response.topViews;
@@ -92,14 +86,9 @@ export const fetchUpsDowns = createAsyncThunk(
   "securities/fetchUpsDowns",
   async (_, { dispatch }) => {
     try {
-      const response = await axios({
+      const response = await v1Axios({
         method: "GET",
-        url: process.env.REACT_APP_UPSDOWNS_URL,
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_UPSDOWNS_API_KEY,
-          "x-rapidapi-host": process.env.REACT_APP_UPSDOWNS_RAPIDAPI_HOST,
-          useQueryString: true,
-        },
+        url: "/market/get-trending-tickers",
       });
 
       return response.data.finance.result[0].quotes;
@@ -127,16 +116,9 @@ export const fetchSecurities = createAsyncThunk(
         if (tickers[securityKey].length <= 0) {
           response[securityKey] = [];
         } else {
-          const securityResponse = await axios({
+          const securityResponse = await lowLatencyAxios({
             method: "GET",
-            url:
-              process.env.REACT_APP_SECURITIES_URL +
-              tickers[securityKey].join(","),
-            headers: {
-              "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
-              "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
-              useQueryString: true,
-            },
+            url: "/v6/finance/quote?symbols=" + tickers[securityKey].join(","),
           });
           response[securityKey] = securityResponse.data.quoteResponse.result;
         }
@@ -160,14 +142,9 @@ export const fetchGraph = createAsyncThunk(
   "securities/fetchGraph",
   async (queryParams, { dispatch }) => {
     try {
-      const response = await axios({
+      const response = await v1Axios({
         method: "GET",
-        url: `${process.env.REACT_APP_SECURITY_ITEM_URL}?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_SECURITY_ITEM_API_KEY,
-          "x-rapidapi-host": process.env.REACT_APP_SECURITY_ITEM_RAPIDAPI_HOST,
-          useQueryString: true,
-        },
+        url: `/stock/v2/get-chart?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
       });
       return response.data;
     } catch (error) {
@@ -187,13 +164,7 @@ export const fetchGraph = createAsyncThunk(
 const slice = createSlice({
   name: "securities",
   initialState,
-  reducers: {
-    getState(state, action) {
-      return {
-        ...state,
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchTopViews.pending, (state) => {
@@ -245,5 +216,4 @@ const slice = createSlice({
   },
 });
 
-export const { getState } = slice.actions;
 export default slice.reducer;
