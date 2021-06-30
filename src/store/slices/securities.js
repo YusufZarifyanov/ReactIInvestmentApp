@@ -226,9 +226,10 @@ const slice = createSlice({
         if (!action.payload.message) {
           state.myBriefcase.data = action.payload;
         }
+        state.myBriefcase.loading = false;
       })
       .addCase(fetchGraph.pending, (state) => {
-        state.graph.loading = true;
+        state.currentSecurity.loading = true;
       })
       .addCase(fetchGraph.fulfilled, (state, action) => {
         if (!action.payload.message) {
