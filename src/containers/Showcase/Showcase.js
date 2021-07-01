@@ -8,7 +8,11 @@ import Events from "../../components/Events/Events";
 import { useRedirect } from "../../hooks/useRedirect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchTopViews, fetchUpsDowns } from "../../store/slices/securities";
+import {
+  fetchTopViews,
+  fetchUpsDowns,
+  resetTopViewsRejectedWith,
+} from "../../store/slices/securities";
 import { fetchNews } from "../../store/slices/events";
 import { resetWarning } from "../../store/slices/modals";
 import { resetRejectedWith as resetEventsRejectedWith } from "../../store/slices/events";
@@ -23,6 +27,9 @@ const Showcase = () => {
   const news = useSelector((state) => state.events.news);
   const warning = useSelector((state) => state.modals.warning);
   const eventsRejectedWith = useSelector((state) => state.events.rejectedWith);
+  const topViewsRejectedWith = useSelector(
+    (state) => state.securities.topViews.rejectedWith
+  );
 
   useEffect(() => {
     showcaseSubmenuId === "topviews" &&
@@ -74,15 +81,16 @@ const Showcase = () => {
   function closeModalWindow() {
     warning && dispatch(resetWarning());
     eventsRejectedWith && dispatch(resetEventsRejectedWith());
+    topViewsRejectedWith && dispatch(resetTopViewsRejectedWith());
   }
 
   return (
     <>
-      {(warning || eventsRejectedWith) && (
+      {(warning || eventsRejectedWith || topViewsRejectedWith) && (
         <Modal
           title="Warning"
           centered
-          visible={warning || eventsRejectedWith}
+          visible={warning || eventsRejectedWith || topViewsRejectedWith}
           onOk={closeModalWindow}
           onCancel={closeModalWindow}
           destroyOnClose={true}
@@ -90,7 +98,7 @@ const Showcase = () => {
             disabled: true,
           }}
         >
-          <p>{warning || eventsRejectedWith}</p>
+          <p>{warning || eventsRejectedWith || topViewsRejectedWith}</p>
         </Modal>
       )}
       <Layout>

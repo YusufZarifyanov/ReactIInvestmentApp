@@ -26,6 +26,7 @@ const initialState = {
       },
     },
     loading: false,
+    rejectedWith: "",
   },
   upsDowns: {
     ups: [],
@@ -73,6 +74,7 @@ export const fetchTopViews = createAsyncThunk(
       return new Promise(function (resolve, reject) {
         setTimeout(() => {
           resolve(topViews);
+          // reject("fetchTopViews rejected");
         }, 1500);
       });
       // }
@@ -164,7 +166,11 @@ export const fetchGraph = createAsyncThunk(
 const slice = createSlice({
   name: "securities",
   initialState,
-  reducers: {},
+  reducers: {
+    resetTopViewsRejectedWith(state) {
+      state.topViews.rejectedWith = "";
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTopViews.pending, (state) => {
@@ -175,6 +181,10 @@ const slice = createSlice({
           state.topViews.main = topViews;
         }
         state.topViews.loading = false;
+      })
+      .addCase(fetchTopViews.rejected, (state, { error }) => {
+        state.topViews.loading = false;
+        state.topViews.rejectedWith = error.message;
       })
       .addCase(fetchUpsDowns.pending, (state) => {
         state.upsDowns.loading = true;
@@ -217,3 +227,4 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
+export const { resetTopViewsRejectedWith } = slice.actions;
