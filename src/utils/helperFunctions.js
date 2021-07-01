@@ -13,15 +13,31 @@ const convertTimestamp = (timestamp) => {
 };
 
 const findTicker = (tickers, ticker) => {
-  console.log('go fun')
+  console.log("go fun");
   if (!tickers) return -1;
   for (let tickerEl of tickers) {
     if (tickerEl.symbol === ticker) return tickerEl;
   }
-  return -1
-}
+  return -1;
+};
+
+//порядок массива: currency,shares,bonds,funds
+//0,2
+const destrucktSecurityArray = (securityArray, lenObj) => {
+  const allSecurity = {};
+  const keys = Object.keys(lenObj);
+  let start = 0,
+    end = 0;
+  for (let key of keys) {
+    end += lenObj[key];
+    allSecurity[key] = securityArray.slice(start, end);
+    start = end;
+  }
+  return allSecurity;
+};
 
 module.exports = {
   convertTimestamp,
-  findTicker
+  findTicker,
+  destrucktSecurityArray,
 };

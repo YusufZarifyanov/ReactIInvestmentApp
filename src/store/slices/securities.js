@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { topViews } from "../../data/showcase/top_views";
 import { setWarning } from "./modals";
-import { convertTimestamp } from "../../utils/helperFunctions";
+import {
+  convertTimestamp,
+  destrucktSecurityArray,
+} from "../../utils/helperFunctions";
 // import { upsDowns } from "../../data/showcase/ups_downs";
 import axios from "axios";
 
@@ -33,17 +36,13 @@ const initialState = {
     loading: false,
   },
   myBriefcase: {
-    data: {
-      currency: [],
-      shares: [],
-      bonds: [],
-      funds: [],
-    },
+    data: [],
     // review: {},
     loading: false,
   },
   currentSecurity: {
     graph: {},
+    meta: [],
     loading: false,
   },
 };
@@ -119,29 +118,28 @@ export const fetchUpsDowns = createAsyncThunk(
 
 export const fetchSecurities = createAsyncThunk(
   "securities/fetchSecurities",
-  async (tickers, { dispatch }) => {
+  async (tickersInfo, { dispatch }) => {
     try {
-      let response = {};
-      const keys = Object.keys(tickers);
-      for (let securityKey of keys) {
-        if (tickers[securityKey].length <= 0) {
-          response[securityKey] = [];
-        } else {
-          const securityResponse = await axios({
-            method: "GET",
-            url:
-              process.env.REACT_APP_SECURITIES_URL +
-              tickers[securityKey].join(","),
-            headers: {
-              "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
-              "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
-              useQueryString: true,
-            },
-          });
-          response[securityKey] = securityResponse.data.quoteResponse.result;
-        }
+      const securityResponse = await axios({
+        method: "GET",
+        url:
+          process.env.REACT_APP_SECURITIES_URL + tickersInfo.tickers.join(","),
+        headers: {
+          "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
+          "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
+          useQueryString: true,
+        },
+      });
+      let showParam;
+      if (tickersInfo["tickersLength"]) {
+        showParam = destrucktSecurityArray(
+          securityResponse.data.quoteResponse.result,
+          tickersInfo.tickersLength
+        );
+      } else {
+        showParam = securityResponse.data.quoteResponse.result
       }
-      return response;
+      return showParam
     } catch (error) {
       if (error.response) {
         console.log("fetchSecurities error in response", error.response);
@@ -188,11 +186,11 @@ const slice = createSlice({
   name: "securities",
   initialState,
   reducers: {
-    getState(state, action) {
-      return {
-        ...state,
-      };
-    },
+    // getState(state, action) {
+    //   return {
+    //     ...state,
+    //   };
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -224,11 +222,16 @@ const slice = createSlice({
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
         if (!action.payload.message) {
-          state.myBriefcase.data = action.payload;
+          if (!Array.isArray(action.payload)) {
+            state.myBriefcase.data = action.payload;
+          } else {
+            state.currentSecurity.meta = action.payload[0];
+          }
         }
+        state.myBriefcase.loading = false;
       })
       .addCase(fetchGraph.pending, (state) => {
-        state.graph.loading = true;
+        state.currentSecurity.loading = true;
       })
       .addCase(fetchGraph.fulfilled, (state, action) => {
         if (!action.payload.message) {

@@ -2,7 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGraph, fetchSecurities,changeCurrentSecurity, } from "../../store/slices/securities";
+import { fetchGraph, fetchSecurities } from "../../store/slices/securities";
 import styles from "./SecurityItem.module.scss";
 
 import { Layout, Space, Button } from "antd";
@@ -29,27 +29,7 @@ const SecurityItem = () => {
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
 
   let graphData = useSelector((state) => state.securities.currentSecurity.graph);
-  let tickerData = useSelector((state) =>  state.securities.myBriefcase.data);
-  let findMyTicker;
-
-  if (tickerData) {
-    if (securityType !== "review") {
-      tickerData = tickerData[securityType];
-      findMyTicker = findTicker(tickerData, ticker);
-    if (findMyTicker !== -1) tickerData = findMyTicker;
-    else console.log("Обработка исключения"); 
-    } else {
-      const keys = Object.keys(tickerData);
-      for (let key of keys) {
-        findMyTicker = findTicker(tickerData[key], ticker);
-        if (findMyTicker !== -1) {
-          tickerData = findMyTicker;
-          break;
-        } 
-      }
-      if (findMyTicker === -1) console.log("Обработка исключения"); 
-    }
-  }
+  let tickerData = useSelector((state) =>  state.securities.currentSecurity.meta);
 
   useEffect(() => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
@@ -59,13 +39,15 @@ const SecurityItem = () => {
   }, [graphSettings, graph]);
 
   useEffect(() => {
-    dispatch(fetchSecurities({
-      currency: tickersData.currency,
-      shares: tickersData.shares,
-      bonds:tickersData.bonds,
-      funds: tickersData.funds,
-    }));
+      dispatch(fetchSecurities({
+        tickers: [ticker],
+      }));
   }, [])
+
+  useEffect(() => {
+    dispatch(fetchGraph({ ...graphSettings, ticker }));
+ }, [graph, graphSettings])
+
 
  
   const handleChange = (action, name, interval, range, index) => {

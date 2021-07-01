@@ -6,10 +6,7 @@ import { useParams, useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchSecurities,
-  fetchGraph
-} from "../../store/slices/securities";
+import { fetchSecurities, fetchGraph } from "../../store/slices/securities";
 import { tickersData } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 
@@ -31,50 +28,35 @@ const Briefcase = () => {
     someData: [],
   };
 
-  const securities = useSelector((state) => state.securities.myBriefcase.data);
-
-  const bodyForSecurityThunk = {
-    currency: tickersData.currency,
-    shares: tickersData.shares,
-    bonds:tickersData.bonds,
-    funds: tickersData.funds,
+  const allTickers = [].concat(
+    tickersData.currency,
+    tickersData.shares,
+    tickersData.bonds,
+    tickersData.funds
+  );
+  const tickersLength = {
+    currency: tickersData.currency.length,
+    shares: tickersData.shares.length,
+    bonds: tickersData.bonds.length,
+    funds: tickersData.funds.length,
   };
-  const securitiesKeys = Object.keys(bodyForSecurityThunk);
+
+  const securities = useSelector((state) => state.securities.myBriefcase.data);
+  const securitiesKeys = Object.keys(tickersLength);
+
+  if (
+    securitiesKeys.indexOf(briefcaseSubmenuId) === -1 &&
+    briefcaseSubmenuId !== "review"
+  )
+    history.push("/briefcase/review");
 
   useEffect(() => {
-      dispatch(fetchSecurities(bodyForSecurityThunk));
+    if (securities.length === 0) {
+      dispatch(fetchSecurities({ tickers: allTickers, tickersLength }));
+    }
   }, [briefcaseSubmenuId]);
 
-  // const components = {
-  //   review: {
-  //     component: Overview,
-  //     data: securities,
-  //   },
-  //   currency: {
-  //     component: Securities,
-  //     data: currency.data,
-  //   },
-  //   shares: {
-  //     component: Securities,
-  //     data: shares.data,
-  //   },
-  //   bonds: {
-  //     component: Securities,
-  //     data: bonds.data,
-  //   },
-  //   funds: {
-  //     component: Securities,
-  //     data: funds.data,
-  //   },
-  // };
-
-  // const Component = useRedirect(
-  //   components,
-  //   "/briefcase/review",
-  //   briefcaseSubmenuId,
-  //   "review"
-  // );
-
+ 
   return (
     <>
       {warning && (
