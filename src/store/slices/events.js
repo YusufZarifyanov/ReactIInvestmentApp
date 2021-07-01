@@ -6,6 +6,7 @@ import { setWarning } from "./modals";
 const initialState = {
   news: [],
   loading: false,
+  rejectedWith: "",
 };
 
 export const fetchNews = createAsyncThunk(
@@ -18,6 +19,7 @@ export const fetchNews = createAsyncThunk(
       });
 
       return response.data.data.main.stream;
+      // return Promise.reject("xaxaxaxa");
       // return new Promise(function (resolve, reject) {
       //   setTimeout(() => {
       //     resolve(dataEvents.data.main.stream);
@@ -40,7 +42,11 @@ export const fetchNews = createAsyncThunk(
 const slice = createSlice({
   name: "events",
   initialState,
-  reducers: {},
+  reducers: {
+    resetRejectedWith(state) {
+      state.rejectedWith = "";
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchNews.pending, (state) => {
@@ -51,8 +57,13 @@ const slice = createSlice({
           state.news = news;
         }
         state.loading = false;
+      })
+      .addCase(fetchNews.rejected, (state, { error }) => {
+        state.loading = false;
+        state.rejectedWith = error.message;
       });
   },
 });
 
 export default slice.reducer;
+export const { resetRejectedWith } = slice.actions;
