@@ -12,6 +12,7 @@ import {
   fetchTopViews,
   fetchUpsDowns,
   resetTopViewsRejectedWith,
+  resetUpsDownsRejectedWith,
 } from "../../store/slices/securities";
 import { fetchNews } from "../../store/slices/events";
 import { resetWarning } from "../../store/slices/modals";
@@ -29,6 +30,9 @@ const Showcase = () => {
   const eventsRejectedWith = useSelector((state) => state.events.rejectedWith);
   const topViewsRejectedWith = useSelector(
     (state) => state.securities.topViews.rejectedWith
+  );
+  const upsDownsRejectedWith = useSelector(
+    (state) => state.securities.upsDowns.rejectedWith
   );
 
   useEffect(() => {
@@ -82,15 +86,24 @@ const Showcase = () => {
     warning && dispatch(resetWarning());
     eventsRejectedWith && dispatch(resetEventsRejectedWith());
     topViewsRejectedWith && dispatch(resetTopViewsRejectedWith());
+    upsDownsRejectedWith && dispatch(resetUpsDownsRejectedWith());
   }
 
   return (
     <>
-      {(warning || eventsRejectedWith || topViewsRejectedWith) && (
+      {(warning ||
+        eventsRejectedWith ||
+        topViewsRejectedWith ||
+        upsDownsRejectedWith) && (
         <Modal
           title="Warning"
           centered
-          visible={warning || eventsRejectedWith || topViewsRejectedWith}
+          visible={
+            warning ||
+            eventsRejectedWith ||
+            topViewsRejectedWith ||
+            upsDownsRejectedWith
+          }
           onOk={closeModalWindow}
           onCancel={closeModalWindow}
           destroyOnClose={true}
@@ -98,7 +111,12 @@ const Showcase = () => {
             disabled: true,
           }}
         >
-          <p>{warning || eventsRejectedWith || topViewsRejectedWith}</p>
+          <p>
+            {warning ||
+              eventsRejectedWith ||
+              topViewsRejectedWith ||
+              upsDownsRejectedWith}
+          </p>
         </Modal>
       )}
       <Layout>
