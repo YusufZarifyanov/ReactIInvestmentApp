@@ -9,26 +9,32 @@ import { useRedirect } from "../../hooks/useRedirect";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchTopViews, fetchUpsDowns } from "../../store/slices/securities";
-import { fetchNews } from '../../store/slices/events';
+import { fetchNews } from "../../store/slices/events";
 import { resetWarning } from "../../store/slices/modals";
+import { resetRejectedWith as resetEventsRejectedWith } from "../../store/slices/events";
 
 const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
   const dispatch = useDispatch();
 
-  const topViews = useSelector(state => state.securities.topViews.main);
-  const ups = useSelector(state => state.securities.upsDowns.ups);
-  const downs = useSelector(state => state.securities.upsDowns.downs);
-  const news = useSelector(state => state.events.news);
-  const warning = useSelector(state => state.modals.warning);
+  const topViews = useSelector((state) => state.securities.topViews.main);
+  const ups = useSelector((state) => state.securities.upsDowns.ups);
+  const downs = useSelector((state) => state.securities.upsDowns.downs);
+  const news = useSelector((state) => state.events.news);
+  const warning = useSelector((state) => state.modals.warning);
+  const eventsRejectedWith = useSelector((state) => state.events.rejectedWith);
 
   useEffect(() => {
-    showcaseSubmenuId === "topviews" && (
+    showcaseSubmenuId === "topviews" &&
       !topViews.currency.data.length &&
       !topViews.shares.data.length &&
       !topViews.bonds.data.length &&
-      !topViews.funds.data.length) && dispatch(fetchTopViews());
-    showcaseSubmenuId === "upsdowns" && (!ups.length && !downs.length) && dispatch(fetchUpsDowns());
+      !topViews.funds.data.length &&
+      dispatch(fetchTopViews());
+    showcaseSubmenuId === "upsdowns" &&
+      !ups.length &&
+      !downs.length &&
+      dispatch(fetchUpsDowns());
     showcaseSubmenuId === "events" && !news.length && dispatch(fetchNews());
   }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);
 
@@ -49,43 +55,44 @@ const Showcase = () => {
           name: "Падения",
           data: downs,
           // data: upsDowns.downs.data
-        }
+        },
       },
     },
     events: {
       component: Events,
       data: news,
     },
-  }
+  };
 
   const Component = useRedirect(
     components,
     "/showcase/topviews",
     showcaseSubmenuId,
     "topviews"
-  )
+  );
 
   function closeModalWindow() {
-    dispatch(resetWarning());
+    warning && dispatch(resetWarning());
+    eventsRejectedWith && dispatch(resetEventsRejectedWith());
   }
 
   return (
     <>
-      {warning && <Modal
-        title="Warning"
-        centered
-        visible={warning}
-        onOk={closeModalWindow}
-        onCancel={closeModalWindow}
-        destroyOnClose={true}
-        cancelButtonProps={
-          {
-            disabled: true
-          }
-        }
-      >
-        <p>{warning}</p>
-      </Modal>}
+      {(warning || eventsRejectedWith) && (
+        <Modal
+          title="Warning"
+          centered
+          visible={warning || eventsRejectedWith}
+          onOk={closeModalWindow}
+          onCancel={closeModalWindow}
+          destroyOnClose={true}
+          cancelButtonProps={{
+            disabled: true,
+          }}
+        >
+          <p>{warning || eventsRejectedWith}</p>
+        </Modal>
+      )}
       <Layout>
         <SideBar
           menuItems={subMenuShowcase}
@@ -99,4 +106,4 @@ const Showcase = () => {
   );
 };
 
-export default Showcase
+export default Showcase;
