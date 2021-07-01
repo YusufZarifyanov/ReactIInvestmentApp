@@ -5,17 +5,20 @@ import styles from './Events.module.scss';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { resetWarning } from '../../store/slices/modals';
+import { resetRejectedWith } from '../../store/slices/events';
 
 const Events = ({ data }) => {
   const loading = useSelector(state => state.events.loading);
   const warning = useSelector(state => state.modals.warning);
+  const rejectedWith = useSelector(state => state.events.rejectedWith);
 
   const dispatch = useDispatch();
 
   const preventDefault = (event) => event.preventDefault();
 
   function closeModalWindow() {
-    dispatch(resetWarning());
+    warning && dispatch(resetWarning());
+    rejectedWith && dispatch(resetRejectedWith());
   }
 
   if (loading) {
@@ -51,10 +54,10 @@ const Events = ({ data }) => {
 
   return (
     <>
-      {warning && <Modal
+      {(warning || rejectedWith) && <Modal
         title="Warning"
         centered
-        visible={warning}
+        visible={warning || rejectedWith}
         onOk={closeModalWindow}
         onCancel={closeModalWindow}
         destroyOnClose={true}
@@ -64,7 +67,7 @@ const Events = ({ data }) => {
           }
         }
       >
-        <p>{warning}</p>
+        <p>{warning || rejectedWith}</p>
       </Modal>}
       <List
         className={styles.list}
