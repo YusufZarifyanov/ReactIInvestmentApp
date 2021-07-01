@@ -6,7 +6,7 @@ import {
   destrucktSecurityArray,
 } from "../../utils/helperFunctions";
 // import { upsDowns } from "../../data/showcase/ups_downs";
-import axios from "axios";
+import { v1Axios, lowLatencyAxios } from "../../utils/axios";
 
 const initialState = {
   topViews: {
@@ -29,11 +29,13 @@ const initialState = {
       },
     },
     loading: false,
+    rejectedWith: "",
   },
   upsDowns: {
     ups: [],
     downs: [],
     loading: false,
+    rejectedWith: "",
   },
   myBriefcase: {
     data: [],
@@ -52,15 +54,9 @@ export const fetchTopViews = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       //todo:
-      //   const response = await axios({
+      //   const response = await v1Axios({
       //     method: 'GET',
-      //     url: "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-popular-watchlists",
-      //       headers: {
-      //         "x-rapidapi-key":
-      //           "f1e65c7abemshcd54427cb794343p12836fjsnc73c0f5b4b4a",
-      //         "x-rapidapi-host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-      //         useQueryString: true,
-      //       },
+      //     url: "/market/get-popular-watchlists",
       //   });
 
       //   return response.topViews;
@@ -78,6 +74,7 @@ export const fetchTopViews = createAsyncThunk(
       return new Promise(function (resolve, reject) {
         setTimeout(() => {
           resolve(topViews);
+          // reject("fetchTopViews rejected");
         }, 1500);
       });
       // }
@@ -91,17 +88,13 @@ export const fetchUpsDowns = createAsyncThunk(
   "securities/fetchUpsDowns",
   async (_, { dispatch }) => {
     try {
-      const response = await axios({
+      const response = await v1Axios({
         method: "GET",
-        url: process.env.REACT_APP_UPSDOWNS_URL,
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_UPSDOWNS_API_KEY,
-          "x-rapidapi-host": process.env.REACT_APP_UPSDOWNS_RAPIDAPI_HOST,
-          useQueryString: true,
-        },
+        url: "/market/get-trending-tickers",
       });
 
       return response.data.finance.result[0].quotes;
+      // return Promise.reject("fetchUpsDowns rejected");
     } catch (error) {
       if (error.response) {
         console.log("fetchUpsDowns error in response", error.response);
@@ -158,14 +151,9 @@ export const fetchGraph = createAsyncThunk(
   "securities/fetchGraph",
   async (queryParams, { dispatch }) => {
     try {
-      const response = await axios({
+      const response = await v1Axios({
         method: "GET",
-        url: `${process.env.REACT_APP_SECURITY_ITEM_URL}?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_SECURITY_ITEM_API_KEY,
-          "x-rapidapi-host": process.env.REACT_APP_SECURITY_ITEM_RAPIDAPI_HOST,
-          useQueryString: true,
-        },
+        url: `/stock/v2/get-chart?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
       });
       return response.data;
     } catch (error) {
@@ -186,11 +174,12 @@ const slice = createSlice({
   name: "securities",
   initialState,
   reducers: {
-    // getState(state, action) {
-    //   return {
-    //     ...state,
-    //   };
-    // },
+    resetTopViewsRejectedWith(state) {
+      state.topViews.rejectedWith = "";
+    },
+    resetUpsDownsRejectedWith(state) {
+      state.upsDowns.rejectedWith = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -202,6 +191,10 @@ const slice = createSlice({
           state.topViews.main = topViews;
         }
         state.topViews.loading = false;
+      })
+      .addCase(fetchTopViews.rejected, (state, { error }) => {
+        state.topViews.loading = false;
+        state.topViews.rejectedWith = error.message;
       })
       .addCase(fetchUpsDowns.pending, (state) => {
         state.upsDowns.loading = true;
@@ -216,6 +209,10 @@ const slice = createSlice({
           );
         }
         state.upsDowns.loading = false;
+      })
+      .addCase(fetchUpsDowns.rejected, (state, { error }) => {
+        state.upsDowns.loading = false;
+        state.upsDowns.rejectedWith = error.message;
       })
       .addCase(fetchSecurities.pending, (state) => {
         state.myBriefcase.loading = true;
@@ -247,5 +244,6 @@ const slice = createSlice({
   },
 });
 
-export const { getState } = slice.actions;
 export default slice.reducer;
+export const { resetTopViewsRejectedWith, resetUpsDownsRejectedWith } =
+  slice.actions;

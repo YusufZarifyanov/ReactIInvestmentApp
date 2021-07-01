@@ -6,19 +6,26 @@ import { useSelector } from "react-redux";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 
 const Overview = ({ data, briefcaseCalculation }) => {
-  const topViewsLoading = useSelector(state => state.securities.topViews.loading);
-  const myBriefcaseLoading = useSelector(state => state.securities.myBriefcase.loading);
+  const topViewsLoading = useSelector(
+    (state) => state.securities.topViews.loading
+  );
+  const myBriefcaseLoading = useSelector(
+    (state) => state.securities.myBriefcase.loading
+  );
   const { pathname } = useLocation();
   const dataKeys = Object.keys(data);
 
-  if (topViewsLoading || myBriefcaseLoading) {
+  if (briefcaseCalculation ? myBriefcaseLoading : topViewsLoading) {
     return (
       <Layout.Content>
-        {
-          briefcaseCalculation && <Skeleton.Button className={styles.skeletonBriefcaseTitle} active={true} />
-        }
-        <Row className={styles.row} gutter={16}>{
-          [0, 1, 2, 3].map(item => (
+        {briefcaseCalculation && (
+          <Skeleton.Button
+            className={styles.skeletonBriefcaseTitle}
+            active={true}
+          />
+        )}
+        <Row className={styles.row} gutter={16}>
+          {[0, 1, 2, 3].map((item) => (
             <Col key={item} xs={24} md={12} xl={6}>
               <Skeleton.Button className={styles.skeletonTitle} active={true} />
               <Skeleton
@@ -28,14 +35,12 @@ const Overview = ({ data, briefcaseCalculation }) => {
                 paragraph={{
                   rows: 2,
                 }}
-              >
-              </Skeleton>
+              ></Skeleton>
             </Col>
-          ))
-        }
+          ))}
         </Row>
       </Layout.Content>
-    )
+    );
   }
   return (
     <Layout.Content>
@@ -56,15 +61,20 @@ const Overview = ({ data, briefcaseCalculation }) => {
               <div className={styles.elemHeader}>{data[securityKey].name}</div>
               <div className={styles.elem}>
                 <List
-                  dataSource={data[securityKey]}
+                  dataSource={
+                    briefcaseCalculation
+                      ? data[securityKey]
+                      : data[securityKey].data
+                  }
                   renderItem={(item) => (
                     <Link
                       to={{
                         pathname: `/${getPathPartByOrdinalNumber(
                           pathname,
                           1
-                        )}/${getPathPartByOrdinalNumber(pathname, 2)}/${item.symbol
-                          }`,
+                        )}/${getPathPartByOrdinalNumber(pathname, 2)}/${
+                          item.symbol
+                        }`,
                         dataItem: item,
                       }}
                     >
@@ -75,7 +85,9 @@ const Overview = ({ data, briefcaseCalculation }) => {
                             <div className={styles.imgWrapper}>
                               <img
                                 className={styles.img}
-                                src={`${process.env.REACT_APP_POLYGON_FOR_LOGO}${item?.symbol?.toLowerCase()}/logo.png`}
+                                src={`${
+                                  process.env.REACT_APP_POLYGON_FOR_LOGO
+                                }${item?.symbol?.toLowerCase()}/logo.png`}
                                 alt={item.symbol}
                               />
                             </div>
@@ -90,23 +102,30 @@ const Overview = ({ data, briefcaseCalculation }) => {
                         {briefcaseCalculation && (
                           <div>{`${2 * item.regularMarketPrice} $`}</div>
                         )}
-                        {!briefcaseCalculation && (item.is_active ? (
-                          <Statistic
-                            value={11.28}
-                            precision={2}
-                            valueStyle={{ color: "#3f8600", fontSize: "1rem" }}
-                            prefix={<ArrowUpOutlined />}
-                            suffix="%"
-                          />
-                        ) : (
-                          <Statistic
-                            value={9.3}
-                            precision={2}
-                            valueStyle={{ color: "#cf1322", fontSize: "1rem" }}
-                            prefix={<ArrowDownOutlined />}
-                            suffix="%"
-                          />
-                        ))}
+                        {!briefcaseCalculation &&
+                          (item.is_active ? (
+                            <Statistic
+                              value={11.28}
+                              precision={2}
+                              valueStyle={{
+                                color: "#3f8600",
+                                fontSize: "1rem",
+                              }}
+                              prefix={<ArrowUpOutlined />}
+                              suffix="%"
+                            />
+                          ) : (
+                            <Statistic
+                              value={9.3}
+                              precision={2}
+                              valueStyle={{
+                                color: "#cf1322",
+                                fontSize: "1rem",
+                              }}
+                              prefix={<ArrowDownOutlined />}
+                              suffix="%"
+                            />
+                          ))}
                       </List.Item>
                     </Link>
                   )}
