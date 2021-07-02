@@ -113,15 +113,9 @@ export const fetchSecurities = createAsyncThunk(
   "securities/fetchSecurities",
   async (tickersInfo, { dispatch }) => {
     try {
-      const securityResponse = await axios({
+      const securityResponse = await lowLatencyAxios({
         method: "GET",
-        url:
-          process.env.REACT_APP_SECURITIES_URL + tickersInfo.tickers.join(","),
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_SECURITIES_API_KEY,
-          "x-rapidapi-host": process.env.REACT_APP_SECURITIES_RAPIDAPI_HOST,
-          useQueryString: true,
-        },
+        url: "/v6/finance/quote?symbols=" + tickersInfo.tickers.join(","),
       });
       let showParam;
       if (tickersInfo["tickersLength"]) {
@@ -130,9 +124,9 @@ export const fetchSecurities = createAsyncThunk(
           tickersInfo.tickersLength
         );
       } else {
-        showParam = securityResponse.data.quoteResponse.result
+        showParam = securityResponse.data.quoteResponse.result;
       }
-      return showParam
+      return showParam;
     } catch (error) {
       if (error.response) {
         console.log("fetchSecurities error in response", error.response);
