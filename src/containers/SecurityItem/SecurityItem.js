@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchGraph, fetchSecurities } from "../../store/slices/securities";
 import styles from "./SecurityItem.module.scss";
 
-import { Layout, Space, Button } from "antd";
+import { Layout, Space, Button, Modal } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
 import { dateArray, tickersData } from "../../utils/data";
 import { findTicker } from "../../utils/helperFunctions";
+import { resetWarning } from "../../store/slices/modals";
 
 const SecurityItem = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const SecurityItem = () => {
 
   let graphData = useSelector((state) => state.securities.currentSecurity.graph);
   let tickerData = useSelector((state) =>  state.securities.currentSecurity.meta);
+  const warning = useSelector((state) => state.modals.warning);
 
   useEffect(() => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
@@ -68,7 +70,27 @@ const SecurityItem = () => {
     }
   };
 
+  function closeModalWindow() {
+    dispatch(resetWarning());
+  }
+
   return (
+    <>
+    {warning && (
+        <Modal
+          title="Warning"
+          centered
+          visible={warning}
+          onOk={closeModalWindow}
+          onCancel={closeModalWindow}
+          destroyOnClose={true}
+          cancelButtonProps={{
+            disabled: true,
+          }}
+        >
+          <p>{warning}</p>
+        </Modal>
+      )}
     <Layout>
       {
         <SideBar
@@ -150,6 +172,7 @@ const SecurityItem = () => {
         </div>
       </Layout.Content>
     </Layout>
+    </>
   );
 };
 
