@@ -34,15 +34,9 @@ const Briefcase = () => {
     tickersData.bonds,
     tickersData.funds
   );
-  const tickersLength = {
-    currency: tickersData.currency.length,
-    shares: tickersData.shares.length,
-    bonds: tickersData.bonds.length,
-    funds: tickersData.funds.length,
-  };
 
   const securities = useSelector((state) => state.securities.myBriefcase.data);
-  const securitiesKeys = Object.keys(tickersLength);
+  const securitiesKeys = Object.keys(tickersData);
 
   if (
     securitiesKeys.indexOf(briefcaseSubmenuId) === -1 &&
@@ -52,7 +46,7 @@ const Briefcase = () => {
 
   useEffect(() => {
     if (securities.length === 0) {
-      dispatch(fetchSecurities({ tickers: allTickers, tickersLength }));
+      dispatch(fetchSecurities(allTickers.join(",")));
     }
   }, [briefcaseSubmenuId]);
 

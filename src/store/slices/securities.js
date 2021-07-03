@@ -111,20 +111,18 @@ export const fetchUpsDowns = createAsyncThunk(
 
 export const fetchSecurities = createAsyncThunk(
   "securities/fetchSecurities",
-  async (tickersInfo, { dispatch }) => {
+  async (tickers, { dispatch }) => {
     try {
       const securityResponse = await lowLatencyAxios({
         method: "GET",
-        url: "/v6/finance/quote?symbols=" + tickersInfo.tickers.join(","),
+        url: "/v6/finance/quote?symbols=" + tickers,
       });
-      let showParam;
-      if (tickersInfo["tickersLength"]) {
-        showParam = destrucktSecurityArray(
-          securityResponse.data.quoteResponse.result,
-          tickersInfo.tickersLength
-        );
+      let securityData = securityResponse.data.quoteResponse.result,
+      showParam;
+      if (securityData.length > 1) {
+        showParam = destrucktSecurityArray(securityData);
       } else {
-        showParam = securityResponse.data.quoteResponse.result;
+        showParam = securityData;
       }
       return showParam;
     } catch (error) {

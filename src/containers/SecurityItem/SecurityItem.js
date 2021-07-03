@@ -41,9 +41,7 @@ const SecurityItem = () => {
   }, [graphSettings, graph]);
 
   useEffect(() => {
-      dispatch(fetchSecurities({
-        tickers: [ticker],
-      }));
+      dispatch(fetchSecurities(`${ticker}`));
   }, [])
 
   useEffect(() => {

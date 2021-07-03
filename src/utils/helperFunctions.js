@@ -1,4 +1,6 @@
-const convertTimestamp = (timestamp) => {
+import{ tickersData} from "./data";
+
+export const convertTimestamp = (timestamp) => {
   let d = new Date(timestamp * 1000),
     yyyy = d.getFullYear(),
     mm = ("0" + (d.getMonth() + 1)).slice(-2),
@@ -12,7 +14,7 @@ const convertTimestamp = (timestamp) => {
   return time;
 };
 
-const findTicker = (tickers, ticker) => {
+export const findTicker = (tickers, ticker) => {
   console.log("go fun");
   if (!tickers) return -1;
   for (let tickerEl of tickers) {
@@ -23,21 +25,16 @@ const findTicker = (tickers, ticker) => {
 
 //порядок массива: currency,shares,bonds,funds
 //0,2
-const destrucktSecurityArray = (securityArray, lenObj) => {
+export const destrucktSecurityArray = (securityArray) => {
+  const keys = Object.keys(tickersData);
   const allSecurity = {};
-  const keys = Object.keys(lenObj);
   let start = 0,
     end = 0;
+
   for (let key of keys) {
-    end += lenObj[key];
+    end += tickersData[key].length;
     allSecurity[key] = securityArray.slice(start, end);
     start = end;
   }
   return allSecurity;
-};
-
-module.exports = {
-  convertTimestamp,
-  findTicker,
-  destrucktSecurityArray,
 };
