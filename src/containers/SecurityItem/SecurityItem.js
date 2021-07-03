@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGraph, fetchSecurities } from "../../store/slices/securities";
+import { Spin } from "antd";
 import styles from "./SecurityItem.module.scss";
 
 import { Layout, Space, Button, Modal } from "antd";
@@ -10,7 +11,6 @@ import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
 import { dateArray, tickersData } from "../../utils/data";
-import { findTicker } from "../../utils/helperFunctions";
 import { resetWarning } from "../../store/slices/modals";
 
 const SecurityItem = () => {
@@ -19,41 +19,47 @@ const SecurityItem = () => {
   const { pathname } = useLocation();
   const [graph, setGraph] = useState(false);
 
-  // const [tickerData, setTickerData] = useState({});
   const [graphSettings, setGraphSettings] = useState({
     name: "День",
     interval: "1m",
     range: "1d",
   });
-
-  const [loading, setLoading] = useState([true]);
+  
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
-
-  let graphData = useSelector((state) => state.securities.currentSecurity.graph);
-  let tickerData = useSelector((state) =>  state.securities.currentSecurity.meta);
+  let loading = [false, false, false, false, false, false];
+  
+  let graphData = useSelector(
+    (state) => state.securities.currentSecurity.graph
+  );
+  let tickerData = useSelector(
+    (state) => state.securities.currentSecurity.meta
+  );
+  const graphLoading = useSelector(
+    (state) => state.securities.currentSecurity.loading
+  );
+  const securityLoading = useSelector(
+    (state) => state.securities.myBriefcase.loading
+  );
   const warning = useSelector((state) => state.modals.warning);
-
+  console.log(loading)
   useEffect(() => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
-    const newLoadings = [...loading];
-    newLoadings[activeBtn.index] = false;
-    setLoading(newLoadings);
   }, [graphSettings, graph]);
 
   useEffect(() => {
-      dispatch(fetchSecurities(`${ticker}`));
-  }, [])
+    dispatch(fetchSecurities(`${ticker}`));
+  }, []);
 
   useEffect(() => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
- }, [graph, graphSettings])
+  }, [graph, graphSettings]);
 
+  console.log(graphLoading)
+  console.log(activeBtn.index)
+  loading[activeBtn.index] = graphLoading;
 
- 
   const handleChange = (action, name, interval, range, index) => {
-    const newLoadings = [...loading];
-    newLoadings[index] = true;
-    setLoading(newLoadings);
+    loading[index] = !graphLoading
     setActiveBtn({ index });
     if (action) {
       graph ? setGraph(false) : setGraph(true);
@@ -74,7 +80,7 @@ const SecurityItem = () => {
 
   return (
     <>
-    {warning && (
+      {warning && (
         <Modal
           title="Warning"
           centered
@@ -89,87 +95,99 @@ const SecurityItem = () => {
           <p>{warning}</p>
         </Modal>
       )}
-    <Layout>
-      {
-        <SideBar
-          menuItems={
-            getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
-              ? subMenuBriefcase
-              : subMenuShowcase
-          }
-          activeMenuItem={`/${getPathPartByOrdinalNumber(
-            pathname,
-            1
-          )}/${getPathPartByOrdinalNumber(pathname, 2)}`}
-        />
-      }
-      <Layout.Content>
-        <div className={styles.container}>
-          <div className={styles.cards}>
-            <div className={styles.securitiesType}>
-              <div className={styles.info}>
-                <div className={styles.infoName}>
-                  <p>{tickerData?.shortName}</p>
-                  <p style={{ marginLeft: "1rem", fontSize: "10px" }}>
-                    {tickerData?.symbol}
-                  </p>
-                </div>
-                <div className={styles.infoDescription}>
-                  <div>
-                    <p>Доходность к погашению:</p>
-                    <p>{tickerData?.bidSize}%</p>
-                  </div>
+      <Layout>
+        {
+          <SideBar
+            menuItems={
+              getPathPartByOrdinalNumber(pathname, 1) === "briefcase"
+                ? subMenuBriefcase
+                : subMenuShowcase
+            }
+            activeMenuItem={`/${getPathPartByOrdinalNumber(
+              pathname,
+              1
+            )}/${getPathPartByOrdinalNumber(pathname, 2)}`}
+          />
+        }
+        <Layout.Content>
+        {securityLoading ? (
+          <Layout.Content>
+            <div className={styles.spin}>
+              <Spin size="large" />
+            </div>
+          </Layout.Content>
+        ) : (
+          <Layout.Content>
+            <div className={styles.container}>
+              <div className={styles.cards}>
+                <div className={styles.securitiesType}>
+                  <div className={styles.info}>
+                    <div className={styles.infoName}>
+                      <p>{tickerData?.shortName}</p>
+                      <p style={{ marginLeft: "1rem", fontSize: "10px" }}>
+                        {tickerData?.symbol}
+                      </p>
+                    </div>
+                    <div className={styles.infoDescription}>
+                      <div>
+                        <p>Доходность к погашению:</p>
+                        <p>{tickerData?.bidSize}%</p>
+                      </div>
 
-                  <div style={{ marginLeft: "2rem" }}>
-                    <p>Рейтинг:</p>
-                    <p>Низкий</p>
+                      <div style={{ marginLeft: "2rem" }}>
+                        <p>Рейтинг:</p>
+                        <p>Низкий</p>
+                      </div>
+                    </div>
                   </div>
+                  <img
+                    alt="example"
+                    src={`${
+                      process.env.REACT_APP_POLYGON_FOR_LOGO
+                    }${ticker.toLowerCase()}/logo.png`}
+                    className={styles.img}
+                  ></img>
+                </div>
+                <div className={styles.securitiesPrice}>
+                  <p className={styles.date}>Цена акции 27 мая 2021г.</p>
+                  <p className={styles.price}>{`${tickerData?.ask} $`}</p>
+
+                  <button className={styles.btn}>
+                    {securityType ? "Купить еще" : "Приобрести"}
+                  </button>
+                  {securityType && (
+                    <button className={styles.btn}>Продать</button>
+                  )}
                 </div>
               </div>
-              <img
-                alt="example"
-                src={`${
-                  process.env.REACT_APP_POLYGON_FOR_LOGO
-                }${ticker.toLowerCase()}/logo.png`}
-                className={styles.img}
-              ></img>
+              <div className={styles.btnList}>
+                <Space size={[8, 16]} wrap>
+                  {dateArray.map((el, index) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Button
+                      key={index}
+                      loading={loading[index]}
+                      onClick={() =>
+                        handleChange(
+                          el.action,
+                          el.name,
+                          el.interval,
+                          el.range,
+                          index
+                        )
+                      }
+                    >
+                      {el.name}
+                    </Button>
+                  ))}
+                </Space>
+              </div>
+              {graphData && <Graph graphFlag={graph} graphData={graphData} />}
             </div>
-            <div className={styles.securitiesPrice}>
-              <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-              <p className={styles.price}>{`${tickerData?.ask} $`}</p>
-
-              <button className={styles.btn}>
-                {securityType ? "Купить еще" : "Приобрести"}
-              </button>
-              {securityType && <button className={styles.btn}>Продать</button>}
-            </div>
-          </div>
-          <div className={styles.btnList}>
-            <Space size={[8, 16]} wrap>
-              {dateArray.map((el, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Button
-                  key={index}
-                  loading={loading[index]}
-                  onClick={() =>
-                    handleChange(
-                      el.action,
-                      el.name,
-                      el.interval,
-                      el.range,
-                      index
-                    )
-                  }
-                >
-                  {el.name}
-                </Button>
-              ))}
-            </Space>
-          </div>
-          {graphData && <Graph graphFlag={graph} graphData={graphData} />}
-        </div>
-      </Layout.Content>
-    </Layout>
+          </Layout.Content>
+        )}
+        </Layout.Content>
+      </Layout>
     </>
   );
 };
