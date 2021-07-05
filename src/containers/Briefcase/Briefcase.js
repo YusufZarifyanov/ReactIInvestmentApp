@@ -6,7 +6,7 @@ import { useParams, useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSecurities, fetchGraph } from "../../store/slices/securities";
+import { fetchSecurities, fetchGraph, resetRejectedInSecuritiesSlice } from "../../store/slices/securities";
 import { tickersData } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 
@@ -16,9 +16,13 @@ const Briefcase = () => {
   const { briefcaseSubmenuId } = useParams();
 
   const warning = useSelector((state) => state.modals.warning);
+  const rejectedInSecurities = useSelector(
+    (state) => state.securities.rejected
+  );
 
   function closeModalWindow() {
-    dispatch(resetWarning());
+    warning && dispatch(resetWarning());
+    rejectedInSecurities && dispatch(resetRejectedInSecuritiesSlice());
   }
 
   const history = useHistory();
@@ -53,11 +57,11 @@ const Briefcase = () => {
  
   return (
     <>
-      {warning && (
+      {(warning || rejectedInSecurities) && (
         <Modal
           title="Warning"
           centered
-          visible={warning}
+          visible={warning || rejectedInSecurities}
           onOk={closeModalWindow}
           onCancel={closeModalWindow}
           destroyOnClose={true}
@@ -66,7 +70,7 @@ const Briefcase = () => {
             disabled: true,
           }}
         >
-          <p>{warning}</p>
+          <p>{warning || rejectedInSecurities}</p>
         </Modal>
       )}
       <Layout>
