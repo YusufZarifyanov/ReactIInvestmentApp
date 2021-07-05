@@ -116,13 +116,8 @@ export const fetchSecurities = createAsyncThunk(
         method: "GET",
         url: "/v6/finance/quote?symbols=" + tickers,
       });
-      let securityData = securityResponse.data.quoteResponse.result,
-      showParam;
-      if (securityData.length > 1) {
-        showParam = destrucktSecurityArray(securityData);
-      } else {
-        showParam = securityData;
-      }
+      let securityData = securityResponse.data.quoteResponse.result;
+      let showParam = securityData.length > 1 ? destrucktSecurityArray(securityData) : securityData;
       return showParam;
       // return Promise.reject("fetchSecurities rejected");
     } catch (error) {
