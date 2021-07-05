@@ -2,7 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGraph, fetchSecurities } from "../../store/slices/securities";
+import { fetchGraph, fetchSecurities, resetRejectedInSecuritiesSlice } from "../../store/slices/securities";
 import { Spin } from "antd";
 import styles from "./SecurityItem.module.scss";
 
