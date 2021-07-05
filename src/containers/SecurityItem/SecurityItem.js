@@ -2,7 +2,11 @@ import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGraph, fetchSecurities, resetRejectedInSecuritiesSlice } from "../../store/slices/securities";
+import {
+  fetchGraph,
+  fetchSecurities,
+  resetRejectedInSecuritiesSlice,
+} from "../../store/slices/securities";
 import { Spin } from "antd";
 import styles from "./SecurityItem.module.scss";
 
@@ -24,10 +28,10 @@ const SecurityItem = () => {
     interval: "1m",
     range: "1d",
   });
-  
+
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
   let loading = [false, false, false, false, false, false];
-  
+
   let graphData = useSelector(
     (state) => state.securities.currentSecurity.graph
   );
@@ -44,7 +48,7 @@ const SecurityItem = () => {
   const rejectedInSecurities = useSelector(
     (state) => state.securities.rejected
   );
-  console.log(loading)
+
   useEffect(() => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
   }, [graphSettings, graph]);
@@ -57,12 +61,12 @@ const SecurityItem = () => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
   }, [graph, graphSettings]);
 
-  console.log(graphLoading)
-  console.log(activeBtn.index)
+  console.log(graphLoading);
+  console.log(activeBtn.index);
   loading[activeBtn.index] = graphLoading;
 
   const handleChange = (action, name, interval, range, index) => {
-    loading[index] = !graphLoading
+    loading[index] = !graphLoading;
     setActiveBtn({ index });
     if (action) {
       graph ? setGraph(false) : setGraph(true);
@@ -115,82 +119,84 @@ const SecurityItem = () => {
           />
         }
         <Layout.Content>
-        {securityLoading ? (
-          <Layout.Content>
-            <div className={styles.spin}>
-              <Spin size="large" />
-            </div>
-          </Layout.Content>
-        ) : (
-          <Layout.Content>
-            <div className={styles.container}>
-              <div className={styles.cards}>
-                <div className={styles.securitiesType}>
-                  <div className={styles.info}>
-                    <div className={styles.infoName}>
-                      <p>{tickerData?.shortName}</p>
-                      <p style={{ marginLeft: "1rem", fontSize: "10px" }}>
-                        {tickerData?.symbol}
-                      </p>
-                    </div>
-                    <div className={styles.infoDescription}>
-                      <div>
-                        <p>Доходность к погашению:</p>
-                        <p>{tickerData?.bidSize}%</p>
+          {securityLoading ? (
+            <Layout.Content>
+              <div className={styles.spin}>
+                <Spin size="large" />
+              </div>
+            </Layout.Content>
+          ) : (
+            <Layout.Content>
+              <div className={styles.container}>
+                <div className={styles.cards}>
+                  <div className={styles.securitiesType}>
+                    <div className={styles.info}>
+                      <div className={styles.infoName}>
+                        <p>{tickerData?.shortName}</p>
+                        <p style={{ marginLeft: "1rem", fontSize: "10px" }}>
+                          {tickerData?.symbol}
+                        </p>
                       </div>
+                      <div className={styles.infoDescription}>
+                        <div>
+                          <p>Доходность к погашению:</p>
+                          <p>{tickerData?.bidSize}%</p>
+                        </div>
 
-                      <div style={{ marginLeft: "2rem" }}>
-                        <p>Рейтинг:</p>
-                        <p>Низкий</p>
+                        <div style={{ marginLeft: "2rem" }}>
+                          <p>Рейтинг:</p>
+                          <p>Низкий</p>
+                        </div>
                       </div>
+                    </div>
+                    <div >
+                      <img
+                        alt="example"
+                        src={`${
+                          process.env.REACT_APP_POLYGON_FOR_LOGO
+                        }${ticker.toLowerCase()}/logo.png`}
+                        className={styles.img}
+                      ></img>
                     </div>
                   </div>
-                  <img
-                    alt="example"
-                    src={`${
-                      process.env.REACT_APP_POLYGON_FOR_LOGO
-                    }${ticker.toLowerCase()}/logo.png`}
-                    className={styles.img}
-                  ></img>
-                </div>
-                <div className={styles.securitiesPrice}>
-                  <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-                  <p className={styles.price}>{`${tickerData?.ask} $`}</p>
+                  <div className={styles.securitiesPrice}>
+                    <p className={styles.date}>Цена акции 27 мая 2021г.</p>
+                    <p className={styles.price}>{`${tickerData?.ask} $`}</p>
 
-                  <button className={styles.btn}>
-                    {securityType ? "Купить еще" : "Приобрести"}
-                  </button>
-                  {securityType && (
-                    <button className={styles.btn}>Продать</button>
-                  )}
+                    <button className={styles.btn}>
+                      {securityType ? "Купить еще" : "Приобрести"}
+                    </button>
+                    {securityType && (
+                      <button className={styles.btn}>Продать</button>
+                    )}
+                  </div>
                 </div>
+                <div className={styles.btnList}>
+                  <Space size={[8, 16]} wrap>
+                    {dateArray.map((el, index) => (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <Button
+                        key={index}
+                        loading={loading[index]}
+                        onClick={() =>
+                          handleChange(
+                            el.action,
+                            el.name,
+                            el.interval,
+                            el.range,
+                            index
+                          )
+                        }
+                      >
+                        {el.name}
+                      </Button>
+                    ))}
+                  </Space>
+                </div>
+                {graphData && <Graph graphFlag={graph} graphData={graphData} />}
               </div>
-              <div className={styles.btnList}>
-                <Space size={[8, 16]} wrap>
-                  {dateArray.map((el, index) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <Button
-                      key={index}
-                      loading={loading[index]}
-                      onClick={() =>
-                        handleChange(
-                          el.action,
-                          el.name,
-                          el.interval,
-                          el.range,
-                          index
-                        )
-                      }
-                    >
-                      {el.name}
-                    </Button>
-                  ))}
-                </Space>
-              </div>
-              {graphData && <Graph graphFlag={graph} graphData={graphData} />}
-            </div>
-          </Layout.Content>
-        )}
+            </Layout.Content>
+          )}
         </Layout.Content>
       </Layout>
     </>

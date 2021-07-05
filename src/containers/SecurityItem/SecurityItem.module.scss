@@ -1,4 +1,4 @@
-@import '../../variables';
+@import "../../variables";
 
 .spin {
   position: relative;
@@ -10,41 +10,44 @@
   min-height: 100vh;
 }
 
-
 .container {
   margin: 0 auto;
   width: 100%;
-  min-height: 91vh;
+  // min-height: 80vh;
   .cards {
     display: flex;
     justify-content: center;
-    height: 225px;
-    width: 96%;
-    margin-top: 20px;
+    width: 80%;
+    margin: 0 auto;
+    @media screen and (min-width: 1100px) {
+      margin-top: 2rem;
+    }
     @media screen and (max-width: 1100px) {
-     flex-direction: column;
-     align-items: center;
-     margin-top: 1rem;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1rem;
     }
 
     .securitiesType {
       background-color: $maincolor;
       width: 50%;
+      flex: 1 1 auto;
+      margin: 0 5px;
       // margin: 2rem;
       display: flex;
-
+      justify-content: space-between;
       @media screen and (max-width: 1100px) {
-  width: 80%;
-    }
+        width: 80%;
+        margin-bottom: 3rem;
+      }
 
       .info {
         display: flex;
         flex-direction: column;
         width: 70%;
-        margin: 1rem auto;
         font-size: 14px;
         font-weight: 600;
-
+        padding: 10px 20px;
         .infoName {
           display: flex;
           width: 100%;
@@ -77,12 +80,12 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      margin: 2rem;
+      flex: 1 1 auto;
       background-color: $maincolor;
 
       @media screen and (max-width: 1100px) {
         width: 60%;
-          }
+      }
 
       .date {
         margin: 0;
@@ -117,8 +120,8 @@
   }
 
   .btnList {
-   display: flex;
-   justify-content:  center;
-   margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
   }
 }
