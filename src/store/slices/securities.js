@@ -29,13 +29,11 @@ const initialState = {
       },
     },
     loading: false,
-    rejectedWith: "",
   },
   upsDowns: {
     ups: [],
     downs: [],
     loading: false,
-    rejectedWith: "",
   },
   myBriefcase: {
     data: [],
@@ -47,6 +45,7 @@ const initialState = {
     meta: [],
     loading: false,
   },
+  rejected: "",
 };
 
 export const fetchTopViews = createAsyncThunk(
@@ -125,6 +124,7 @@ export const fetchSecurities = createAsyncThunk(
         showParam = securityData;
       }
       return showParam;
+      // return Promise.reject("fetchSecurities rejected");
     } catch (error) {
       if (error.response) {
         console.log("fetchSecurities error in response", error.response);
@@ -148,6 +148,7 @@ export const fetchGraph = createAsyncThunk(
         url: `/stock/v2/get-chart?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
       });
       return response.data;
+      // return Promise.reject("fetchGraph rejected");
     } catch (error) {
       if (error.response) {
         console.log("fetchGraphData error in response", error.response);
@@ -166,11 +167,8 @@ const slice = createSlice({
   name: "securities",
   initialState,
   reducers: {
-    resetTopViewsRejectedWith(state) {
-      state.topViews.rejectedWith = "";
-    },
-    resetUpsDownsRejectedWith(state) {
-      state.upsDowns.rejectedWith = "";
+    resetRejectedInSecuritiesSlice(state) {
+      state.rejected = "";
     },
   },
   extraReducers: (builder) => {
@@ -184,9 +182,11 @@ const slice = createSlice({
         }
         state.topViews.loading = false;
       })
-      .addCase(fetchTopViews.rejected, (state, { error }) => {
+      .addCase(fetchTopViews.rejected, (state, { error, meta }) => {
         state.topViews.loading = false;
-        state.topViews.rejectedWith = error.message;
+        // if (!meta.aborted) {
+          state.rejected = error.message;
+        // }
       })
       .addCase(fetchUpsDowns.pending, (state) => {
         state.upsDowns.loading = true;
@@ -202,9 +202,11 @@ const slice = createSlice({
         }
         state.upsDowns.loading = false;
       })
-      .addCase(fetchUpsDowns.rejected, (state, { error }) => {
+      .addCase(fetchUpsDowns.rejected, (state, { error, meta }) => {
         state.upsDowns.loading = false;
-        state.upsDowns.rejectedWith = error.message;
+        // if (!meta.aborted) {
+          state.rejected = error.message;
+        // }
       })
       .addCase(fetchSecurities.pending, (state) => {
         state.myBriefcase.loading = true;
@@ -219,6 +221,12 @@ const slice = createSlice({
         }
         state.myBriefcase.loading = false;
       })
+      .addCase(fetchSecurities.rejected, (state, { error, meta }) => {
+        state.myBriefcase.loading = false;
+        // if (!meta.aborted) {
+          state.rejected = error.message;
+        // }
+      })
       .addCase(fetchGraph.pending, (state) => {
         state.currentSecurity.loading = true;
       })
@@ -232,10 +240,15 @@ const slice = createSlice({
           };
         }
         state.currentSecurity.loading = false;
-      });
+      })
+      .addCase(fetchGraph.rejected, (state, { error, meta }) => {
+        state.currentSecurity.loading = false;
+        // if (!meta.aborted) {
+          state.rejected = error.message;
+        // }
+      })
   },
 });
 
 export default slice.reducer;
-export const { resetTopViewsRejectedWith, resetUpsDownsRejectedWith } =
-  slice.actions;
+export const { resetRejectedInSecuritiesSlice } = slice.actions;

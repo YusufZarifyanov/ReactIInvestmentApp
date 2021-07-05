@@ -41,6 +41,9 @@ const SecurityItem = () => {
     (state) => state.securities.myBriefcase.loading
   );
   const warning = useSelector((state) => state.modals.warning);
+  const rejectedInSecurities = useSelector(
+    (state) => state.securities.rejected
+  );
   console.log(loading)
   useEffect(() => {
     dispatch(fetchGraph({ ...graphSettings, ticker }));
@@ -75,16 +78,17 @@ const SecurityItem = () => {
   };
 
   function closeModalWindow() {
-    dispatch(resetWarning());
+    warning && dispatch(resetWarning());
+    rejectedInSecurities && dispatch(resetRejectedInSecuritiesSlice());
   }
 
   return (
     <>
-      {warning && (
+      {(warning || rejectedInSecurities) && (
         <Modal
           title="Warning"
           centered
-          visible={warning}
+          visible={warning || rejectedInSecurities}
           onOk={closeModalWindow}
           onCancel={closeModalWindow}
           destroyOnClose={true}
@@ -92,7 +96,7 @@ const SecurityItem = () => {
             disabled: true,
           }}
         >
-          <p>{warning}</p>
+          <p>{warning || rejectedInSecurities}</p>
         </Modal>
       )}
       <Layout>

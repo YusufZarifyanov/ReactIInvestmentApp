@@ -11,12 +11,11 @@ import { useEffect } from "react";
 import {
   fetchTopViews,
   fetchUpsDowns,
-  resetTopViewsRejectedWith,
-  resetUpsDownsRejectedWith,
+  resetRejectedInSecuritiesSlice,
 } from "../../store/slices/securities";
 import { fetchNews } from "../../store/slices/events";
 import { resetWarning } from "../../store/slices/modals";
-import { resetRejectedWith as resetEventsRejectedWith } from "../../store/slices/events";
+import { resetRejectedInEventsSlice } from "../../store/slices/events";
 
 const Showcase = () => {
   const { showcaseSubmenuId } = useParams();
@@ -27,12 +26,9 @@ const Showcase = () => {
   const downs = useSelector((state) => state.securities.upsDowns.downs);
   const news = useSelector((state) => state.events.news);
   const warning = useSelector((state) => state.modals.warning);
-  const eventsRejectedWith = useSelector((state) => state.events.rejectedWith);
-  const topViewsRejectedWith = useSelector(
-    (state) => state.securities.topViews.rejectedWith
-  );
-  const upsDownsRejectedWith = useSelector(
-    (state) => state.securities.upsDowns.rejectedWith
+  const rejectedInEvents = useSelector((state) => state.events.rejected);
+  const rejectedInSecurities = useSelector(
+    (state) => state.securities.rejected
   );
 
   useEffect(() => {
@@ -84,26 +80,17 @@ const Showcase = () => {
 
   function closeModalWindow() {
     warning && dispatch(resetWarning());
-    eventsRejectedWith && dispatch(resetEventsRejectedWith());
-    topViewsRejectedWith && dispatch(resetTopViewsRejectedWith());
-    upsDownsRejectedWith && dispatch(resetUpsDownsRejectedWith());
+    rejectedInEvents && dispatch(resetRejectedInEventsSlice());
+    rejectedInSecurities && dispatch(resetRejectedInSecuritiesSlice());
   }
 
   return (
     <>
-      {(warning ||
-        eventsRejectedWith ||
-        topViewsRejectedWith ||
-        upsDownsRejectedWith) && (
+      {(warning || rejectedInEvents || rejectedInSecurities) && (
         <Modal
           title="Warning"
           centered
-          visible={
-            warning ||
-            eventsRejectedWith ||
-            topViewsRejectedWith ||
-            upsDownsRejectedWith
-          }
+          visible={warning || rejectedInEvents || rejectedInSecurities}
           onOk={closeModalWindow}
           onCancel={closeModalWindow}
           destroyOnClose={true}
@@ -111,12 +98,7 @@ const Showcase = () => {
             disabled: true,
           }}
         >
-          <p>
-            {warning ||
-              eventsRejectedWith ||
-              topViewsRejectedWith ||
-              upsDownsRejectedWith}
-          </p>
+          <p>{warning || rejectedInEvents || rejectedInSecurities}</p>
         </Modal>
       )}
       <Layout>

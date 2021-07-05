@@ -6,7 +6,7 @@ import { setWarning } from "./modals";
 const initialState = {
   news: [],
   loading: false,
-  rejectedWith: "",
+  rejected: "",
 };
 
 export const fetchNews = createAsyncThunk(
@@ -43,8 +43,8 @@ const slice = createSlice({
   name: "events",
   initialState,
   reducers: {
-    resetRejectedWith(state) {
-      state.rejectedWith = "";
+    resetRejectedInEventsSlice(state) {
+      state.rejected = "";
     },
   },
   extraReducers: (builder) => {
@@ -58,12 +58,14 @@ const slice = createSlice({
         }
         state.loading = false;
       })
-      .addCase(fetchNews.rejected, (state, { error }) => {
+      .addCase(fetchNews.rejected, (state, { error, meta }) => {
         state.loading = false;
-        state.rejectedWith = error.message;
+        // if (!meta.aborted) {
+          state.rejected = error.message;
+        // }
       });
   },
 });
 
 export default slice.reducer;
-export const { resetRejectedWith } = slice.actions;
+export const { resetRejectedInEventsSlice } = slice.actions;
