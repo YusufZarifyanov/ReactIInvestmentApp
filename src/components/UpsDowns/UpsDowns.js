@@ -7,7 +7,7 @@ import { getPathPartByOrdinalNumber } from '../../utils/getPathPartByOrdinalNumb
 import { useSelector } from "react-redux";
 
 const UpsDowns = ({ data }) => {
-  const loading = useSelector(state => state.securities.upsDowns.loading);
+  const loading = useSelector(state => state.securities.loading);
 
   const { pathname } = useLocation()
 

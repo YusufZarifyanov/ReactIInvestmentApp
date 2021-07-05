@@ -6,16 +6,13 @@ import { useSelector } from "react-redux";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 
 const Overview = ({ data, briefcaseCalculation }) => {
-  const topViewsLoading = useSelector(
-    (state) => state.securities.topViews.loading
-  );
-  const myBriefcaseLoading = useSelector(
-    (state) => state.securities.myBriefcase.loading
+  const loading = useSelector(
+    (state) => state.securities.loading
   );
   const { pathname } = useLocation();
   const dataKeys = Object.keys(data);
 
-  if (briefcaseCalculation ? myBriefcaseLoading : topViewsLoading) {
+  if (loading) {
     return (
       <Layout.Content>
         {briefcaseCalculation && (

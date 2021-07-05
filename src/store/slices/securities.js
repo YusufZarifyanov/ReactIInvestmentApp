@@ -28,16 +28,13 @@ const initialState = {
         data: [],
       },
     },
-    loading: false,
   },
   upsDowns: {
     ups: [],
     downs: [],
-    loading: false,
   },
   myBriefcase: {
     data: [],
-    // review: {},
     loading: false,
   },
   currentSecurity: {
@@ -46,6 +43,7 @@ const initialState = {
     loading: false,
   },
   rejected: "",
+  loading: false,
 };
 
 export const fetchTopViews = createAsyncThunk(
@@ -169,22 +167,22 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTopViews.pending, (state) => {
-        state.topViews.loading = true;
+        state.loading = true;
       })
       .addCase(fetchTopViews.fulfilled, (state, { payload: topViews }) => {
         if (!topViews.message) {
           state.topViews.main = topViews;
         }
-        state.topViews.loading = false;
+        state.loading = false;
       })
       .addCase(fetchTopViews.rejected, (state, { error, meta }) => {
-        state.topViews.loading = false;
+        state.loading = false;
         // if (!meta.aborted) {
           state.rejected = error.message;
         // }
       })
       .addCase(fetchUpsDowns.pending, (state) => {
-        state.upsDowns.loading = true;
+        state.loading = true;
       })
       .addCase(fetchUpsDowns.fulfilled, (state, { payload: upsDowns }) => {
         if (!upsDowns.message) {
@@ -195,10 +193,10 @@ const slice = createSlice({
             (quote) => quote.regularMarketChangePercent < 0
           );
         }
-        state.upsDowns.loading = false;
+        state.loading = false;
       })
       .addCase(fetchUpsDowns.rejected, (state, { error, meta }) => {
-        state.upsDowns.loading = false;
+        state.loading = false;
         // if (!meta.aborted) {
           state.rejected = error.message;
         // }
