@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  warning: '',
+  warning: "",
 };
 
 const slice = createSlice({
@@ -9,11 +9,13 @@ const slice = createSlice({
   initialState,
   reducers: {
     setWarning(state, { payload: warning }) {
-      state.warning = warning
+      if (warning) {
+        state.warning = warning;
+      }
     },
     resetWarning(state) {
-      state.warning = '';
-    }
+      state.warning = "";
+    },
   },
 });
 

@@ -7,6 +7,7 @@ import {
 } from "../../utils/helperFunctions";
 // import { upsDowns } from "../../data/showcase/ups_downs";
 import { v1Axios, lowLatencyAxios } from "../../utils/axios";
+import axios from "axios";
 
 const initialState = {
   topViews: {
@@ -83,11 +84,18 @@ export const fetchTopViews = createAsyncThunk(
 
 export const fetchUpsDowns = createAsyncThunk(
   "securities/fetchUpsDowns",
-  async (_, { dispatch }) => {
+  async (_, { dispatch, signal }) => {
     try {
+    const source = axios.CancelToken.source();
+
+    signal.addEventListener("abort", () => {
+      source.cancel();
+    });
+
       const response = await v1Axios({
         method: "GET",
         url: "/market/get-trending-tickers",
+        cancelToken: source.token,
       });
 
       return response.data.finance.result[0].quotes;
@@ -108,11 +116,18 @@ export const fetchUpsDowns = createAsyncThunk(
 
 export const fetchSecurities = createAsyncThunk(
   "securities/fetchSecurities",
-  async (tickers, { dispatch }) => {
+  async (tickers, { dispatch, signal }) => {
     try {
+    const source = axios.CancelToken.source();
+
+    signal.addEventListener("abort", () => {
+      source.cancel();
+    });
+
       const securityResponse = await lowLatencyAxios({
         method: "GET",
         url: "/v6/finance/quote?symbols=" + tickers,
+        cancelToken: source.token,
       });
       let securityData = securityResponse.data.quoteResponse.result;
       let showParam = securityData.length > 1 ? destrucktSecurityArray(securityData) : securityData;
@@ -134,11 +149,18 @@ export const fetchSecurities = createAsyncThunk(
 
 export const fetchGraph = createAsyncThunk(
   "securities/fetchGraph",
-  async (queryParams, { dispatch }) => {
+  async (queryParams, { dispatch, signal }) => {
     try {
+      const source = axios.CancelToken.source();
+
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
       const response = await v1Axios({
         method: "GET",
         url: `/stock/v2/get-chart?interval=${queryParams.interval}&symbol=${queryParams.ticker}&range=${queryParams.range}`,
+        cancelToken: source.token,
       });
       return response.data;
       // return Promise.reject("fetchGraph rejected");
@@ -177,9 +199,9 @@ const slice = createSlice({
       })
       .addCase(fetchTopViews.rejected, (state, { error, meta }) => {
         state.loading = false;
-        // if (!meta.aborted) {
+        if (!meta.aborted) {
           state.rejected = error.message;
-        // }
+        }
       })
       .addCase(fetchUpsDowns.pending, (state) => {
         state.loading = true;
@@ -197,9 +219,9 @@ const slice = createSlice({
       })
       .addCase(fetchUpsDowns.rejected, (state, { error, meta }) => {
         state.loading = false;
-        // if (!meta.aborted) {
+        if (!meta.aborted) {
           state.rejected = error.message;
-        // }
+        }
       })
       .addCase(fetchSecurities.pending, (state) => {
         state.myBriefcase.loading = true;
@@ -216,9 +238,9 @@ const slice = createSlice({
       })
       .addCase(fetchSecurities.rejected, (state, { error, meta }) => {
         state.myBriefcase.loading = false;
-        // if (!meta.aborted) {
+        if (!meta.aborted) {
           state.rejected = error.message;
-        // }
+        }
       })
       .addCase(fetchGraph.pending, (state) => {
         state.currentSecurity.loading = true;
@@ -236,9 +258,9 @@ const slice = createSlice({
       })
       .addCase(fetchGraph.rejected, (state, { error, meta }) => {
         state.currentSecurity.loading = false;
-        // if (!meta.aborted) {
+        if (!meta.aborted) {
           state.rejected = error.message;
-        // }
+        }
       })
   },
 });

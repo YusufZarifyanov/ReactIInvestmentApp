@@ -50,19 +50,23 @@ const SecurityItem = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchGraph({ ...graphSettings, ticker }));
-  }, [graphSettings, graph]);
+    let promiseForCanceling;
+    promiseForCanceling = dispatch(fetchSecurities(`${ticker}`));
 
-  useEffect(() => {
-    dispatch(fetchSecurities(`${ticker}`));
+    return () => {
+      promiseForCanceling && promiseForCanceling.abort();
+    };
   }, []);
 
   useEffect(() => {
-    dispatch(fetchGraph({ ...graphSettings, ticker }));
+    let promiseForCanceling;
+    promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
+
+    return () => {
+      promiseForCanceling && promiseForCanceling.abort();
+    };
   }, [graph, graphSettings]);
 
-  console.log(graphLoading);
-  console.log(activeBtn.index);
   loading[activeBtn.index] = graphLoading;
 
   const handleChange = (action, name, interval, range, index) => {

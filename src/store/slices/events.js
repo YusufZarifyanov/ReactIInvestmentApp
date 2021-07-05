@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fakeResponseForEvents as dataEvents } from "../../data/showcase/fakeResponseEvents";
 import { v1Axios } from "../../utils/axios";
 import { setWarning } from "./modals";
+import axios from "axios";
 
 const initialState = {
   news: [],
@@ -11,11 +12,18 @@ const initialState = {
 
 export const fetchNews = createAsyncThunk(
   "events/fetchNews",
-  async (_, { dispatch }) => {
+  async (_, { dispatch, signal }) => {
     try {
+      const source = axios.CancelToken.source();
+
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
       const response = await v1Axios({
         method: "POST",
         url: "/news/v2/list?region=US&snippetCount=28",
+        cancelToken: source.token,
       });
 
       return response.data.data.main.stream;
@@ -60,9 +68,9 @@ const slice = createSlice({
       })
       .addCase(fetchNews.rejected, (state, { error, meta }) => {
         state.loading = false;
-        // if (!meta.aborted) {
+        if (!meta.aborted) {
           state.rejected = error.message;
-        // }
+        }
       });
   },
 });

@@ -3,10 +3,13 @@ import SideBar from "../../components/SideBar/SideBar";
 import Overview from "../../components/Overview/Overview";
 import Securities from "../../components/Securities/Securities";
 import { useParams, useHistory } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { subMenuBriefcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSecurities, fetchGraph, resetRejectedInSecuritiesSlice } from "../../store/slices/securities";
+import {
+  fetchSecurities,
+  resetRejectedInSecuritiesSlice,
+} from "../../store/slices/securities";
 import { tickersData } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 
@@ -49,12 +52,17 @@ const Briefcase = () => {
     history.push("/briefcase/review");
 
   useEffect(() => {
+    let promiseForCanceling;
+
     if (securities.length === 0) {
-      dispatch(fetchSecurities(allTickers.join(",")));
+      promiseForCanceling = dispatch(fetchSecurities(allTickers.join(",")));
     }
+
+    return () => {
+      promiseForCanceling && promiseForCanceling.abort();
+    };
   }, [briefcaseSubmenuId]);
 
- 
   return (
     <>
       {(warning || rejectedInSecurities) && (

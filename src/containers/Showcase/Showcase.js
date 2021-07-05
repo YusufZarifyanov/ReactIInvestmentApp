@@ -32,17 +32,29 @@ const Showcase = () => {
   );
 
   useEffect(() => {
-    showcaseSubmenuId === "topviews" &&
+    let promiseForCanceling;
+
+    if (
+      showcaseSubmenuId === "topviews" &&
       !topViews.currency.data.length &&
       !topViews.shares.data.length &&
       !topViews.bonds.data.length &&
-      !topViews.funds.data.length &&
-      dispatch(fetchTopViews());
-    showcaseSubmenuId === "upsdowns" &&
+      !topViews.funds.data.length
+    ) {
+      promiseForCanceling = dispatch(fetchTopViews());
+    } else if (
+      showcaseSubmenuId === "upsdowns" &&
       !ups.length &&
-      !downs.length &&
-      dispatch(fetchUpsDowns());
-    showcaseSubmenuId === "events" && !news.length && dispatch(fetchNews());
+      !downs.length
+    ) {
+      promiseForCanceling = dispatch(fetchUpsDowns());
+    } else if (showcaseSubmenuId === "events" && !news.length) {
+      promiseForCanceling = dispatch(fetchNews());
+    }
+
+    return () => {
+      promiseForCanceling && promiseForCanceling.abort();
+    };
   }, [showcaseSubmenuId, topViews, ups, downs, news, dispatch]);
 
   const components = {
