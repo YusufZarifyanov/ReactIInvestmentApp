@@ -61,6 +61,7 @@ const Briefcase = () => {
           onOk={closeModalWindow}
           onCancel={closeModalWindow}
           destroyOnClose={true}
+          maskClosable={false}
           cancelButtonProps={{
             disabled: true,
           }}
