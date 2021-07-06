@@ -36,12 +36,10 @@ const initialState = {
   },
   myBriefcase: {
     data: [],
-    loading: false,
   },
   currentSecurity: {
     graph: {},
     meta: [],
-    loading: false,
   },
   rejected: "",
   loading: false,
@@ -86,11 +84,11 @@ export const fetchUpsDowns = createAsyncThunk(
   "securities/fetchUpsDowns",
   async (_, { dispatch, signal }) => {
     try {
-    const source = axios.CancelToken.source();
+      const source = axios.CancelToken.source();
 
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
 
       const response = await v1Axios({
         method: "GET",
@@ -118,11 +116,11 @@ export const fetchSecurities = createAsyncThunk(
   "securities/fetchSecurities",
   async (tickers, { dispatch, signal }) => {
     try {
-    const source = axios.CancelToken.source();
+      const source = axios.CancelToken.source();
 
-    signal.addEventListener("abort", () => {
-      source.cancel();
-    });
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
 
       const securityResponse = await lowLatencyAxios({
         method: "GET",
@@ -130,7 +128,10 @@ export const fetchSecurities = createAsyncThunk(
         cancelToken: source.token,
       });
       let securityData = securityResponse.data.quoteResponse.result;
-      let showParam = securityData.length > 1 ? destrucktSecurityArray(securityData) : securityData;
+      let showParam =
+        securityData.length > 1
+          ? destrucktSecurityArray(securityData)
+          : securityData;
       return showParam;
       // return Promise.reject("fetchSecurities rejected");
     } catch (error) {
@@ -171,6 +172,53 @@ export const fetchGraph = createAsyncThunk(
         return error.response.data;
       } else {
         console.log("fetchGraphData Error -->", error);
+        dispatch(setWarning(error.message));
+        return error;
+      }
+    }
+  }
+);
+
+export const fetchCurrentSecurity = createAsyncThunk(
+  "securities/fetchCurrentSecurity",
+  async ({ tickers, queryParams }, { dispatch, signal }) => {
+    try {
+      const source = axios.CancelToken.source();
+
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
+      let securityResponse, graphResponse;
+
+      await Promise.all([
+        (securityResponse = await lowLatencyAxios({
+          method: "GET",
+          url: "/v6/finance/quote?symbols=" + tickers,
+          cancelToken: source.token,
+        })),
+        (graphResponse = await v1Axios({
+          method: "GET",
+          url: `/stock/v2/get-chart?interval=${queryParams?.interval}&symbol=${queryParams?.ticker}&range=${queryParams?.range}`,
+          cancelToken: source.token,
+        })),
+      ]);
+
+      let securityData = securityResponse.data.quoteResponse.result;
+      let showParam =
+        securityData.length > 1
+          ? destrucktSecurityArray(securityData)
+          : securityData;
+
+      return { showParam, chart: graphResponse.data.chart.result[0] };
+      // return Promise.reject("fetchCurrentSecurity rejected");
+    } catch (error) {
+      if (error.response) {
+        console.log("fetchCurrentSecurity error in response", error.response);
+        dispatch(setWarning(error.response.data.message));
+        return error.response.data;
+      } else {
+        console.log("fetchCurrentSecurity Error -->", error);
         dispatch(setWarning(error.message));
         return error;
       }
@@ -224,7 +272,7 @@ const slice = createSlice({
         }
       })
       .addCase(fetchSecurities.pending, (state) => {
-        state.myBriefcase.loading = true;
+        state.loading = true;
       })
       .addCase(fetchSecurities.fulfilled, (state, action) => {
         if (!action.payload.message) {
@@ -234,16 +282,16 @@ const slice = createSlice({
             state.currentSecurity.meta = action.payload[0];
           }
         }
-        state.myBriefcase.loading = false;
+        state.loading = false;
       })
       .addCase(fetchSecurities.rejected, (state, { error, meta }) => {
-        state.myBriefcase.loading = false;
+        state.loading = false;
         if (!meta.aborted) {
           state.rejected = error.message;
         }
       })
       .addCase(fetchGraph.pending, (state) => {
-        state.currentSecurity.loading = true;
+        state.loading = true;
       })
       .addCase(fetchGraph.fulfilled, (state, action) => {
         if (!action.payload.message) {
@@ -254,10 +302,31 @@ const slice = createSlice({
             ...action.payload.chart.result[0].indicators.quote[0],
           };
         }
-        state.currentSecurity.loading = false;
+        state.loading = false;
       })
       .addCase(fetchGraph.rejected, (state, { error, meta }) => {
-        state.currentSecurity.loading = false;
+        state.loading = false;
+        if (!meta.aborted) {
+          state.rejected = error.message;
+        }
+      })
+      .addCase(fetchCurrentSecurity.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCurrentSecurity.fulfilled, (state, action) => {
+        if (!action.payload.message) {
+          state.currentSecurity.meta = action.payload.showParam[0];
+          state.currentSecurity.graph = {
+            xRange: action.payload.chart.timestamp.map((el) =>
+              convertTimestamp(el)
+            ),
+            ...action.payload.chart.indicators.quote[0],
+          };
+        }
+        state.loading = false;
+      })
+      .addCase(fetchCurrentSecurity.rejected, (state, { error, meta }) => {
+        state.loading = false;
         if (!meta.aborted) {
           state.rejected = error.message;
         }

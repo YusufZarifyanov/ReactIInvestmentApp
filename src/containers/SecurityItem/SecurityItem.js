@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  fetchCurrentSecurity,
   fetchGraph,
   fetchSecurities,
   resetRejectedInSecuritiesSlice,
@@ -30,7 +31,7 @@ const SecurityItem = () => {
   });
 
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
-  let loading = [false, false, false, false, false, false];
+  let loadingForBtns = [false, false, false, false, false, false];
 
   let graphData = useSelector(
     (state) => state.securities.currentSecurity.graph
@@ -38,39 +39,48 @@ const SecurityItem = () => {
   let tickerData = useSelector(
     (state) => state.securities.currentSecurity.meta
   );
-  const graphLoading = useSelector(
-    (state) => state.securities.currentSecurity.loading
-  );
-  const securityLoading = useSelector(
-    (state) => state.securities.myBriefcase.loading
-  );
+  // const graphLoading = useSelector(
+  //   (state) => state.securities.currentSecurity.loading
+  // );
+  const loading = useSelector((state) => state.securities.loading);
   const warning = useSelector((state) => state.modals.warning);
+  const currentSecurity = useSelector(
+    (state) => state.securities.currentSecurity.meta
+  );
   const rejectedInSecurities = useSelector(
     (state) => state.securities.rejected
   );
 
+  // useEffect(() => {
+  //   let promiseForCanceling;
+  //   promiseForCanceling = dispatch(fetchSecurities(`${ticker}`));
+  //   // promiseForCanceling = dispatch(fetchCurrentSecurity(`${ticker}`, {...graphSettings, ticker}));
+
+  //   return () => {
+  //     promiseForCanceling && promiseForCanceling.abort();
+  //   };
+  // }, []);
+
   useEffect(() => {
     let promiseForCanceling;
-    promiseForCanceling = dispatch(fetchSecurities(`${ticker}`));
 
-    return () => {
-      promiseForCanceling && promiseForCanceling.abort();
-    };
-  }, []);
-
-  useEffect(() => {
-    let promiseForCanceling;
-    promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
+    if (!currentSecurity.length) {
+      promiseForCanceling = dispatch(
+        fetchCurrentSecurity(`${ticker}`, { ...graphSettings, ticker })
+      );
+    } else {
+      promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
+    }
 
     return () => {
       promiseForCanceling && promiseForCanceling.abort();
     };
   }, [graph, graphSettings]);
 
-  loading[activeBtn.index] = graphLoading;
+  loadingForBtns[activeBtn.index] = loading;
 
   const handleChange = (action, name, interval, range, index) => {
-    loading[index] = !graphLoading;
+    loadingForBtns[index] = !loading;
     setActiveBtn({ index });
     if (action) {
       graph ? setGraph(false) : setGraph(true);
@@ -123,7 +133,7 @@ const SecurityItem = () => {
           />
         }
         <Layout.Content>
-          {securityLoading ? (
+          {loading && !currentSecurity.length ? (
             <Layout.Content>
               <div className={styles.spin}>
                 <Spin size="large" />
@@ -153,7 +163,7 @@ const SecurityItem = () => {
                         </div>
                       </div>
                     </div>
-                    <div >
+                    <div>
                       <img
                         alt="example"
                         src={`${
