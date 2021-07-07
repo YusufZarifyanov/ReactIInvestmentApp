@@ -44,7 +44,7 @@ const SecurityItem = () => {
   // );
   const loading = useSelector((state) => state.securities.loading);
   const warning = useSelector((state) => state.modals.warning);
-  const currentSecurity = useSelector(
+  const currentSecurityMeta = useSelector(
     (state) => state.securities.currentSecurity.meta
   );
   const rejectedInSecurities = useSelector(
@@ -64,9 +64,12 @@ const SecurityItem = () => {
   useEffect(() => {
     let promiseForCanceling;
 
-    if (!currentSecurity.length) {
+    if (Object.keys(currentSecurityMeta).length === 0) {
       promiseForCanceling = dispatch(
-        fetchCurrentSecurity(`${ticker}`, { ...graphSettings, ticker })
+        fetchCurrentSecurity({
+          tickers: `${ticker}`,
+          queryParams: { ...graphSettings, ticker },
+        })
       );
     } else {
       promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
@@ -133,7 +136,7 @@ const SecurityItem = () => {
           />
         }
         <Layout.Content>
-          {loading && !currentSecurity.length ? (
+          {loading && Object.keys(currentSecurityMeta).length === 0 ? (
             <Layout.Content>
               <div className={styles.spin}>
                 <Spin size="large" />
@@ -191,7 +194,7 @@ const SecurityItem = () => {
                       // eslint-disable-next-line react/no-array-index-key
                       <Button
                         key={index}
-                        loading={loading[index]}
+                        loading={loadingForBtns[index]}
                         onClick={() =>
                           handleChange(
                             el.action,

@@ -39,7 +39,7 @@ const initialState = {
   },
   currentSecurity: {
     graph: {},
-    meta: [],
+    meta: {},
   },
   rejected: "",
   loading: false,
@@ -189,19 +189,17 @@ export const fetchCurrentSecurity = createAsyncThunk(
         source.cancel();
       });
 
-      let securityResponse, graphResponse;
-
-      await Promise.all([
-        (securityResponse = await lowLatencyAxios({
+      const [securityResponse, graphResponse] = await Promise.all([
+        lowLatencyAxios({
           method: "GET",
           url: "/v6/finance/quote?symbols=" + tickers,
           cancelToken: source.token,
-        })),
-        (graphResponse = await v1Axios({
+        }),
+        v1Axios({
           method: "GET",
           url: `/stock/v2/get-chart?interval=${queryParams?.interval}&symbol=${queryParams?.ticker}&range=${queryParams?.range}`,
           cancelToken: source.token,
-        })),
+        }),
       ]);
 
       let securityData = securityResponse.data.quoteResponse.result;
@@ -210,7 +208,7 @@ export const fetchCurrentSecurity = createAsyncThunk(
           ? destrucktSecurityArray(securityData)
           : securityData;
 
-      return { showParam, chart: graphResponse.data.chart.result[0] };
+      return { showParam, graphResponse: graphResponse.data };
       // return Promise.reject("fetchCurrentSecurity rejected");
     } catch (error) {
       if (error.response) {
@@ -317,10 +315,10 @@ const slice = createSlice({
         if (!action.payload.message) {
           state.currentSecurity.meta = action.payload.showParam[0];
           state.currentSecurity.graph = {
-            xRange: action.payload.chart.timestamp.map((el) =>
-              convertTimestamp(el)
+            xRange: action.payload.graphResponse.chart.result[0].timestamp.map(
+              (el) => convertTimestamp(el)
             ),
-            ...action.payload.chart.indicators.quote[0],
+            ...action.payload.graphResponse.chart.result[0].indicators.quote[0],
           };
         }
         state.loading = false;
@@ -330,7 +328,7 @@ const slice = createSlice({
         if (!meta.aborted) {
           state.rejected = error.message;
         }
-      })
+      });
   },
 });
 
