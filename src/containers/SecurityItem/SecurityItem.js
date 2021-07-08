@@ -43,9 +43,6 @@ const SecurityItem = () => {
   // );
   const loading = useSelector((state) => state.securities.loading);
   const warning = useSelector((state) => state.modals.warning);
-  const currentSecurityMeta = useSelector(
-    (state) => state.securities.currentSecurity.meta
-  );
   const rejectedInSecurities = useSelector(
     (state) => state.securities.rejected
   );
@@ -63,7 +60,7 @@ const SecurityItem = () => {
   useEffect(() => {
     let promiseForCanceling;
 
-    if (Object.keys(currentSecurityMeta).length === 0) {
+    if (Object.keys(tickerData).length === 0) {
       promiseForCanceling = dispatch(
         fetchCurrentSecurity({
           tickers: `${ticker}`,
@@ -135,7 +132,7 @@ const SecurityItem = () => {
           />
         }
         <Layout.Content>
-          {loading && Object.keys(currentSecurityMeta).length === 0 ? (
+          {loading && Object.keys(tickerData).length === 0 ? (
             <Layout.Content>
               <div className={styles.spin}>
                 <Spin size="large" />
