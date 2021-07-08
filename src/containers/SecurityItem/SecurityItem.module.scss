@@ -13,7 +13,7 @@
 .container {
   margin: 0 auto;
   width: 100%;
-  // min-height: 80vh;
+  min-height: 89vh;
   .cards {
     display: flex;
     justify-content: center;
@@ -27,6 +27,12 @@
       align-items: center;
       margin-top: 1rem;
     }
+    @media screen and (max-width: 575px) {
+      width: 100%;
+      p {
+        line-height: 1.5;
+      }
+    }
 
     .securitiesType {
       background-color: $maincolor;
@@ -39,6 +45,9 @@
       @media screen and (max-width: 1100px) {
         width: 80%;
         margin-bottom: 3rem;
+      }
+      @media screen and (max-width: 575px) {
+        flex-direction: column;
       }
 
       .info {
@@ -70,6 +79,9 @@
         width: 4rem;
         height: 4rem;
         margin: 2.5rem 2rem;
+        @media screen and (max-width: 575px) {
+          margin: 2rem auto;
+        }
       }
     }
 
@@ -123,5 +135,8 @@
     display: flex;
     justify-content: center;
     margin: 2rem 0;
+    @media screen and (max-width: 575px) {
+      margin: 0 auto;
+    }
   }
 }

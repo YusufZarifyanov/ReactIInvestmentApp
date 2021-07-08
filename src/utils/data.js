@@ -1,7 +1,7 @@
 export const tickersData = {
   currency: ["AAPL", "IBM"],
   shares: ["MSFT"],
-  bonds:["BABA"],
+  bonds: ["BABA"],
   funds: ["IBM"],
 };
 
@@ -43,4 +43,4 @@ export const dateArray = [
   },
 ];
 
-
+export const loadingForBtns = new Array(6).fill(false);

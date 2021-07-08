@@ -15,7 +15,7 @@ import { Layout, Space, Button, Modal } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
-import { dateArray, tickersData } from "../../utils/data";
+import { dateArray, loadingForBtns } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 
 const SecurityItem = () => {
@@ -31,7 +31,6 @@ const SecurityItem = () => {
   });
 
   const [activeBtn, setActiveBtn] = useState({ index: 0 });
-  let loadingForBtns = [false, false, false, false, false, false];
 
   let graphData = useSelector(
     (state) => state.securities.currentSecurity.graph
@@ -166,15 +165,14 @@ const SecurityItem = () => {
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <img
-                        alt="example"
-                        src={`${
-                          process.env.REACT_APP_POLYGON_FOR_LOGO
-                        }${ticker.toLowerCase()}/logo.png`}
-                        className={styles.img}
-                      ></img>
-                    </div>
+
+                    <img
+                      alt="example"
+                      src={`${
+                        process.env.REACT_APP_POLYGON_FOR_LOGO
+                      }${ticker.toLowerCase()}/logo.png`}
+                      className={styles.img}
+                    ></img>
                   </div>
                   <div className={styles.securitiesPrice}>
                     <p className={styles.date}>Цена акции 27 мая 2021г.</p>
