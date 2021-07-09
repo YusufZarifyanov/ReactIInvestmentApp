@@ -1,5 +1,5 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +7,7 @@ import {
   fetchGraph,
   fetchSecurities,
   resetRejectedInSecuritiesSlice,
+  cleanCurrentSucurityInfo,
 } from "../../store/slices/securities";
 import { Spin } from "antd";
 import styles from "./SecurityItem.module.scss";
@@ -57,16 +58,28 @@ const SecurityItem = () => {
   //   };
   // }, []);
 
-  useEffect(() => {
-    let promiseForCanceling;
+  // useEffect(() => {
+  //   console.log(1);
 
+  // }, []);
+
+  useEffect(() => {
+    if (tickerData?.symbol !== ticker && Object.keys(tickerData).length !== 0) {
+      console.log(4);
+      dispatch(cleanCurrentSucurityInfo());
+    }
+    console.log(2);
+    let promiseForCanceling;
+    console.log(Object.keys(tickerData).length);
     if (Object.keys(tickerData).length === 0) {
+      console.log(3);
       promiseForCanceling = dispatch(
         fetchCurrentSecurity({
           tickers: `${ticker}`,
           queryParams: { ...graphSettings, ticker },
         })
       );
+      console.log(promiseForCanceling);
     } else {
       promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
     }
@@ -75,7 +88,7 @@ const SecurityItem = () => {
       promiseForCanceling && promiseForCanceling.abort();
     };
   }, [graph, graphSettings]);
-
+  console.log(tickerData);
   loadingForBtns[activeBtn.index] = loading;
 
   const handleChange = (action, name, interval, range, index) => {
@@ -98,6 +111,23 @@ const SecurityItem = () => {
     warning && dispatch(resetWarning());
     rejectedInSecurities && dispatch(resetRejectedInSecuritiesSlice());
   }
+
+  const result = useMemo(() => {
+    
+    if (tickerData?.symbol !== ticker && Object.keys(tickerData).length !== 0) {
+      console.log(4);
+      dispatch(cleanCurrentSucurityInfo());
+    }
+
+    if (Object.keys(tickerData).length === 0) {
+      const a = dispatch(
+        fetchCurrentSecurity({
+          tickers: `${ticker}`,
+          queryParams: { ...graphSettings, ticker },
+        })
+      );
+    }
+  }, [tickerData]);
 
   return (
     <>

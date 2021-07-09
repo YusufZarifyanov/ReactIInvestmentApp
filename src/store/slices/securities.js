@@ -231,6 +231,9 @@ const slice = createSlice({
     resetRejectedInSecuritiesSlice(state) {
       state.rejected = "";
     },
+    cleanCurrentSucurityInfo(state) {
+      state.currentSecurity.meta = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -333,4 +336,5 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-export const { resetRejectedInSecuritiesSlice } = slice.actions;
+export const { resetRejectedInSecuritiesSlice, cleanCurrentSucurityInfo } =
+  slice.actions;
