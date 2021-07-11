@@ -65,21 +65,16 @@ const SecurityItem = () => {
 
   useEffect(() => {
     if (tickerData?.symbol !== ticker && Object.keys(tickerData).length !== 0) {
-      console.log(4);
       dispatch(cleanCurrentSucurityInfo());
     }
-    console.log(2);
     let promiseForCanceling;
-    console.log(Object.keys(tickerData).length);
     if (Object.keys(tickerData).length === 0) {
-      console.log(3);
       promiseForCanceling = dispatch(
         fetchCurrentSecurity({
           tickers: `${ticker}`,
           queryParams: { ...graphSettings, ticker },
         })
       );
-      console.log(promiseForCanceling);
     } else {
       promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
     }
@@ -88,7 +83,7 @@ const SecurityItem = () => {
       promiseForCanceling && promiseForCanceling.abort();
     };
   }, [graph, graphSettings]);
-  console.log(tickerData);
+
   loadingForBtns[activeBtn.index] = loading;
 
   const handleChange = (action, name, interval, range, index) => {
@@ -112,15 +107,14 @@ const SecurityItem = () => {
     rejectedInSecurities && dispatch(resetRejectedInSecuritiesSlice());
   }
 
-  const result = useMemo(() => {
-    
+  useEffect(() => {
+    console.log("useMemo work");
     if (tickerData?.symbol !== ticker && Object.keys(tickerData).length !== 0) {
-      console.log(4);
       dispatch(cleanCurrentSucurityInfo());
     }
 
     if (Object.keys(tickerData).length === 0) {
-      const a = dispatch(
+      const fetchedSecurity = dispatch(
         fetchCurrentSecurity({
           tickers: `${ticker}`,
           queryParams: { ...graphSettings, ticker },
@@ -128,6 +122,9 @@ const SecurityItem = () => {
       );
     }
   }, [tickerData]);
+
+  // console.log(tickerData?.ask);
+  // console.log(tickerData);
 
   return (
     <>
@@ -219,6 +216,7 @@ const SecurityItem = () => {
                       // eslint-disable-next-line react/no-array-index-key
                       <Button
                         key={index}
+                        disabled={loading}
                         loading={loadingForBtns[index]}
                         onClick={() =>
                           handleChange(
