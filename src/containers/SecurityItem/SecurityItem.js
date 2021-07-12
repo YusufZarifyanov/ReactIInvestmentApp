@@ -63,27 +63,6 @@ const SecurityItem = () => {
 
   // }, []);
 
-  useEffect(() => {
-    if (tickerData?.symbol !== ticker && Object.keys(tickerData).length !== 0) {
-      dispatch(cleanCurrentSucurityInfo());
-    }
-    let promiseForCanceling;
-    if (Object.keys(tickerData).length === 0) {
-      promiseForCanceling = dispatch(
-        fetchCurrentSecurity({
-          tickers: `${ticker}`,
-          queryParams: { ...graphSettings, ticker },
-        })
-      );
-    } else {
-      promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
-    }
-
-    return () => {
-      promiseForCanceling && promiseForCanceling.abort();
-    };
-  }, [graph, graphSettings]);
-
   loadingForBtns[activeBtn.index] = loading;
 
   const handleChange = (action, name, interval, range, index) => {
@@ -108,11 +87,16 @@ const SecurityItem = () => {
   }
 
   useEffect(() => {
-    console.log("useMemo work");
-    if (tickerData?.symbol !== ticker && Object.keys(tickerData).length !== 0) {
-      dispatch(cleanCurrentSucurityInfo());
-    }
+    let promiseForCanceling = dispatch(
+      fetchGraph({ ...graphSettings, ticker })
+    );
 
+    return () => {
+      promiseForCanceling && promiseForCanceling.abort();
+    };
+  }, [graphSettings]);
+
+  useEffect(() => {
     if (Object.keys(tickerData).length === 0) {
       const fetchedSecurity = dispatch(
         fetchCurrentSecurity({
@@ -121,10 +105,8 @@ const SecurityItem = () => {
         })
       );
     }
-  }, [tickerData]);
-
-  // console.log(tickerData?.ask);
-  // console.log(tickerData);
+    return () => dispatch(cleanCurrentSucurityInfo());
+  }, []);
 
   return (
     <>
@@ -200,7 +182,9 @@ const SecurityItem = () => {
                   </div>
                   <div className={styles.securitiesPrice}>
                     <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-                    <p className={styles.price}>{`${tickerData?.ask} $`}</p>
+                    <p
+                      className={styles.price}
+                    >{`${tickerData?.regularMarketDayLow} $`}</p>
 
                     <button className={styles.btn}>
                       {securityType ? "Купить еще" : "Приобрести"}
