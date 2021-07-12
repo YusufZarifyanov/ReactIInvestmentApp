@@ -35,7 +35,7 @@ const SecurityItemData = ({ tickerData, ticker, securityType }) => {
       </div>
       <div className={styles.securitiesPrice}>
         <p className={styles.date}>Цена акции 27 мая 2021г.</p>
-        <p className={styles.price}>{`${tickerData?.ask} $`}</p>
+        <p className={styles.price}>{`${tickerData?.regularMarketDayLow} $`}</p>
 
         <button className={styles.btn}>
           {securityType ? "Купить еще" : "Приобрести"}
