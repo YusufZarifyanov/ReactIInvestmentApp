@@ -1,11 +1,10 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCurrentSecurity,
   fetchGraph,
-  fetchSecurities,
   resetRejectedInSecuritiesSlice,
   cleanCurrentSucurityInfo,
 } from "../../store/slices/securities";
@@ -40,29 +39,12 @@ const SecurityItem = () => {
   let tickerData = useSelector(
     (state) => state.securities.currentSecurity.meta
   );
-  // const graphLoading = useSelector(
-  //   (state) => state.securities.currentSecurity.loading
-  // );
   const loading = useSelector((state) => state.securities.loading);
   const warning = useSelector((state) => state.modals.warning);
   const rejectedInSecurities = useSelector(
     (state) => state.securities.rejected
   );
 
-  // useEffect(() => {
-  //   let promiseForCanceling;
-  //   promiseForCanceling = dispatch(fetchSecurities(`${ticker}`));
-  //   // promiseForCanceling = dispatch(fetchCurrentSecurity(`${ticker}`, {...graphSettings, ticker}));
-
-  //   return () => {
-  //     promiseForCanceling && promiseForCanceling.abort();
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log(1);
-
-  // }, []);
   var loadingForBtns = new Array(6).fill(false);
 
   if (loadingForBtns.filter((loadingBtn) => loadingBtn === true).length > 1)
@@ -93,7 +75,21 @@ const SecurityItem = () => {
   }
 
   useEffect(() => {
-    let promiseForCanceling = dispatch(
+    const promiseForCanceling = dispatch(
+      fetchCurrentSecurity({
+        tickers: `${ticker}`,
+        queryParams: { ...graphSettings, ticker },
+      })
+    );
+
+    return () => {
+      promiseForCanceling && promiseForCanceling.abort();
+      dispatch(cleanCurrentSucurityInfo());
+    };
+  }, []);
+
+  useEffect(() => {
+    const promiseForCanceling = dispatch(
       fetchGraph({ ...graphSettings, ticker })
     );
 
@@ -101,25 +97,6 @@ const SecurityItem = () => {
       promiseForCanceling && promiseForCanceling.abort();
     };
   }, [graphSettings]);
-
-  useEffect(() => {
-    if (Object.keys(tickerData).length === 0) {
-      const fetchedSecurity = dispatch(
-        fetchCurrentSecurity({
-          tickers: `${ticker}`,
-          queryParams: { ...graphSettings, ticker },
-        })
-      );
-    }
-    return () => dispatch(cleanCurrentSucurityInfo());
-  }, []);
-
-  // console.log(
-  //   loadingForBtns,
-  //   loadingForBtns.filter((loadingBtn) => loadingBtn === false).length
-  // );
-
-  //
 
   return (
     <>
