@@ -16,7 +16,7 @@ import { Layout, Space, Button, Modal } from "antd";
 import SideBar from "../../components/SideBar/SideBar";
 import Graph from "../../components/SecuritiesGraphic/SecuritiesGraphic.js";
 import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumber";
-import { dateArray, loadingForBtns } from "../../utils/data";
+import { dateArray } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 import SecurityItemData from "../../components/SecurityItemData/SecurityItemData";
 
@@ -63,8 +63,13 @@ const SecurityItem = () => {
   //   console.log(1);
 
   // }, []);
+  var loadingForBtns = new Array(6).fill(false);
+
+  if (loadingForBtns.filter((loadingBtn) => loadingBtn === true).length > 1)
+    loadingForBtns[loadingForBtns.findIndex(true)] = false;
 
   loadingForBtns[activeBtn.index] = loading;
+  console.log(loadingForBtns);
 
   const handleChange = (action, name, interval, range, index) => {
     loadingForBtns[index] = !loading;
@@ -108,6 +113,13 @@ const SecurityItem = () => {
     }
     return () => dispatch(cleanCurrentSucurityInfo());
   }, []);
+
+  // console.log(
+  //   loadingForBtns,
+  //   loadingForBtns.filter((loadingBtn) => loadingBtn === false).length
+  // );
+
+  //
 
   return (
     <>
@@ -162,7 +174,7 @@ const SecurityItem = () => {
                       // eslint-disable-next-line react/no-array-index-key
                       <Button
                         key={index}
-                        disabled={loading}
+                        // disabled={loading}
                         loading={loadingForBtns[index]}
                         onClick={() =>
                           handleChange(
