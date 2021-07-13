@@ -40,6 +40,7 @@ const initialState = {
   currentSecurity: {
     graph: {},
     meta: {},
+    currentRequestId: undefined,
   },
   rejected: "",
   loading: false,
@@ -291,7 +292,8 @@ const slice = createSlice({
           state.rejected = error.message;
         }
       })
-      .addCase(fetchGraph.pending, (state) => {
+      .addCase(fetchGraph.pending, (state, action) => {
+        state.currentSecurity.currentRequestId = action.meta.requestId;
         state.loading = true;
       })
       .addCase(fetchGraph.fulfilled, (state, action) => {
@@ -303,10 +305,13 @@ const slice = createSlice({
             ...action.payload.chart.result[0].indicators.quote[0],
           };
         }
+        state.currentSecurity.currentRequestId = undefined;
         state.loading = false;
       })
       .addCase(fetchGraph.rejected, (state, { error, meta }) => {
-        state.loading = false;
+        if (state.currentSecurity.currentRequestId === meta.requestId) {
+          state.loading = false;
+        }
         if (!meta.aborted) {
           state.rejected = error.message;
         }
