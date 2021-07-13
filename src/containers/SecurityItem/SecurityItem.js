@@ -1,5 +1,5 @@
 import { useLocation, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { subMenuBriefcase, subMenuShowcase } from "../../data/sub_menu";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -89,14 +89,37 @@ const SecurityItem = () => {
   }, []);
 
   useEffect(() => {
-    const promiseForCanceling = dispatch(
-      fetchGraph({ ...graphSettings, ticker })
-    );
+    let promiseForCanceling;
+    if (Object.keys(tickerData).length) {
+      promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
+    }
 
     return () => {
       promiseForCanceling && promiseForCanceling.abort();
     };
   }, [graphSettings]);
+
+  // or we can do this:
+  // useRef don't change between renders
+  // componentDidMount (first running) -> didMount.current = false, so dispatch not runs; change didMount.current to true
+  // componentDidUpdate (second and more runnings) -> didMount.current = true and dispatch runs
+
+  // /////start/////
+  // const didMount = useRef(false);
+
+  // useEffect(() => {
+  //   let promiseForCanceling;
+  //   if (didMount.current) {
+  //     promiseForCanceling = dispatch(fetchGraph({ ...graphSettings, ticker }));
+  //   } else {
+  //     didMount.current = true;
+  //   }
+
+  //   return () => {
+  //     promiseForCanceling && promiseForCanceling.abort();
+  //   };
+  // }, [graphSettings]);
+  // /////finish/////
 
   return (
     <>
