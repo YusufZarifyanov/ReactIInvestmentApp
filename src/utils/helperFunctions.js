@@ -1,4 +1,4 @@
-import{ tickersData} from "./data";
+import { tickersData, dateArray } from "./data";
 
 export const convertTimestamp = (timestamp) => {
   let d = new Date(timestamp * 1000),
@@ -37,4 +37,8 @@ export const destrucktSecurityArray = (securityArray) => {
     start = end;
   }
   return allSecurity;
+};
+
+export const cleanSecurityBtnLoading = () => {
+  dateArray.forEach((el) => (el.loading = false));
 };

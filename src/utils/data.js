@@ -11,6 +11,7 @@ export const dateArray = [
     name: "День",
     interval: "1m",
     range: "1d",
+    loading: false,
   },
   {
     index: "2",
@@ -23,24 +24,28 @@ export const dateArray = [
     name: "Месяц",
     interval: "60m",
     range: "1mo",
+    loading: false,
   },
   {
     index: "4",
     name: "Полгода",
     interval: "1d",
     range: "6mo",
+    loading: false,
   },
   {
     index: "5",
     name: "Год",
     interval: "1d",
     range: "1y",
+    loading: false,
   },
   {
     index: "6",
     name: <i className="fa fa-arrows-v" aria-hidden="true"></i>,
     action: "changeGraph",
+    loading: false,
   },
 ];
 
-export const loadingForBtns = new Array(6).fill(false);
+export var loadingForBtns = new Array(6).fill(false);

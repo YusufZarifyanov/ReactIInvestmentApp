@@ -18,6 +18,7 @@ import { getPathPartByOrdinalNumber } from "../../utils/getPathPartByOrdinalNumb
 import { dateArray } from "../../utils/data";
 import { resetWarning } from "../../store/slices/modals";
 import SecurityItemData from "../../components/SecurityItemData/SecurityItemData";
+import { cleanSecurityBtnLoading } from "../../utils/helperFunctions";
 
 const SecurityItem = () => {
   const dispatch = useDispatch();
@@ -45,16 +46,10 @@ const SecurityItem = () => {
     (state) => state.securities.rejected
   );
 
-  var loadingForBtns = new Array(6).fill(false);
-
-  if (loadingForBtns.filter((loadingBtn) => loadingBtn === true).length > 1)
-    loadingForBtns[loadingForBtns.findIndex(true)] = false;
-
-  loadingForBtns[activeBtn.index] = loading;
-  console.log(loadingForBtns);
+  cleanSecurityBtnLoading();
+  dateArray[activeBtn.index].loading = loading;
 
   const handleChange = (action, name, interval, range, index) => {
-    loadingForBtns[index] = !loading;
     setActiveBtn({ index });
     if (action) {
       graph ? setGraph(false) : setGraph(true);
@@ -175,7 +170,7 @@ const SecurityItem = () => {
                       <Button
                         key={index}
                         // disabled={loading}
-                        loading={loadingForBtns[index]}
+                        loading={el.loading}
                         onClick={() =>
                           handleChange(
                             el.action,
